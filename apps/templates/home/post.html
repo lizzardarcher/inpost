@@ -1,0 +1,72 @@
+{% extends "layouts/base.html" %}
+{% block title %} Посты {% endblock %}
+
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}
+    <h1> Мои Посты </h1>
+    <div class="p-2 m-1">
+        <a href="post_create">
+            <button class="btn btn-primary">+ Добавить Пост</button>
+        </a>
+    </div>
+    {% for post in posts %}
+        <div class="col-12">
+            <div class="card card-chart">
+                <div class="card-header ">
+                    <div class="row">
+                        <div class="col-sm-6 text-left">
+                            <h4 class="card-title">{{ post.name }}</h4>
+                            <p class="card-text">{{ post.text }}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="container">
+
+                    {% if post.photo %}
+                        <div class="row p-1">
+                            <div class="col-sm">
+                                <img width="100" class="img-thumbnail" src="{{ MEDIA_URL }}{{ post.photo }}">
+                            </div>
+                        </div>
+                    {% endif %}
+
+                    {% if post.video %}
+                        <div class="row p-1">
+                            <div class="col-sm">
+                                <video controls width="180" src="{{ MEDIA_URL }}{{ post.video }}"></video>
+                            </div>
+
+                        </div>
+                    {% endif %}
+
+                    {% if post.document %}
+                        <div class="row p-1">
+                            <div class="col-sm">
+                                <a download href="{{ MEDIA_URL }}{{ post.document }}">
+                                    <i class="tim-icons icon-single-copy-04"></i>
+                                    {{ post.document }}
+                                </a>
+                            </div>
+                        </div>
+                    {% endif %}
+
+                    {% if post.is_active %}
+                        <i class="bg-primary tim-icons icon-check-2"></i>
+                    {% else %}
+                        <i class="bg-danger tim-icons icon-simple-remove"></i>
+                    {% endif %}
+                    <br/>
+                    <a href="post_update/{{ post.id }}">Update</a>
+                    <br/>
+                    <a href="post_delete/{{ post.id }}">Delete</a>
+                    <br/>
+
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+
+{% endblock content %}
+
+{% block javascripts %}{% endblock javascripts %}

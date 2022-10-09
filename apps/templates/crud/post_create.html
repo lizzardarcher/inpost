@@ -1,0 +1,16 @@
+{% extends 'layouts/base.html' %}
+{% load crispy_forms_tags %}
+{% block content %}
+    <body class="bg-light bg-gradient">
+    <a href="post" class="text-black"><h3>Назад</h3></a>
+    <div class="container">
+        <form method="post" enctype='multipart/form-data'>
+            {% csrf_token %}
+            {{ form|crispy }}
+            <button type="submit" class="btn btn-primary">Подтвердить</button>
+        </form>
+    </div>
+    </body>
+{% endblock %}
+
+

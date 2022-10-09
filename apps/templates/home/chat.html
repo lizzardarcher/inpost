@@ -1,0 +1,34 @@
+{% extends "layouts/base.html" %}
+{% block title %} Посты {% endblock %}
+
+{% block content %}
+        <h1> Мои Каналы </h1>
+    <div class="p-2 m-1">
+        <a href="chat_create">
+            <button class="btn btn-primary">+ Добавить Канал</button>
+        </a>
+    </div>
+        {% for chat in chats %}
+        <div class="col-12">
+            <div class="card card-chart">
+                <div class="card-header ">
+                    <div class="row">
+                        <div class="col-sm-6 text-left">
+                            <h4 class="card-title">{{ chat.name }}</h4>
+                            <p class="card-text">{{ chat.chat_type }}</p>
+                            <p class="card-text">{{ chat.ref }}</p>
+                        </div>
+                    </div>
+                </div>
+                <br/>
+                    <a href="chat_update/{{ chat.id }}">Update</a>
+                    <br/>
+                    <a href="chat_delete/{{ chat.id }}">Delete</a>
+                    <br/>
+            </div>
+        </div>
+        {% endfor %}
+{% endblock content %}
+
+{% block stylesheets %}{% endblock stylesheets %}
+{% block javascripts %}{% endblock javascripts %}
