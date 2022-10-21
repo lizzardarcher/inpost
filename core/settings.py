@@ -1,7 +1,4 @@
 # -*- encoding: utf-8 -*-
-"""
-Copyright (c) 2019 - present AppSeed.us
-"""
 
 import os
 from decouple import config
@@ -34,6 +31,11 @@ INSTALLED_APPS = [
     'apps.home',
 
     'crispy_forms',
+    'filer',
+    'mptt',
+    'easy_thumbnails',
+    'debug_toolbar',
+
 ]
 
 CRISPY_TEMPLATE_PACK = 'uni_form'
@@ -47,7 +49,14 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'apps.middleware.current_user.CurrentUserMiddleware',
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
 ]
+
+INTERNAL_IPS = [
+    "127.0.0.1",
+]
+
 
 ROOT_URLCONF = 'core.urls'
 LOGIN_REDIRECT_URL = "home"  # Route defined in home/urls.py
@@ -113,7 +122,7 @@ USE_I18N = True
 
 USE_L10N = True
 
-USE_TZ = True
+USE_TZ = False
 
 #############################################################
 # SRC: https://devcenter.heroku.com/articles/django-assets

@@ -1,0 +1,22 @@
+{% extends 'layouts/base.html' %}
+
+{% block content %}
+    <form method="post">
+        {% csrf_token %}
+        {{ form }}
+        <input type="submit" value="Подтвердить">
+    </form>
+    <script>
+        let sch = document.getElementById('id_schedule')
+        let now     = new Date();
+        let year    = window.location.pathname.split('/')[2];
+        let month   = window.location.pathname.split('/')[3];
+        let day     = window.location.pathname.split('/')[4];
+        let hour    = now.getHours();
+        let minute  = now.getMinutes();
+        if (day.length == 1){
+            day = '0' + day
+        }
+        sch.setAttribute('value', `${year}-${month}-${day}T${hour}:${minute}`)
+    </script>
+{% endblock content %}

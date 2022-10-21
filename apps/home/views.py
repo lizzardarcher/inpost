@@ -1,21 +1,69 @@
 # -*- encoding: utf-8 -*-
-"""
-Copyright (c) 2019 - present AppSeed.us
-"""
 
-from django import template
-from django.contrib.auth.decorators import login_required
-from django.http import HttpResponse, HttpResponseRedirect
+from datetime import datetime
+from django.http import HttpResponse
 from django.template import loader
 from django.urls import reverse, reverse_lazy
 from django.shortcuts import render, redirect
-from django.views.generic import (ListView, DeleteView, UpdateView, CreateView)
+from django.views.generic import (ListView, DeleteView, UpdateView, CreateView, TemplateView)
 from django.contrib.auth.mixins import LoginRequiredMixin
 
-from betterforms.multiform import MultiModelForm
+from .models import Post, Bot, Chat, Media, Button, User, PostSchedule, PostPhoto
+from .forms import PostForm, PostPhotoForm, PostCreationMultiForm, PostScheduleForm, PostScheduleMultiForm
+from .calendar import PostCalendar
 
-from .models import Post, Bot, Chat, Media, Button, User
-from .forms import PostForm, PostPhotoForm,PostCreationMultiForm
+from django.shortcuts import render
+from django.forms import modelformset_factory
+from django.contrib.auth.decorators import login_required
+from django.contrib import messages
+from django.http import HttpResponseRedirect
+
+
+@login_required
+def post(request):
+    ImageFormSet = modelformset_factory(PostPhoto,
+                                        form=PostPhotoForm, extra=3)
+    # 'extra' means the number of photos that you can upload   ^
+    if request.method == 'POST':
+
+        postForm = PostForm(request.POST)
+        formset = ImageFormSet(request.POST, request.FILES,
+                               queryset=PostPhoto.objects.none())
+
+        if postForm.is_valid() and formset.is_valid():
+            post_form = postForm.save(commit=False)
+            post_form.user = request.user
+            post_form.save()
+
+            for form in formset.cleaned_data:
+                # this helps to not crash if the user
+                # do not upload all the photos
+                if form:
+                    image = form['photos']
+                    photo = PostPhoto(post=post_form, photos=image)
+                    photo.save()
+            # use django messages framework
+            messages.success(request,
+                             "Yeeew, check it out on the home page!")
+            return HttpResponseRedirect("/")
+        else:
+            print(postForm.errors, formset.errors)
+    else:
+        postForm = PostForm()
+        formset = ImageFormSet(queryset=PostPhoto.objects.none())
+    return render(request, 'crud/test_post.html', {'postForm': postForm, 'formset': formset})
+
+
+# USER ##############################################
+
+class UserUpdateView(UpdateView):
+    template_name = 'home/user_profile.html'
+    model = User
+    fields = ['username', 'email', 'first_name', 'last_name']
+    success_url = '/user_profile'
+
+    def user_profile(request):
+        return redirect('/user_profile/1')
 
 
 # POST ##############################################
@@ -41,32 +89,6 @@ class PostCreateView(LoginRequiredMixin, CreateView):
         form.instance.user = self.request.user
         return super().form_valid(form)
 
-# class PostCreateView(CreateView):
-#     form_class = PostCreationMultiForm
-#     template_name = 'crud/post_create.html'
-#     success_url = 'post'
-#
-#     def form_valid(self, form):
-#         form.instance.user = self.request.user
-#         post = form['post'].save()
-#         photo = form['photo'].save(commit=False)
-#         photo.post = post
-#         photo.save()
-#         if self.request.FILES:
-#             for f in self.request.FILES.getlist('photo'):
-#                 photo = self.model.objects.create(photo=f)
-#         return super().form_valid(form)
-
-    # def post(self, request, *args, **kwargs):
-    #     form_class = self.get_form_class()
-    #     form = self.get_form(form_class)
-    #     files = request.FILES.getlist('photo')
-    #     if form.is_valid():
-    #         for f in files:
-    #             ...  # Do something with each file.
-    #         return self.form_valid(form)
-    #     else:
-    #         return self.form_invalid(form)
 
 class PostUpdateView(LoginRequiredMixin, UpdateView):
     model = Post
@@ -113,7 +135,7 @@ class BotUpdateView(LoginRequiredMixin, UpdateView):
     model = Bot
     fields = ['name', 'token']
     template_name = 'crud/bot_create.html'
-    success_url = 'bot'
+    success_url = '/bot'
 
     def form_valid(self, form):
         form.instance.user = self.request.user
@@ -166,35 +188,70 @@ class ChatDeleteView(LoginRequiredMixin, DeleteView):
     template_name = 'crud/chat_delete.html'
 
 
+# CALENDAR ###############################################
+
+class CalendarView(TemplateView):
+    template_name = 'crud/calendar.html'
+
+    def get(self, request, year, month, *args, **kwargs):
+        cal = PostCalendar().formatmonth(theyear=int(year), themonth=int(month))
+        context = {'cal': cal}
+        return render(request, 'home/calendar.html', context=context)
+
+    def post(self, request, year, month, *args, **kwargs):
+        cal = PostCalendar().formatmonth(theyear=int(year), themonth=int(month))
+        context = {'cal': cal}
+        return render(request, 'home/calendar.html', context=context)
+
+    def form_valid(self, form):
+        form.instance.user = self.request.user
+        return super().form_valid(form)
+
+
+def calendar_event(request, year, month, day):
+    post = Post.objects.filter(user=request.user).last()
+    form = PostScheduleForm(request.POST, instance=post)
+    if form.is_valid():
+        print(form)
+        form.save()
+        # return redirect(f"/calendar/{datetime.now().year}/{datetime.now().month}/")
+    return render(request, 'home/calendar_event.html', context={
+        'posts': post,
+        'year': year,
+        'month': month,
+        'day': day
+    })
+
+
+class CalendarEventCreate(CreateView):
+    model = PostSchedule
+    form_class = PostScheduleForm
+    template_name = 'crud/calendar_event_create.html'
+    success_url = f'/calendar/{datetime.now().year}/{datetime.now().month}/'
+
+    def form_valid(self, form):
+        form.instance.user = self.request.user
+        return super().form_valid(form)
+
+
+class ScheduleUpdateView(UpdateView):
+    model = PostSchedule
+    template_name = 'crud/schedule_update.html'
+    form_class = PostScheduleForm
+    success_url = f'/calendar/{datetime.now().year}/{datetime.now().month}/'
+
+
+class ScheduleDeleteView(LoginRequiredMixin, DeleteView):
+    model = PostSchedule
+    success_url = f'/calendar/{datetime.now().year}/{datetime.now().month}/'
+    template_name = 'crud/schedule_delete.html'
+
+
 @login_required(login_url="/login/")
 def index(request):
-    context = {'segment': 'index'}
-
+    context = {'segment': 'index',
+               'year': datetime.now().year,
+               'month': datetime.now().month}
     html_template = loader.get_template('home/index.html')
     return HttpResponse(html_template.render(context, request))
 
-
-@login_required(login_url="/login/")
-def pages(request):
-    context = {}
-    # All resource paths end in .html.
-    # Pick out the html file name from the url. And load that template.
-    try:
-
-        load_template = request.path.split('/')[-1]
-
-        if load_template == 'admin':
-            return HttpResponseRedirect(reverse('admin:index'))
-        context['segment'] = load_template
-
-        html_template = loader.get_template('home/' + load_template)
-        return HttpResponse(html_template.render(context, request))
-
-    except template.TemplateDoesNotExist:
-
-        html_template = loader.get_template('home/page-404.html')
-        return HttpResponse(html_template.render(context, request))
-
-    except:
-        html_template = loader.get_template('home/page-500.html')
-        return HttpResponse(html_template.render(context, request))

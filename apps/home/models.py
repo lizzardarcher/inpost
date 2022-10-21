@@ -5,6 +5,19 @@ from django.contrib.auth.models import User
 from . import validators
 
 
+class UserStatus(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    exp_date = models.DateField(null=True, blank=True, verbose_name='Оплачено по:')
+    is_vip = models.BooleanField(default=False, blank=True, verbose_name='VIP')
+
+    def __str__(self):
+        return self.user.username
+
+    class Meta:
+        verbose_name = 'Статус оплаты'
+        verbose_name_plural = 'Статус оплаты'
+
+
 class Bot(models.Model):
     name = models.CharField(max_length=100, null=True, verbose_name='Название бота', validators=[validators.validate_post_name])
     token = models.CharField(max_length=300, null=False, blank=False, verbose_name='Телеграм Токен')
@@ -25,11 +38,7 @@ class Post(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True, verbose_name='Пользователь')
     bot = models.ForeignKey(Bot, on_delete=models.CASCADE, null=True, blank=True, verbose_name='Бот')
     post_type = models.CharField(max_length=20, choices=[('Пост', 'Пост'), ('Опрос', 'Опрос')], null=True, blank=False, verbose_name='Тип поста')
-    photo = models.ImageField(null=True, blank=True, verbose_name='Фото')
-    video = models.FileField(null=True, blank=True, verbose_name='Видео')
-    document = models.FileField(null=True, blank=True, verbose_name='Документ')
     text = models.TextField(max_length=5000, null=True, blank=True, verbose_name='Текст')
-    schedule = models.DateTimeField(null=True, blank=True, verbose_name='Расписание')
     is_active = models.BooleanField(null=True, blank=True, default=False, verbose_name='Активно')
     id = models.AutoField(primary_key=True, editable=False)
 
@@ -42,9 +51,10 @@ class Post(models.Model):
         verbose_name_plural = "Посты"
 
 
-class PostPhoto(models.Model):
-    post = models.ForeignKey(Post, on_delete=models.CASCADE, null=True, blank=True, verbose_name='Пост')
-    photos = models.ImageField(verbose_name='Фото')
+class PostSchedule(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True, verbose_name='Пользователь')
+    post = models.ForeignKey(Post, on_delete=models.CASCADE, null=True, blank=False, verbose_name='Пост')
+    schedule = models.DateTimeField(null=True, blank=False, verbose_name='Расписание')
     id = models.AutoField(primary_key=True, editable=False)
 
     def __str__(self):
@@ -52,8 +62,64 @@ class PostPhoto(models.Model):
 
     class Meta:
         ordering = ['id']
+        verbose_name = "Расписание"
+        verbose_name_plural = "Расписание"
+
+
+class PostPhoto(models.Model):
+    post = models.ForeignKey(Post, on_delete=models.CASCADE, null=True, blank=True, verbose_name='Пост')
+    photos = models.ImageField(verbose_name='Фото')
+    id = models.AutoField(primary_key=True, editable=False)
+
+    def __str__(self):
+        return self.post.name + ' - ' + str(self.id)
+
+    class Meta:
+        ordering = ['id']
         verbose_name = "Фото"
         verbose_name_plural = "Фото"
+
+
+class PostMusic(models.Model):
+    post = models.ForeignKey(Post, on_delete=models.CASCADE, null=True, blank=True, verbose_name='Пост')
+    music = models.FileField(verbose_name='Музыкальный Трек')
+    id = models.AutoField(primary_key=True, editable=False)
+
+    def __str__(self):
+        return self.post.name + ' - ' + str(self.id)
+
+    class Meta:
+        ordering = ['id']
+        verbose_name = "Муз Трек"
+        verbose_name_plural = "Муз Треки"
+
+
+class PostVideo(models.Model):
+    post = models.ForeignKey(Post, on_delete=models.CASCADE, null=True, blank=True, verbose_name='Пост')
+    video = models.FileField(verbose_name='Видео Запись')
+    id = models.AutoField(primary_key=True, editable=False)
+
+    def __str__(self):
+        return self.post.name + ' - ' + str(self.id)
+
+    class Meta:
+        ordering = ['id']
+        verbose_name = "Видео Запись"
+        verbose_name_plural = "Видео Записи"
+
+
+class PostDocument(models.Model):
+    post = models.ForeignKey(Post, on_delete=models.CASCADE, null=True, blank=True, verbose_name='Пост')
+    document = models.FileField(verbose_name='Документ')
+    id = models.AutoField(primary_key=True, editable=False)
+
+    def __str__(self):
+        return self.post.name + ' - ' + str(self.id)
+
+    class Meta:
+        ordering = ['id']
+        verbose_name = "Документ"
+        verbose_name_plural = "Документы"
 
 
 class Button(models.Model):
@@ -97,4 +163,4 @@ class Chat(models.Model):
         ordering = ['id']
 
     def __str__(self):
-        return self.name
+        return self.ref

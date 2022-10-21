@@ -1,0 +1,29 @@
+{% extends 'layouts/base.html' %}
+{% load crispy_forms_tags %}
+{% block content %}
+    <body class="bg-light bg-gradient">
+    <a id="back-btn" href="#" class="text-black"><h3>Назад</h3></a>
+    <div class="container">
+        <form method="post" enctype='multipart/form-data'>
+            {% csrf_token %}
+            {{ form|crispy }}
+            <button type="submit" class="btn btn-primary">Обновить</button>
+        </form>
+        <a id="delete" href="">
+            <button type="submit" class="btn btn-danger text-dark">Удалить</button>
+        </a>
+    </div>
+    </body>
+    <script>
+        let _id = window.location.pathname.split('/')[2]
+        let del_btn = document.getElementById("delete")
+        del_btn.setAttribute("href", `/schedule_delete/${_id}`)
+
+        let now     = new Date();
+        let year    = now.getFullYear();
+        let month   = now.getMonth();
+        let back_btn = document.getElementById("back-btn")
+        back_btn.setAttribute("href", `/calendar/${year}/${month+1}`)
+
+    </script>
+{% endblock %}

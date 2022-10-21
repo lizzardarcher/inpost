@@ -10,49 +10,51 @@
                 Telegram panel
             </a>
         </div>
-
         <ul class="nav">
             {% if request.user.is_authenticated %}
-
-            <li class="{% if 'index' in segment %} active {% endif %}">
-                <a href="/">
-                    <i class="tim-icons icon-chart-pie-36"></i>
-                    <p>Главная</p>
-                </a>
-            </li>
-            <li class="{% if 'post' in segment %} active {% endif %}">
-                <a href="/post">
-                    <i class="tim-icons icon-components"></i>
-                    <p>Мои Посты</p>
-                </a>
-            </li>
-            <li class="{% if 'chat' in segment %} active {% endif %}">
-                <a href="/chat">
-                    <i class="tim-icons icon-paper"></i>
-                    <p>Мои Каналы</p>
-                </a>
-            </li>
-            <li class="{% if 'bot' in segment %} active {% endif %}">
-                <a href="/bot">
-                    <i class="tim-icons icon-vector"></i>
-                    <p>Мои Боты</p>
-                </a>
-            </li>
-            <li class="{% if 'page-user' in segment %} active {% endif %}">
-                <a href="/user-profile">
-                    <i class="tim-icons icon-single-02"></i>
-                    <p>Профиль</p>
-                </a>
-            </li>
-            <li>
-                <a href="{% url 'logout' %}">
-                    <i class="tim-icons icon-button-power"></i>
-                    <p>Выйти</p>
-                </a>
-            </li>
+                <li class="{% if 'index' in segment %} active {% endif %}">
+                    <a href="/">
+                        <i class="tim-icons icon-chart-pie-36"></i>
+                        <p>Главная</p>
+                    </a>
+                </li>
+                <li class="{% if 'post' in segment %} active {% endif %}">
+                    <a href="/post">
+                        <i class="tim-icons icon-components"></i>
+                        <p>Мои Посты</p>
+                    </a>
+                </li>
+                <li class="{% if 'chat' in segment %} active {% endif %}">
+                    <a href="/chat">
+                        <i class="tim-icons icon-paper"></i>
+                        <p>Мои Каналы</p>
+                    </a>
+                </li>
+                <li class="{% if 'bot' in segment %} active {% endif %}">
+                    <a href="/bot">
+                        <i class="tim-icons icon-vector"></i>
+                        <p>Мои Боты</p>
+                    </a>
+                </li>
+                <li class="{% if 'calendar' in segment %} active {% endif %}">
+                    <a href="/calendar/{% now "Y" %}/{% now "m" %}/">
+                        <i class="tim-icons icon-time-alarm"></i>
+                        <p>Расписание</p>
+                    </a>
+                </li>
+                <li class="{% if 'page-user' in segment %} active {% endif %}">
+                    <a href="/user_profile/{{ user.id }}">
+                        <i class="tim-icons icon-single-02"></i>
+                        <p>Профиль</p>
+                    </a>
+                </li>
+                <li>
+                    <a href="{% url 'logout' %}">
+                        <i class="tim-icons icon-button-power"></i>
+                        <p>Выйти</p>
+                    </a>
+                </li>
             {% endif %}
-
         </ul>
-
     </div>
 </div>

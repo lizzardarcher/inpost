@@ -1,7 +1,4 @@
 # -*- encoding: utf-8 -*-
-"""
-Copyright (c) 2019 - present AppSeed.us
-"""
 
 from django.urls import path, re_path
 from apps.home import views
@@ -10,27 +7,36 @@ from django.conf.urls.static import static
 
 urlpatterns = [
 
-    # The home page
-    path('', views.index, name='home'),
+      path('', views.index, name='home'),
 
-    path('post', views.PostListView.as_view(), name='posts'),
-    # path('post_create', views.PostCreateView.as_view(), name='create post'),
-    path('post_create', views.PostCreateView.as_view(), name='create post'),
-    path('post_update/<int:pk>', views.PostUpdateView.as_view(), name='update post'),
-    path('post_delete/<int:pk>', views.PostDeleteView.as_view(), name='delete post'),
+      # path('post', views.post),
 
-    path('bot', views.BotListView.as_view(), name='bot'),
-    path('bot_create', views.BotCreateView.as_view(), name='create bot'),
-    path('bot_update/<int:pk>', views.BotUpdateView.as_view(), name='update bot'),
-    path('bot_delete/<int:pk>', views.BotDeleteView.as_view(), name='delete bot'),
+      path('user_profile', views.UserUpdateView.user_profile, name='user profile fast kostyl'),
+      path('user_profile/<int:pk>', views.UserUpdateView.as_view(), name='user profile'),
 
-    path('chat', views.ChatListView.as_view(), name='chat'),
-    path('chat_create', views.ChatCreateView.as_view(), name='create chat'),
-    path('chat_update/<int:pk>', views.ChatUpdateView.as_view(), name='update chat'),
-    path('chat_delete/<int:pk>', views.ChatDeleteView.as_view(), name='delete chat'),
+      path('post', views.PostListView.as_view(), name='posts'),
+      # path('post_create', views.PostCreateView.as_view(), name='create post'),
+      path('post_create', views.post, name='create post'),
+      path('post_update/<int:pk>', views.PostUpdateView.as_view(), name='update post'),
+      path('post_delete/<int:pk>', views.PostDeleteView.as_view(), name='delete post'),
 
+      path('bot', views.BotListView.as_view(), name='bot'),
+      path('bot_create', views.BotCreateView.as_view(), name='create bot'),
+      path('bot_update/<int:pk>', views.BotUpdateView.as_view(), name='update bot'),
+      path('bot_delete/<int:pk>', views.BotDeleteView.as_view(), name='delete bot'),
 
-    # Matches any html file
-    # re_path(r'^.*\.*', views.pages, name='pages'),
+      path('chat', views.ChatListView.as_view(), name='chat'),
+      path('chat_create', views.ChatCreateView.as_view(), name='create chat'),
+      path('chat_update/<int:pk>', views.ChatUpdateView.as_view(), name='update chat'),
+      path('chat_delete/<int:pk>', views.ChatDeleteView.as_view(), name='delete chat'),
 
-] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+      path('calendar/<int:year>/<int:month>/', views.CalendarView.as_view(), name='calendar'),
+      path('calendar_event/<int:year>/<int:month>/<int:day>/', views.calendar_event, name='calendar event'),
+      path('calendar_event_create/<int:year>/<int:month>/<int:day>/', views.CalendarEventCreate.as_view(), name='calendar event create'),
+
+      path('schedule_update/<int:pk>', views.ScheduleUpdateView.as_view(), name='update schedule'),
+      path('schedule_delete/<int:pk>', views.ScheduleDeleteView.as_view(), name='delete schedule'),
+
+]
+
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

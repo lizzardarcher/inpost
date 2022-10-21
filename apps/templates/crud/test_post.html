@@ -1,0 +1,41 @@
+{% extends 'layouts/base.html' %}
+
+{% block content %}
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="title">Создание поста</h5>
+                </div>
+                <div class="card-body">
+
+                    <form id="post_form" method="post" action="" enctype="multipart/form-data">
+
+                        <div class="row">
+                            {% csrf_token %}
+                            {% for field in postForm %}
+                                <div class="col-md-6 px-md-1">
+                                    <div class="form-group">
+                                        {{ field }}
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+
+                        <div class="row">
+                            {{ formset.management_form }}
+                            {% for form in formset %}
+                                <p class="bg-primary rounded">{{ form }}</p>
+                            {% endfor %}
+                        </div>
+
+                        <input type="submit" name="submit" value="Submit"/>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+{% endblock content %}
