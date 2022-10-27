@@ -30,7 +30,7 @@
                             <p class="card-text">{{ post.text }}</p>
                         </div>
 
-                        <div class="col-sm-4">
+                        <div class="col-sm-5">
                             {% if photos %}
                                 {% for photo in photos %}
                                     {% if photo.post == post %}
@@ -76,16 +76,16 @@
                                 {% endfor %}
                             {% endif %}
                         </div>
-                        <div class="col-sm-4">
+                        <div class="col-sm-3">
                             <a href="post_update/{{ post.id }}">
                                 <button class="btn btn-success text-dark col-12">
-                                    <i class="fa fa-edit"></i> Редактировать
+                                    <i class="fa fa-edit"></i>
                                 </button>
                             </a>
                             <br/>
                             <a href="post_delete/{{ post.id }}">
                                 <button class="btn btn-danger text-dark col-12"><i
-                                        class="fa fa-trash"></i> Удалить
+                                        class="fa fa-trash"></i>
                                 </button>
                             </a>
                         </div>
