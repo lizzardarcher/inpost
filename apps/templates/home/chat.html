@@ -2,32 +2,43 @@
 {% block title %} Посты {% endblock %}
 
 {% block content %}
-        <h1> Мои Каналы </h1>
+    <h1> Мои Каналы </h1>
     <div class="p-2 m-1">
         <a href="chat_create">
             <button class="btn btn-primary">+ Добавить Канал</button>
         </a>
     </div>
+    <div class="col-6">
         {% for chat in chats %}
-        <div class="col-12">
             <div class="card card-chart">
                 <div class="card-header ">
                     <div class="row">
-                        <div class="col-sm-6 text-left">
+                        <div class="col-sm-8 text-left">
                             <h4 class="card-title">{{ chat.name }}</h4>
                             <p class="card-text">{{ chat.chat_type }}</p>
                             <p class="card-text">{{ chat.ref }}</p>
                         </div>
+                        <div class="col-sm-4 ">
+                            <a href="chat_update/{{ chat.id }}">
+                                <button class="btn btn-success text-dark text-center col-12">
+                                    <i class="fa fa-edit"></i>
+                                </button>
+                            </a>
+
+                            <a href="chat_delete/{{ chat.id }}">
+                                <button class="btn btn-danger text-dark col-12"><i
+                                        class="fa fa-trash"></i>
+                                </button>
+                            </a>
+                        </div>
                     </div>
                 </div>
-                <br/>
-                    <a href="chat_update/{{ chat.id }}">Update</a>
-                    <br/>
-                    <a href="chat_delete/{{ chat.id }}">Delete</a>
-                    <br/>
+
+
             </div>
-        </div>
         {% endfor %}
+    </div>
+
 {% endblock content %}
 
 {% block stylesheets %}{% endblock stylesheets %}

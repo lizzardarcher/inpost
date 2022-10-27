@@ -8,26 +8,37 @@
             <button class="btn btn-primary">+ Добавить Бота</button>
         </a>
     </div>
-        {% for bot in bots %}
-        <div class="col-12">
+    {% for bot in bots %}
+        <div class="col-8">
             <div class="card card-chart">
                 <div class="card-header ">
                     <div class="row">
+                        <div class="col-sm-2 text-left">
+                            <img class="img img-thumbnail" width="90px" height="90px" src="{{ MEDIA_URL }}/B.svg.png" />
+                        </div>
                         <div class="col-sm-6 text-left">
-                            <h4 class="card-title">{{ bot.name }}</h4>
-                            <p class="card-text">{{ bot.token }}</p>
+                            <h4 class="card-title">Название Бота: {{ bot.name }}</h4>
+                            <p class="card-text"><b>BOT TOKEN: </b>{{ bot.token }}</p>
+                        </div>
+                        <div class="col-sm-4 ">
+                            <a href="bot_update/{{ bot.id }}">
+                                <button class="btn btn-success text-dark text-center col-12">
+                                    <i class="fa fa-edit"></i>
+                                </button>
+                            </a>
+
+                            <a href="bot_delete/{{ bot.id }}">
+                                <button class="btn btn-danger text-dark col-12"><i
+                                        class="fa fa-trash"></i>
+                                </button>
+                            </a>
                         </div>
                     </div>
                 </div>
-                <br/>
-                    <a href="bot_update/{{ bot.id }}">Update Bot</a>
-                    <br/>
-                    <a href="bot_delete/{{ bot.id }}">Delete Bot</a>
-                    <br/>
             </div>
 
         </div>
-        {% endfor %}
+    {% endfor %}
 {% endblock content %}
 
 {% block stylesheets %}{% endblock stylesheets %}

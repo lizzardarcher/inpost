@@ -2,8 +2,8 @@
 {% load crispy_forms_tags %}
 {% block content %}
     <body class="bg-light bg-gradient">
-    <a href="/post" class="text-black"><h3>Назад</h3></a>
-    <div class="container">
+    <div class="container col-12">
+        <a href="/post" class="text-black"><h3>Назад</h3></a>
         <form method="post" enctype="multipart/form-data">
             {% load crispy_forms_tags %}
             {% csrf_token %}

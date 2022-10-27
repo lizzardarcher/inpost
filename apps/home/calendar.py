@@ -28,17 +28,14 @@ class PostCalendar(HTMLCalendar, ListView):
         schedule_data = ''
         for data in s:
             if data[3] >= datetime.now().strftime('%Y-%m-%d %H:%M'):
-                print('print', datetime.now() + timedelta(hours=int(data[1].split(":")[0]), minutes=int(data[1].split(":")[1])), '>=', datetime.now())
                 schedule_data += f'<a href="/schedule_update/{data[2]}"><p class="badge badge-warning text-dark">{data[0]} | {data[1]}</p></a><br/>'
             else:
-                print('print', datetime.now() + timedelta(hours=int(data[1].split(":")[0]), minutes=int(data[1].split(":")[1])), '<', datetime.now())
                 schedule_data += f'<a href="/schedule_update/{data[2]}"><p class="badge badge-info text-dark">{data[0]} | {data[1]}</p></a><br/>'
         if date_row.month != self.month:
             return '<td class="noday">&nbsp;</td>'  # day outside month
         else:
-            return f'<td class="{week_day}"><a href="/calendar_event_create/{num_year}/{num_month}/{num_day}/">{num_day}</a><br/> ' \
+            return f'<td class="{week_day}"><a href="/calendar_event_create/{num_year}/{num_month}/{num_day}/"><div style="height:100%;width:100%"  >{num_day}</div></a><br/> ' \
                    f'{schedule_data}</td>'
-            # f'{str(s).replace("[","").replace("]","").replace(",","<br/>")}</td>'
 
     def formatweek(self, theweek):
         """
