@@ -11,7 +11,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from .models import (Post, Bot, Chat, Media, Button, User, PostSchedule, PostPhoto, UserStatus, PostDocument, PostVideo,
                      PostMusic)
 from .forms import (PostForm, PostPhotoForm, PostCreationMultiForm, PostScheduleForm, PostScheduleMultiForm,
-                    PostVideoForm, PostDocumentForm, PostMusicForm)
+                    PostVideoForm, PostDocumentForm, PostMusicForm, BotForm, ChatForm)
 from .calendar import PostCalendar
 
 from django.shortcuts import render
@@ -267,7 +267,7 @@ class BotListView(LoginRequiredMixin, ListView):
 
 class BotCreateView(LoginRequiredMixin, CreateView):
     model = Bot
-    fields = ['name', 'token']
+    form_class = BotForm
     template_name = 'crud/bot_create.html'
     success_url = 'bot'
 
@@ -278,7 +278,7 @@ class BotCreateView(LoginRequiredMixin, CreateView):
 
 class BotUpdateView(LoginRequiredMixin, UpdateView):
     model = Bot
-    fields = ['name', 'token']
+    form_class = BotForm
     template_name = 'crud/bot_create.html'
     success_url = '/bot'
 
@@ -307,7 +307,7 @@ class ChatListView(LoginRequiredMixin, ListView):
 
 class ChatCreateView(LoginRequiredMixin, CreateView):
     model = Chat
-    fields = ['chat_type', 'ref']
+    form_class = ChatForm
     template_name = 'crud/chat_create.html'
     success_url = '/chat'
 
@@ -318,7 +318,7 @@ class ChatCreateView(LoginRequiredMixin, CreateView):
 
 class ChatUpdateView(LoginRequiredMixin, UpdateView):
     model = Chat
-    fields = '__all__'
+    form_class = ChatForm
     template_name = 'crud/chat_create.html'
     success_url = '/chat'
 

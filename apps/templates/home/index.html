@@ -323,15 +323,42 @@
     {% else %}
         <div class="row">
             <div class="col-md-8">
-                    <div class="alert alert-warning">
-                    <h3><i class="fa fa-exclamation-triangle"></i>
+
+                <h3 class="alert alert-warning"><i class="fa fa-exclamation-triangle"></i>
                     Внимание! Вы видите это сообщение, так как у вас ещё не создано ни одного бота</h3>
+                <h4>Телеграм Бот это тот же пользовательский аккаунт, которым вместо людей управляют программы.</h4>
+                <h4>Здесь отображаются все ваши боты, которых вы создали в @BotFather.
+                    Назначьте в ваши каналы администратором вашего бота.</h4>
+                <h2>Создать бота в телеграм очень просто. Необходимо сделать 5 шагов</h2>
+                <ol>
+                    <li class="alert">Переходим в @BotFather --> <a
+                            href="https://t.me/BotFather">https://t.me/BotFather</a></li>
+                    <li class="alert">Нажимаем кнопку Старт, либо Перезапустить
+                        <p><img src="{{ MEDIA_URL }}/tg-1.jpg" class="img img-thumbnail" width="200" height="350"></p>
+                    </li>
+
+                    <li class="alert">Выбираем команду /newbot
+                        <p><img src="{{ MEDIA_URL }}/tg-2.jpg" class="img img-thumbnail" width="200" height="350"></p>
+                    </li>
+
+                    <li class="alert">Вводим любое название для вашего бота
+                        <p><img src="{{ MEDIA_URL }}/tg-3.jpg" class="img img-thumbnail" width="200" height="350"></p>
+                    </li>
+
+                    <li class="alert">Далее нас попросят ввести юзернейм(username) для бота, придумайте свой юзернейм
+                        используя латиницу.
+                        <p>! Важно ! юзернейм должен оканчиваться на "bot"</p>
+                        <p><img src="{{ MEDIA_URL }}/tg-5.jpg" class="img img-thumbnail" width="200" height="350"></p>
+                    </li>
+                </ol>
+                <h4>Ваш бот готов! теперь возьмите полученные данные - Bot Token и введите их в форму для добавления
+                    бота</h4>
+                <p class="m-5"><img src="{{ MEDIA_URL }}/tg-4.jpg" class="img img-thumbnail" width="200" height="350"></p>
+                <div class="p-2 m-1">
+                    <a href="bot_create">
+                        <button class="btn btn-primary"><h3>Создать своего первого бота</h3></button>
+                    </a>
                 </div>
-                                    <h4>Телеграм Бот это тот же пользовательский аккаунт, которым вместо людей управляют программы.</h4>
-                    <h4>Здесь отображаются все ваши боты, которых вы создали в @BotFather.
-                        Назначьте в ваши каналы администратором вашего бота.</h4>
-
-
             </div>
         </div>
     {% endif %}

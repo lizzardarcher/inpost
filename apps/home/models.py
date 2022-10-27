@@ -20,8 +20,8 @@ class UserStatus(models.Model):
 
 class Bot(models.Model):
 
-    name = models.CharField(max_length=100, null=True, verbose_name='Название бота', validators=[validators.validate_post_name])
-    token = models.CharField(max_length=300, null=False, blank=False, verbose_name='Телеграм Токен')
+    name = models.CharField(max_length=100, null=True, verbose_name='Название вашего бота', validators=[validators.validate_post_name])
+    token = models.CharField(max_length=300, null=False, blank=False, verbose_name='Бот Токен')
     user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='Пользователь')
     id = models.AutoField(primary_key=True, editable=False)
 

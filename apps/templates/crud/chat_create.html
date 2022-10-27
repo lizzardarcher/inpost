@@ -2,14 +2,13 @@
 {% load crispy_forms_tags %}
 {% block content %}
 <body class="bg-light bg-gradient">
-<a href="chat" class="text-black"><h3>Назад</h3></a>
 <div class="container">
+<a href="/chat" ><h3>Назад</h3></a>
     <form method="post" >
-
         {% csrf_token %}
         {{ form.chat_type|as_crispy_field }}
         {{ form.ref|as_crispy_field }}
-
+        <br/>
         <button type="submit" class="btn btn-primary">Подтвердить</button>
     </form>
 </div>

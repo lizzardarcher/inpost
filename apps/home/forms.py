@@ -72,3 +72,23 @@ class PostScheduleMultiForm(MultiModelForm):
     form_classes = {
         'post': PostScheduleForm,
     }
+
+
+class BotForm(forms.ModelForm):
+    class Meta:
+        model = Bot
+        fields = ['name', 'token']
+        widgets = {
+            'name': forms.TextInput(attrs={'class': 'form-control'}),
+            'token': forms.TextInput(attrs={'class': 'form-control'}),
+        }
+
+
+class ChatForm(forms.ModelForm):
+    class Meta:
+        model = Chat
+        fields = ['chat_type', 'ref']
+        widgets = {
+            'chat_type': forms.TextInput(attrs={'class': 'form-control'}),
+            'ref': forms.TextInput(attrs={'class': 'form-control'}),
+        }
