@@ -20,7 +20,7 @@
         </a>
     </div>
     {% for post in posts %}
-        <div class="col-8">
+        <div class="col-12">
             <div class="card card-chart">
                 <div class="card-header ">
                     <div class="row">
@@ -30,7 +30,8 @@
                             <p class="card-text">{{ post.text }}</p>
                         </div>
 
-                        <div class="col-sm-5">
+                        <div class="col-sm-6">
+                            <p>Изображения:</p>
                             {% if photos %}
                                 {% for photo in photos %}
                                     {% if photo.post == post %}
@@ -42,43 +43,46 @@
                                 {% endfor %}
                             {% endif %}
                             <br/>
+
+                            <p>Видео файлы:</p>
                             {% if videos %}
                                 {% for video in videos %}
                                     {% if video.post == post %}
                                         <a href="/post_video_update/{{ video.id }}">{{ video.video }}</a>
-                                        <video width="150px" height="120px" controls>
-                                            <source src="{{ MEDIA_URL }}{{ video.video }}">
-                                        </video>
+                                        {#                                        <video width="150px" height="120px" controls>#}
+                                        {#                                            <source src="{{ MEDIA_URL }}{{ video.video }}">#}
+                                        {#                                        </video>#}
 
                                     {% endif %}
                                 {% endfor %}
                             {% endif %}
                             <br/>
 
+                            <p>Аудио файлы:</p>
                             {% if musics %}
                                 {% for music in musics %}
                                     {% if music.post == post %}
                                         <a href="/post_music_update/{{ music.id }}">{{ music.music }}</a>
-                                        <audio controls>
-                                            <source src="{{ MEDIA_URL }}{{ music.music }}">
-                                        </audio>
+                                        {#                                        <audio controls>#}
+                                        {#                                            <source src="{{ MEDIA_URL }}{{ music.music }}">#}
+                                        {#                                        </audio>#}
                                     {% endif %}
                                 {% endfor %}
                             {% endif %}
                             <br/>
 
+                            <p>Документы:</p>
                             {% if documents %}
                                 {% for document in documents %}
                                     {% if document.post == post %}
-                                        <a href="/post_document_update/{{ document.id }}"
-                                           download>{{ document.document }}</a>
+                                        <a href="/post_document_update/{{ document.id }}">{{ document.document }}</a>
                                     {% endif %}
                                 {% endfor %}
                             {% endif %}
                         </div>
-                        <div class="col-sm-3">
+                        <div class="col-sm-2">
                             <a href="post_update/{{ post.id }}">
-                                <button class="btn btn-success text-dark col-12">
+                                <button class="btn btn-success text-dark text-center col-12">
                                     <i class="fa fa-edit"></i>
                                 </button>
                             </a>

@@ -1,7 +1,13 @@
-<!-- Navbar -->
-<nav class="navbar navbar-expand-lg navbar-absolute navbar-transparent">
+<nav class="navbar navbar-expand-lg navbar-absolute navbar-transparent" style="top: 0px;">
     <div class="container-fluid">
         <div class="navbar-wrapper">
+            <div class="navbar-minimize d-inline">
+                <button class="minimize-sidebar btn btn-link btn-just-icon" rel="tooltip"
+                        data-original-title="Sidebar toggle" data-placement="right">
+                    <i class="tim-icons icon-align-center visible-on-sidebar-regular"></i>
+                    <i class="tim-icons icon-bullet-list-67 visible-on-sidebar-mini"></i>
+                </button>
+            </div>
             <div class="navbar-toggle d-inline">
                 <button type="button" class="navbar-toggler">
                     <span class="navbar-toggler-bar bar1"></span>
@@ -9,71 +15,67 @@
                     <span class="navbar-toggler-bar bar3"></span>
                 </button>
             </div>
-            <a class="navbar-brand" href="javascript:void(0)">
-                My Tg Admin
-            </a>
+{#            <a class="navbar-brand" href="javascript:void(0)">Dashboard</a>#}
         </div>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navigation"
+        <button class="navbar-toggler collapsed" type="button" data-toggle="collapse" data-target="#navigation"
                 aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-bar navbar-kebab"></span>
             <span class="navbar-toggler-bar navbar-kebab"></span>
             <span class="navbar-toggler-bar navbar-kebab"></span>
         </button>
-        <div class="collapse navbar-collapse" id="navigation">
-
+        <div class="navbar-collapse collapse" id="navigation" style="">
             <ul class="navbar-nav ml-auto">
-                {% if request.user.is_authenticated %}
+                <li class="search-bar input-group">
+                    <button class="btn btn-link" id="search-button" data-toggle="modal" data-target="#searchModal"><i
+                            class="tim-icons icon-zoom-split"></i>
+                        <span class="d-lg-none d-md-block">Search</span>
+                    </button>
+                </li>
 
-                    <li class="search-bar input-group">
-                        <button class="btn btn-link" id="search-button" data-toggle="modal" data-target="#searchModal">
-                            <i class="tim-icons icon-zoom-split"></i>
-                            <span class="d-lg-none d-md-block">Search</span>
-                        </button>
-                    </li>
-                    <li class="dropdown nav-item">
-                        <a href="javascript:void(0)" class="dropdown-toggle nav-link" data-toggle="dropdown">
-                            <div class="notification d-none d-lg-block d-xl-block"></div>
-                            <i class="tim-icons icon-sound-wave"></i>
-                            <p class="d-lg-none">
-                                Notifications
-                            </p>
-                        </a>
-                        <ul class="dropdown-menu dropdown-menu-right dropdown-navbar">
-                            <li class="nav-link"><a href="#" class="nav-item dropdown-item">Пост №3 "Анжелика"
-                                отправлен</a></li>
-                            <li class="nav-link"><a href="javascript:void(0)" class="nav-item dropdown-item">Пост №1
-                                "Сбор грибов" отправлен</a></li>
-                            <li class="nav-link"><a href="javascript:void(0)" class="nav-item dropdown-item">Пост №5
-                                "Автомойка" отправлен</a></li>
-                            <li class="nav-link"><a href="javascript:void(0)" class="nav-item dropdown-item">Ошибка
-                                отправки поста №72</a></li>
-                            <li class="nav-link"><a href="javascript:void(0)" class="nav-item dropdown-item">Пост №41
-                                "Елена" отправлен</a></li>
-                        </ul>
-                    </li>
-                    <li class="dropdown nav-item">
-                        <a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown">
-                            <div class="photo">
-                                <img src="/static/assets/img/anime3.png" alt="Profile Photo">
-                            </div>
-                            <b class="caret d-none d-lg-block d-xl-block"></b>
-                            <p class="d-lg-none">
-                                Log out
-                            </p>
-                        </a>
-                        <ul class="dropdown-menu dropdown-navbar">
-                            <li class="nav-link"><a href="/page-user.html" class="nav-item dropdown-item">Профиль</a>
-                            </li>
-                            <li class="dropdown-divider"></li>
-                            <li class="nav-link"><a href="{% url 'logout' %}" class="nav-item dropdown-item">Выйти</a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li class="separator d-lg-none"></li>
+                <li class="dropdown nav-item">
+                    <a href="javascript:void(0)" class="dropdown-toggle nav-link" data-toggle="dropdown">
+                        <div class="notification d-none d-lg-block d-xl-block"></div>
+                        <i class="tim-icons icon-sound-wave"></i>
+                        <p class="d-lg-none">
+                            Notifications
+                        </p>
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-right dropdown-navbar">
+                        <li class="nav-link"><a href="#" class="nav-item dropdown-item">Пост №3 "Анжелика"
+                            отправлен</a></li>
+                        <li class="nav-link"><a href="javascript:void(0)" class="nav-item dropdown-item">Пост №1
+                            "Сбор грибов" отправлен</a></li>
+                        <li class="nav-link"><a href="javascript:void(0)" class="nav-item dropdown-item">Пост №5
+                            "Автомойка" отправлен</a></li>
+                        <li class="nav-link"><a href="javascript:void(0)" class="nav-item dropdown-item">Ошибка
+                            отправки поста №72</a></li>
+                        <li class="nav-link"><a href="javascript:void(0)" class="nav-item dropdown-item">Пост №41
+                            "Елена" отправлен</a></li>
+                    </ul>
+                </li>
 
-                {% endif %}
+                <li class="dropdown nav-item">
+                    <a href="/logout/" class="dropdown-toggle nav-link" data-toggle="dropdown">
+                        <div class="photo">
+                            <img src="{{ MEDIA_URL }}/simple-user-icon-128x128.png" alt="Profile Photo">
+                        </div>
+                        <b class="caret d-none d-lg-block d-xl-block"></b>
+                        <p class="d-lg-none">
+                            Log out
+                        </p>
+                    </a>
+                    <ul class="dropdown-menu dropdown-navbar">
+                        <li class="nav-link">
+                            <a href="/user_profile/{{ user.id }}" class="nav-item dropdown-item">Профиль</a>
+                        </li>
+                        <li class="dropdown-divider"></li>
+                        <li class="nav-link">
+                            <a href="{% url 'logout' %}" class="nav-item dropdown-item">Выйти</a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="separator d-lg-none"></li>
             </ul>
-
         </div>
     </div>
 </nav>
@@ -90,4 +92,3 @@
         </div>
     </div>
 </div>
-<!-- End Navbar -->
