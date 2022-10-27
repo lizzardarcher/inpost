@@ -52,6 +52,7 @@ class PostListView(LoginRequiredMixin, ListView):
             'videos': PostVideo.objects.filter(post__user=self.request.user),
             'musics': PostMusic.objects.filter(post__user=self.request.user),
             'documents': PostDocument.objects.filter(post__user=self.request.user),
+            'cal': PostCalendar().formatmonth(theyear=int(datetime.now().year), themonth=int(datetime.now().month)),
         })
         return context
 
@@ -454,6 +455,8 @@ def index(request):
         'month': datetime.now().month,
         'bots': Bot.objects.filter(user=request.user),
         'chats': Chat.objects.filter(user=request.user),
+        'cal': PostCalendar().formatmonth(theyear=int(datetime.now().year), themonth=int(datetime.now().month)),
+
     }
     html_template = loader.get_template('home/index.html')
     return HttpResponse(html_template.render(context, request))

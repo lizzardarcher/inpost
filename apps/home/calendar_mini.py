@@ -1,5 +1,5 @@
 from calendar import HTMLCalendar
-from datetime import date, datetime, timedelta
+from datetime import date
 from itertools import groupby
 
 from django.views.generic import ListView
@@ -8,8 +8,7 @@ from .models import Post, PostSchedule
 from django.utils.html import conditional_escape as esc
 from apps.middleware import current_user
 
-
-class PostCalendar(HTMLCalendar, ListView):
+class PostCalendarMini(HTMLCalendar, ListView):
     cssclasses = ["mon", "tue", "wed", "thu", "fri", "sat", "sun"]
 
     def formatday(self, date_row):
@@ -24,21 +23,16 @@ class PostCalendar(HTMLCalendar, ListView):
         sch = PostSchedule.objects.filter(user=current_user.get_current_user())
         for i in sch:
             if i.schedule.year == num_year and i.schedule.month == num_month and i.schedule.day == num_day:
-                s.append((i.post.name, i.schedule.strftime('%H:%M'), i.id, i.schedule.strftime('%Y-%m-%d %H:%M')))
+                s.append((i.post.name, i.schedule.strftime('%H:%M'), i.id))
         schedule_data = ''
         for data in s:
-            if data[3] >= datetime.now().strftime('%Y-%m-%d %H:%M'):
-                print('print', datetime.now() + timedelta(hours=int(data[1].split(":")[0]), minutes=int(data[1].split(":")[1])), '>=', datetime.now())
-                schedule_data += f'<a href="/schedule_update/{data[2]}"><p class="badge badge-warning text-dark">{data[0]} | {data[1]}</p></a><br/>'
-            else:
-                print('print', datetime.now() + timedelta(hours=int(data[1].split(":")[0]), minutes=int(data[1].split(":")[1])), '<', datetime.now())
-                schedule_data += f'<a href="/schedule_update/{data[2]}"><p class="badge badge-info text-dark">{data[0]} | {data[1]}</p></a><br/>'
+            schedule_data += f'<p><a href="/schedule_update/{data[2]}">{data[0],data[1]}</a></p>'
         if date_row.month != self.month:
             return '<td class="noday">&nbsp;</td>'  # day outside month
         else:
             return f'<td class="{week_day}"><a href="/calendar_event_create/{num_year}/{num_month}/{num_day}/">{num_day}</a><br/> ' \
                    f'{schedule_data}</td>'
-            # f'{str(s).replace("[","").replace("]","").replace(",","<br/>")}</td>'
+                   # f'{str(s).replace("[","").replace("]","").replace(",","<br/>")}</td>'
 
     def formatweek(self, theweek):
         """

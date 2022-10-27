@@ -1,22 +1,33 @@
 {% extends 'layouts/base.html' %}
+{% load crispy_forms_tags %}
 
 {% block content %}
-    <form method="post">
-        {% csrf_token %}
-        {{ form }}
-        <input type="submit" value="Подтвердить">
-    </form>
+    <div class="col-md-4">
+        <form method="post">
+            {% csrf_token %}
+            <div class="form-control">
+                {{ form.post|as_crispy_field }}
+            </div>
+            <div class="form-control">
+                {{ form.schedule|as_crispy_field }}
+            </div>
+            <br/>
+            <input class="btn btn-primary" type="submit" value="Подтвердить">
+        </form>
+    </div>
+
     <script>
         let sch = document.getElementById('id_schedule')
-        let now     = new Date();
-        let year    = window.location.pathname.split('/')[2];
-        let month   = window.location.pathname.split('/')[3];
-        let day     = window.location.pathname.split('/')[4];
-        let hour    = now.getHours();
-        let minute  = now.getMinutes();
-        if (day.length == 1){
+        let now = new Date();
+        let year = window.location.pathname.split('/')[2];
+        let month = window.location.pathname.split('/')[3];
+        let day = window.location.pathname.split('/')[4];
+        let hour = now.getHours();
+        let minute = now.getMinutes();
+        if (day.length == 1) {
             day = '0' + day
         }
         sch.setAttribute('value', `${year}-${month}-${day}T${hour}:${minute}`)
+
     </script>
 {% endblock content %}
