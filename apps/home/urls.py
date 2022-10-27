@@ -15,10 +15,17 @@ urlpatterns = [
       path('user_profile/<int:pk>', views.UserUpdateView.as_view(), name='user profile'),
 
       path('post', views.PostListView.as_view(), name='posts'),
-      # path('post_create', views.PostCreateView.as_view(), name='create post'),
-      path('post_create', views.post, name='create post'),
+      path('post_create', views.PostCreateView.as_view(), name='create post'),
+      # path('post_create', views.post, name='create post'),
+      # path('post_update/<int:pk>', views.post_update, name='update post'),
       path('post_update/<int:pk>', views.PostUpdateView.as_view(), name='update post'),
       path('post_delete/<int:pk>', views.PostDeleteView.as_view(), name='delete post'),
+
+      path('post_photo_update/<int:pk>', views.PostPhotoUpdateView.as_view(), name='post photo update'),
+      path('post_photo_delete/<int:pk>', views.PostPhotoDeleteView.as_view(), name='post photo update'),
+      # path('post_video_update/<int:pk>', views.PostVideoUpdateView.as_view(), name='post video update'),
+      # path('post_music_update/<int:pk>', views.PostMusicUpdateView.as_view(), name='post music update'),
+      # path('post_documet_update/<int:pk>', views.PostDocumentUpdateView.as_view(), name='post document update'),
 
       path('bot', views.BotListView.as_view(), name='bot'),
       path('bot_create', views.BotCreateView.as_view(), name='create bot'),

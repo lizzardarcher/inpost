@@ -1,0 +1,147 @@
+{% extends 'layouts/base.html' %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-md-6">
+            {% if messages %}
+                <div class="rounded alert alert-success col-md-12">
+                    {% for message in messages %}
+                        <p{% if message.tags %} class="{{ message.tags }}"{% endif %}><i
+                                class="fa fa-check"></i> {{ message }}</p>
+                    {% endfor %}
+                </div>
+            {% endif %}
+            <div class="card">
+
+                <div class="card-header">
+                    <h3 class="title">Редактирование поста</h3>
+                </div>
+                <div class="card-body">
+                    <form method="POST" enctype="multipart/form-data">
+                        <div class="row">
+                            {% load crispy_forms_tags %}
+                            {% csrf_token %}
+                            <div class="col-md-12 px-md-3">
+                                <div class="form-group">
+                                    <h4><b>Название поста:</b></h4>
+                                    {{ postForm.name }}
+                                </div>
+                            </div>
+                            <div class="col-md-12 px-md-3">
+                                <div class="form-group">
+                                    <h4><b>Текст:</b></h4>
+                                    {{ postForm.text }}
+                                </div>
+                            </div>
+                            <div class="col-md-12 px-md-3">
+                                <div class="form-group">
+                                    <h4><b>Бот:</b></h4>
+                                    {{ postForm.bot }}
+                                </div>
+                            </div>
+                            <div class="col-md-12 px-md-3">
+                                <div class="form-group">
+                                    <h4><b>Тип поста:</b></h4>
+                                    {{ postForm.post_type }}
+                                </div>
+                            </div>
+                            <a class="btn btn-social" data-toggle="collapse" href="#collapseMedia" role="button"
+                               aria-expanded="false" aria-controls="collapseExample">
+                                Редактировать Медиа Файлы
+                            </a>
+                            <div class="collapse" id="collapseMedia">
+                                <div class="row">
+                                    <div class="col-md-8 px-md-3">
+                                        <a id="photoCollapse" class="btn btn-social" data-toggle="collapse"
+                                           href="#collapsePhoto" role="button"
+                                           aria-expanded="false" aria-controls="collapseExample">
+                                            Фото</a>
+                                        <div class="collapse" id="collapsePhoto">
+                                            {{ formsetI.management_form }}
+                                            {% for form in formsetI %}
+                                                {{ form }}
+                                            {% endfor %}
+                                        </div>
+                                        <a id="videoCollapse" class="btn btn-social" data-toggle="collapse"
+                                           href="#collapseVideo" role="button"
+                                           aria-expanded="false" aria-controls="collapseExample">
+                                            Видео
+                                        </a>
+                                        <div class="collapse" id="collapseVideo">
+                                            {{ formsetV.management_form }}
+                                            {% for form in formsetV %}
+                                                {{ form }}
+                                            {% endfor %}
+                                        </div>
+
+                                        <a id="MusicCollapse" class="btn btn-social" data-toggle="collapse"
+                                           href="#collapseMusic" role="button"
+                                           aria-expanded="false" aria-controls="collapseExample">
+                                            Музыка
+                                        </a>
+                                        <div class="collapse" id="collapseMusic">
+                                            {{ formsetM.management_form }}
+                                            {% for form in formsetM %}
+                                                {{ form }}
+                                            {% endfor %}
+                                        </div>
+
+                                        <a id="docCollapse" class="btn btn-social" data-toggle="collapse"
+                                           href="#collapseDocs" role="button"
+                                           aria-expanded="false" aria-controls="collapseExample">
+                                            Документы
+                                        </a>
+                                        <div class="collapse" id="collapseDocs">
+                                            {{ formsetD.management_form }}
+                                            {% for form in formsetD %}
+                                                {{ form }}
+                                            {% endfor %}
+                                        </div>
+
+                                        <div class="col-md-8 px-md-3">
+                                            <button class="btn btn-primary" type="submit" name="submit">Подтвердить
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock content %}
+
+{% block javascripts %}
+
+    <script>
+        const photo_inputs = document.querySelectorAll('input[name$="photos"]');
+        const photo_labels = document.querySelectorAll('label[for$="photos"]');
+        const music_inputs = document.querySelectorAll('input[name$="music"]');
+        const music_labels = document.querySelectorAll('label[for$="music"]');
+        const video_inputs = document.querySelectorAll('input[name$="video"]');
+        const video_labels = document.querySelectorAll('label[for$="video"]');
+        const document_inputs = document.querySelectorAll('input[name$="document"]');
+        const document_labels = document.querySelectorAll('label[for$="document"]');
+
+        function inputHandler(inputs, labels) {
+            for (let index = 0; index < inputs.length; ++index) {
+                const input = inputs[index];
+                const label = labels[index];
+                label.setAttribute('style', 'display:none')
+            }
+        }
+        inputHandler(photo_inputs, photo_labels)
+
+        const a_to_img = document.querySelectorAll('a[href*="/media/"]')
+        for (let index = 0; index < a_to_img.length; ++index) {
+            const link = a_to_img[index]
+            const image = link.textContent
+            link.textContent = ''
+            link.insertAdjacentHTML('afterbegin', `<img class="img-thumbnail" width="60px" height="45px" src="{{ MEDIA_URL }}/${image}"/>`)
+        }
+    </script>
+
+{% endblock javascripts %}

@@ -9,11 +9,10 @@ class PostForm(forms.ModelForm):
 
     class Meta:
         model = Post
-        fields = ['name', 'post_type', 'text', 'bot', 'is_active']
+        fields = ['post_type', 'name', 'text', 'bot']
         widgets = {
             'name': forms.TextInput(attrs={'class': 'form-control'}),
-            'text': forms.Textarea(attrs={'class': 'form-control'}),
-            'is_active': forms.CheckboxInput(attrs={'class': 'form-control'}),
+            'text': forms.Textarea(attrs={'class': 'form-control'}, ),
         }
 
 
@@ -54,7 +53,6 @@ class PostDocumentForm(forms.ModelForm):
 
 
 class PostCreationMultiForm(MultiModelForm):
-
     form_classes = {
         'post': PostForm,
         'photo': PostPhotoForm,
@@ -74,5 +72,3 @@ class PostScheduleMultiForm(MultiModelForm):
     form_classes = {
         'post': PostScheduleForm,
     }
-
-

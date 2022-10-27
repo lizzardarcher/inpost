@@ -4,14 +4,23 @@
 {% block stylesheets %}{% endblock stylesheets %}
 
 {% block content %}
-    <h1> Мои Посты </h1>
+    {% if messages %}
+        <div class="rounded alert alert-success col-md-6">
+            {% for message in messages %}
+                <p{% if message.tags %} class="{{ message.tags }}"{% endif %}><i
+                        class="fa fa-check"></i> {{ message }}</p>
+            {% endfor %}
+        </div>
+    {% endif %}
+
     <div class="p-2 m-1">
+        <h1> Мои Посты </h1>
         <a href="post_create">
             <button class="btn btn-primary">+ Добавить Пост</button>
         </a>
     </div>
     {% for post in posts %}
-        <div class="col-12">
+        <div class="col-8">
             <div class="card card-chart">
                 <div class="card-header ">
                     <div class="row">
@@ -23,33 +32,10 @@
                 </div>
                 <div class="container">
 
-                    {% if post.photo %}
-                        <div class="row p-1">
-                            <div class="col-sm">
-                                <img width="100" class="img-thumbnail" src="{{ MEDIA_URL }}{{ post.photo }}">
-                            </div>
-                        </div>
-                    {% endif %}
+                    {% for photo in photos %}
+                        <a href="/post_photo_update/{{ photo.id }}"><img class="img-thumbnail" width="75px" height="60px" src="{{ MEDIA_URL }}{{ photo.photos }}"></a>
+                    {% endfor %}
 
-                    {% if post.video %}
-                        <div class="row p-1">
-                            <div class="col-sm">
-                                <video controls width="180" src="{{ MEDIA_URL }}{{ post.video }}"></video>
-                            </div>
-
-                        </div>
-                    {% endif %}
-
-                    {% if post.document %}
-                        <div class="row p-1">
-                            <div class="col-sm">
-                                <a download href="{{ MEDIA_URL }}{{ post.document }}">
-                                    <i class="tim-icons icon-single-copy-04"></i>
-                                    {{ post.document }}
-                                </a>
-                            </div>
-                        </div>
-                    {% endif %}
 
                     {% if post.is_active %}
                         <i class="bg-primary tim-icons icon-check-2"></i>

@@ -4,12 +4,14 @@ from datetime import datetime
 from django.http import HttpResponse
 from django.template import loader
 from django.urls import reverse, reverse_lazy
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic import (ListView, DeleteView, UpdateView, CreateView, TemplateView)
 from django.contrib.auth.mixins import LoginRequiredMixin
 
-from .models import Post, Bot, Chat, Media, Button, User, PostSchedule, PostPhoto
-from .forms import PostForm, PostPhotoForm, PostCreationMultiForm, PostScheduleForm, PostScheduleMultiForm
+from .models import (Post, Bot, Chat, Media, Button, User, PostSchedule, PostPhoto, UserStatus, PostDocument, PostVideo,
+                     PostMusic)
+from .forms import (PostForm, PostPhotoForm, PostCreationMultiForm, PostScheduleForm, PostScheduleMultiForm,
+                    PostVideoForm, PostDocumentForm, PostMusicForm)
 from .calendar import PostCalendar
 
 from django.shortcuts import render
@@ -17,41 +19,6 @@ from django.forms import modelformset_factory
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.http import HttpResponseRedirect
-
-
-@login_required
-def post(request):
-    ImageFormSet = modelformset_factory(PostPhoto,
-                                        form=PostPhotoForm, extra=3)
-    # 'extra' means the number of photos that you can upload   ^
-    if request.method == 'POST':
-
-        postForm = PostForm(request.POST)
-        formset = ImageFormSet(request.POST, request.FILES,
-                               queryset=PostPhoto.objects.none())
-
-        if postForm.is_valid() and formset.is_valid():
-            post_form = postForm.save(commit=False)
-            post_form.user = request.user
-            post_form.save()
-
-            for form in formset.cleaned_data:
-                # this helps to not crash if the user
-                # do not upload all the photos
-                if form:
-                    image = form['photos']
-                    photo = PostPhoto(post=post_form, photos=image)
-                    photo.save()
-            # use django messages framework
-            messages.success(request,
-                             "Yeeew, check it out on the home page!")
-            return HttpResponseRedirect("/")
-        else:
-            print(postForm.errors, formset.errors)
-    else:
-        postForm = PostForm()
-        formset = ImageFormSet(queryset=PostPhoto.objects.none())
-    return render(request, 'crud/test_post.html', {'postForm': postForm, 'formset': formset})
 
 
 # USER ##############################################
@@ -77,11 +44,19 @@ class PostListView(LoginRequiredMixin, ListView):
     def get_queryset(self):
         return Post.objects.filter(user=self.request.user)
 
+    def get_context_data(self, **kwargs):
+        context = super(PostListView, self).get_context_data(**kwargs)
+        context.update({
+            'posts': Post.objects.filter(user=self.request.user),
+            'photos': PostPhoto.objects.all(),
+        })
+        return context
+
 
 class PostCreateView(LoginRequiredMixin, CreateView):
     model = Post
     form_class = PostForm
-    template_name = 'crud/post_create.html'
+    template_name = 'crud/test_post.html'
     success_url = 'post'
 
     def form_valid(self, form):
@@ -89,11 +64,181 @@ class PostCreateView(LoginRequiredMixin, CreateView):
         form.instance.user = self.request.user
         return super().form_valid(form)
 
+    def get(self, request):
+        extra = 10
+        ImageFormSet = modelformset_factory(PostPhoto, form=PostPhotoForm, extra=extra)
+        MusicFormSet = modelformset_factory(PostMusic, form=PostMusicForm, extra=extra)
+        VideoFormSet = modelformset_factory(PostVideo, form=PostVideoForm, extra=extra)
+        DocumentFormSet = modelformset_factory(PostDocument, form=PostDocumentForm, extra=extra)
+        postForm = PostForm()
+        formsetI = ImageFormSet(queryset=PostPhoto.objects.none())
+        formsetV = MusicFormSet(queryset=PostMusic.objects.none())
+        formsetM = VideoFormSet(queryset=PostVideo.objects.none())
+        formsetD = DocumentFormSet(queryset=PostDocument.objects.none())
+        return render(request, 'crud/post_create.html', {
+            'postForm': postForm,
+            'formsetI': formsetI,
+            'formsetV': formsetV,
+            'formsetM': formsetM,
+            'formsetD': formsetD,
+        })
+
+    def post(self, request):
+        """
+        Пример взят отсюда:
+        https://stackoverflow.com/questions/34006994/how-to-upload-multiple-images-to-a-blog-post-in-django
+        """
+        extra = 10
+        ImageFormSet = modelformset_factory(PostPhoto, form=PostPhotoForm, extra=extra)
+        MusicFormSet = modelformset_factory(PostMusic, form=PostMusicForm, extra=extra)
+        VideoFormSet = modelformset_factory(PostVideo, form=PostVideoForm, extra=extra)
+        DocumentFormSet = modelformset_factory(PostDocument, form=PostDocumentForm, extra=extra)
+
+        if request.method == 'POST':
+
+            postForm = PostForm(request.POST)
+
+            formsetI = ImageFormSet(request.POST, request.FILES, queryset=PostPhoto.objects.none())
+            formsetV = VideoFormSet(request.POST, request.FILES, queryset=PostVideo.objects.none())
+            formsetM = MusicFormSet(request.POST, request.FILES, queryset=PostMusic.objects.none())
+            formsetD = DocumentFormSet(request.POST, request.FILES, queryset=PostMusic.objects.none())
+
+            if postForm.is_valid():
+                post_form = postForm.save(commit=False)
+                post_form.user = request.user
+                post_form.save()
+
+                for form in formsetI.cleaned_data:
+                    if form:
+                        image = form['photos']
+                        photo = PostPhoto(post=post_form, photos=image)
+                        photo.save()
+
+                for form in formsetV.cleaned_data:
+                    if form:
+                        video_file = form['video']
+                        video = PostVideo(post=post_form, video=video_file)
+                        video.save()
+
+                for form in formsetM.cleaned_data:
+                    if form:
+                        music_file = form['music']
+                        music = PostMusic(post=post_form, music=music_file)
+                        music.save()
+
+                for form in formsetD.cleaned_data:
+                    if form:
+                        doc_file = form['document']
+                        doc = PostDocument(post=post_form, document=doc_file)
+                        doc.save()
+
+                # use django messages framework
+                messages.success(request, "Пост успешно добавлен!")
+                return HttpResponseRedirect("/post")
+            else:
+                print(postForm.errors)
+        else:
+            postForm = PostForm()
+            formsetI = ImageFormSet(queryset=PostPhoto.objects.none())
+            formsetV = MusicFormSet(queryset=PostMusic.objects.none())
+            formsetM = VideoFormSet(queryset=PostVideo.objects.none())
+            formsetD = DocumentFormSet(queryset=PostDocument.objects.none())
+        return render(request, 'crud/post_create.html', {
+            'postForm': postForm,
+            'formsetI': formsetI,
+            'formsetV': formsetV,
+            'formsetM': formsetM,
+            'formsetD': formsetD,
+        })
+
 
 class PostUpdateView(LoginRequiredMixin, UpdateView):
+    extra = 1
+
+    def form_valid(self, form):
+        form.instance.user = self.request.user
+        return super().form_valid(form)
+
+    def get(self, request, pk):
+        obj = get_object_or_404(Post, id=pk)
+        form = PostForm(request.POST or None, instance=obj)
+        ImageFormSet = modelformset_factory(PostPhoto, form=PostPhotoForm, extra=self.extra)
+        VideoFormSet = modelformset_factory(PostVideo, form=PostVideoForm, extra=self.extra)
+        MusicFormSet = modelformset_factory(PostMusic, form=PostMusicForm, extra=self.extra)
+        DocumentFormSet = modelformset_factory(PostDocument, form=PostDocumentForm, extra=self.extra)
+
+        formsetI = ImageFormSet(queryset=PostPhoto.objects.filter(post__id=pk))
+        formsetV = VideoFormSet(queryset=PostVideo.objects.filter(post__id=pk))
+        formsetM = MusicFormSet(queryset=PostMusic.objects.filter(post__id=pk))
+        formsetD = DocumentFormSet(queryset=PostDocument.objects.filter(post__id=pk))
+        return render(request, 'crud/post_update.html', {
+            'postForm': form,
+            'formsetI': formsetI,
+            'formsetV': formsetV,
+            'formsetM': formsetM,
+            'formsetD': formsetD,
+        })
+
+    def post(self, request, pk):
+        ImageFormSet = modelformset_factory(PostPhoto, form=PostPhotoForm, extra=self.extra)
+        VideoFormSet = modelformset_factory(PostVideo, form=PostVideoForm, extra=self.extra)
+        MusicFormSet = modelformset_factory(PostMusic, form=PostMusicForm, extra=self.extra)
+        DocumentFormSet = modelformset_factory(PostDocument, form=PostDocumentForm, extra=self.extra)
+
+        formsetI = ImageFormSet(request.POST, request.FILES, queryset=PostPhoto.objects.filter(post__id=pk))
+        formsetV = VideoFormSet(request.POST, request.FILES, queryset=PostVideo.objects.filter(post__id=pk))
+        formsetM = MusicFormSet(request.POST, request.FILES, queryset=PostMusic.objects.filter(post__id=pk))
+        formsetD = DocumentFormSet(request.POST, request.FILES, queryset=PostDocument.objects.filter(post__id=pk))
+
+        obj = get_object_or_404(Post, id=pk)
+        form = PostForm(data=request.POST or None, files=request.FILES or None, instance=obj)
+
+        if form.is_valid():
+            post_form = form.save(commit=False)
+            post_form.user = request.user
+            post_form.save()
+
+            for form in formsetI.cleaned_data:
+                if form:
+                    image = form['photos']
+                    photo = PostPhoto(post=post_form, photos=image)
+                    photo.save()
+
+            for form in formsetV.cleaned_data:
+                if form:
+                    video_file = form['video']
+                    video = PostVideo(post=post_form, video=video_file)
+                    video.save()
+
+            for form in formsetM.cleaned_data:
+                if form:
+                    music_file = form['music']
+                    music = PostMusic(post=post_form, music=music_file)
+                    music.save()
+
+            for form in formsetD.cleaned_data:
+                if form:
+                    doc_file = form['document']
+                    doc = PostDocument(post=post_form, document=doc_file)
+                    doc.save()
+
+            messages.success(request, "Пост успешно обновлен!")
+            return HttpResponseRedirect(f"/post_update/{pk}")
+        else:
+            print(form.errors)
+        return render(request, 'crud/post_update.html', {'postForm': form, 'formsetI': formsetI, })
+
+
+class PostDeleteView(LoginRequiredMixin, DeleteView):
     model = Post
-    form_class = PostForm
-    template_name = 'crud/post_create.html'
+    success_url = '/post'
+    template_name = 'crud/post_delete.html'
+
+
+class PostPhotoUpdateView(LoginRequiredMixin, UpdateView):
+    model = PostPhoto
+    form_class = PostPhotoForm
+    template_name = 'crud/post_photo_update.html'
     success_url = '/post'
 
     def form_valid(self, form):
@@ -101,10 +246,10 @@ class PostUpdateView(LoginRequiredMixin, UpdateView):
         return super().form_valid(form)
 
 
-class PostDeleteView(LoginRequiredMixin, DeleteView):
-    model = Post
+class PostPhotoDeleteView(LoginRequiredMixin, DeleteView):
+    model = PostPhoto
     success_url = '/post'
-    template_name = 'crud/post_delete.html'
+    template_name = 'crud/post_photo_delete.html'
 
 
 # BOT ###############################################
@@ -249,9 +394,12 @@ class ScheduleDeleteView(LoginRequiredMixin, DeleteView):
 
 @login_required(login_url="/login/")
 def index(request):
-    context = {'segment': 'index',
-               'year': datetime.now().year,
-               'month': datetime.now().month}
+    context = {
+        'segment': 'index',
+        'year': datetime.now().year,
+        'month': datetime.now().month,
+        'bots': Bot.objects.filter(user=request.user),
+        'chats': Chat.objects.filter(user=request.user),
+    }
     html_template = loader.get_template('home/index.html')
     return HttpResponse(html_template.render(context, request))
-

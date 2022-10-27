@@ -19,6 +19,7 @@ class UserStatus(models.Model):
 
 
 class Bot(models.Model):
+
     name = models.CharField(max_length=100, null=True, verbose_name='Название бота', validators=[validators.validate_post_name])
     token = models.CharField(max_length=300, null=False, blank=False, verbose_name='Телеграм Токен')
     user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='Пользователь')
@@ -27,6 +28,9 @@ class Bot(models.Model):
     def __str__(self):
         return self.name
 
+    def get_chat_username(self):
+        return self.name.split('/')[0]
+
     class Meta:
         ordering = ['id']
         verbose_name = "Бот"
@@ -34,7 +38,7 @@ class Bot(models.Model):
 
 
 class Post(models.Model):
-    name = models.CharField(max_length=100, null=True, verbose_name='Название поста', validators=[validators.validate_post_name])
+    name = models.CharField(max_length=100, null=True, verbose_name='Заголовок поста', validators=[validators.validate_post_name])
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True, verbose_name='Пользователь')
     bot = models.ForeignKey(Bot, on_delete=models.CASCADE, null=True, blank=True, verbose_name='Бот')
     post_type = models.CharField(max_length=20, choices=[('Пост', 'Пост'), ('Опрос', 'Опрос')], null=True, blank=False, verbose_name='Тип поста')
@@ -151,9 +155,11 @@ class Media(models.Model):
 
 
 class Chat(models.Model):
+
     chat_type = models.CharField(max_length=20, choices=[('Группа', 'Группа'), ('Канал', 'Канал')], null=True, blank=False, verbose_name='Тип Чата')
     # name = models.CharField(max_length=200, null=True, blank=True, verbose_name='Название')
     ref = models.CharField(max_length=200, null=True, unique=True, validators=[validators.validate_contains_https], verbose_name='Ссылка на чат')
+    title = models.CharField(max_length=300, default='', blank=True, verbose_name='Название канала')
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True, verbose_name='Пользователь')
     id = models.AutoField(primary_key=True, editable=False)
 

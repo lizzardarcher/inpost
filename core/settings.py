@@ -35,7 +35,7 @@ INSTALLED_APPS = [
     'mptt',
     'easy_thumbnails',
     'debug_toolbar',
-
+    # 'emoji_picker',
 ]
 
 CRISPY_TEMPLATE_PACK = 'uni_form'
@@ -56,7 +56,6 @@ MIDDLEWARE = [
 INTERNAL_IPS = [
     "127.0.0.1",
 ]
-
 
 ROOT_URLCONF = 'core.urls'
 LOGIN_REDIRECT_URL = "home"  # Route defined in home/urls.py
@@ -137,9 +136,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, "static/media")
 
 MEDIA_URL = '/media/'
 
-
 # Extra places for collectstatic to find static files.
 STATICFILES_DIRS = (
     os.path.join(CORE_DIR, 'apps/static'),
 )
-
