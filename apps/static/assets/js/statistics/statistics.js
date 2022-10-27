@@ -251,7 +251,7 @@ function initDashboardPageCharts (){
 
     var data = {
       datasets: [{
-        label: "Подписчики",
+        label: "Посты",
         fill: true,
         backgroundColor: gradientStroke,
         borderColor: '#d048b6',
@@ -265,7 +265,7 @@ function initDashboardPageCharts (){
         pointHoverRadius: 4,
         pointHoverBorderWidth: 15,
         pointRadius: 4,
-        data: [100, 200, 400, 600, 700, 800, 1000,],
+        data: [74, 63, 86, 81, 90, 100, 120,],
       }],
       labels: ['Пон','Вт','Ср', 'Чт','Пт', 'Сб','Вс'],
 

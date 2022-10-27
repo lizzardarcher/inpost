@@ -16,13 +16,13 @@
                 {% csrf_token %} 
 
                 <div class="card-header">
-                  <h5 class="title">Register</h5>
+                  <h5 class="title">Регистрация</h5>
 
                   <h6 class="card-category">
                       {% if msg %}
                         <span class="text-danger">{{ msg | safe }}</span>
                       {% else %}
-                        Add your credentials
+                        Введите пользовательские данные
                       {% endif %}  
                   </h6>
                 </div>
@@ -40,7 +40,7 @@
                     <div class="row">
                       <div class="col-md-3 px-md-1">
                         <div class="form-group">
-                          <label>Username</label>
+                          <label>Логин</label>
                           {{ form.username }}
                         </div>
                       </div>
@@ -60,7 +60,7 @@
                     <div class="row">
                       <div class="col-md-3 px-md-1">
                         <div class="form-group">
-                          <label>Password</label>
+                          <label>Пароль</label>
                           {{ form.password1 }}
                         </div>
                       </div>
@@ -70,7 +70,7 @@
                     <div class="row">
                         <div class="col-md-3 px-md-1">
                             <div class="form-group">
-                            <label>Password Check</label>
+                            <label>Подтвердите Пароль</label>
                             {{ form.password2 }}
                             </div>
                         </div>
@@ -79,9 +79,9 @@
 
                 </div>
                 <div class="card-footer">
-                  <button type="submit" name="register" class="btn btn-fill btn-primary">Register</button>
+                  <button type="submit" name="register" class="btn btn-fill btn-primary">Регистрация</button>
                   &nbsp; &nbsp;
-                  Have an account? <a href="{% url 'login' %}" class="text-primary">Login</a>
+                  У вас уже есть аккаунт? <a href="{% url 'login' %}" class="text-primary">Логин</a>
                 </div>
 
               {% endif %} 

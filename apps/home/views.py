@@ -48,7 +48,10 @@ class PostListView(LoginRequiredMixin, ListView):
         context = super(PostListView, self).get_context_data(**kwargs)
         context.update({
             'posts': Post.objects.filter(user=self.request.user),
-            'photos': PostPhoto.objects.all(),
+            'photos': PostPhoto.objects.filter(post__user=self.request.user),
+            'videos': PostVideo.objects.filter(post__user=self.request.user),
+            'musics': PostMusic.objects.filter(post__user=self.request.user),
+            'documents': PostDocument.objects.filter(post__user=self.request.user),
         })
         return context
 
@@ -250,6 +253,57 @@ class PostPhotoDeleteView(LoginRequiredMixin, DeleteView):
     model = PostPhoto
     success_url = '/post'
     template_name = 'crud/post_photo_delete.html'
+
+
+class PostVideoUpdateView(LoginRequiredMixin, UpdateView):
+    model = PostVideo
+    form_class = PostVideoForm
+    template_name = 'crud/post_video_update.html'
+    success_url = '/post'
+
+    def form_valid(self, form):
+        form.instance.user = self.request.user
+        return super().form_valid(form)
+
+
+class PostVideoDeleteView(LoginRequiredMixin, DeleteView):
+    model = PostVideo
+    success_url = '/post'
+    template_name = 'crud/post_video_delete.html'
+
+
+class PostMusicUpdateView(LoginRequiredMixin, UpdateView):
+    model = PostMusic
+    form_class = PostMusicForm
+    template_name = 'crud/post_music_update.html'
+    success_url = '/post'
+
+    def form_valid(self, form):
+        form.instance.user = self.request.user
+        return super().form_valid(form)
+
+
+class PostMusicDeleteView(LoginRequiredMixin, DeleteView):
+    model = PostMusic
+    success_url = '/post'
+    template_name = 'crud/post_music_delete.html'
+
+
+class PostDocumentUpdateView(LoginRequiredMixin, UpdateView):
+    model = PostDocument
+    form_class = PostDocumentForm
+    template_name = 'crud/post_document_update.html'
+    success_url = '/post'
+
+    def form_valid(self, form):
+        form.instance.user = self.request.user
+        return super().form_valid(form)
+
+
+class PostDocumentDeleteView(LoginRequiredMixin, DeleteView):
+    model = PostDocument
+    success_url = '/post'
+    template_name = 'crud/post_document_delete.html'
 
 
 # BOT ###############################################

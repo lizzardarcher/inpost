@@ -23,9 +23,15 @@ urlpatterns = [
 
       path('post_photo_update/<int:pk>', views.PostPhotoUpdateView.as_view(), name='post photo update'),
       path('post_photo_delete/<int:pk>', views.PostPhotoDeleteView.as_view(), name='post photo update'),
-      # path('post_video_update/<int:pk>', views.PostVideoUpdateView.as_view(), name='post video update'),
-      # path('post_music_update/<int:pk>', views.PostMusicUpdateView.as_view(), name='post music update'),
-      # path('post_documet_update/<int:pk>', views.PostDocumentUpdateView.as_view(), name='post document update'),
+
+      path('post_video_update/<int:pk>', views.PostVideoUpdateView.as_view(), name='post video update'),
+      path('post_video_delete/<int:pk>', views.PostVideoDeleteView.as_view(), name='post video delete'),
+
+      path('post_music_update/<int:pk>', views.PostMusicUpdateView.as_view(), name='post music update'),
+      path('post_music_delete/<int:pk>', views.PostMusicDeleteView.as_view(), name='post music delete'),
+
+      path('post_documet_update/<int:pk>', views.PostDocumentUpdateView.as_view(), name='post document update'),
+      path('post_documet_delete/<int:pk>', views.PostDocumentDeleteView.as_view(), name='post document delete'),
 
       path('bot', views.BotListView.as_view(), name='bot'),
       path('bot_create', views.BotCreateView.as_view(), name='create bot'),
