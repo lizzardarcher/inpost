@@ -50,7 +50,7 @@ class PostCalendar(HTMLCalendar, ListView):
         """
         v = []
         a = v.append
-        a('<table border="1" cellpadding="1" cellspacing="1" class="month table fixed">')
+        a('<table border="1" cellpadding="1" cellspacing="1" class="month table fixed col-12 col-md-8">')
         a('\n')
         a(self.formatmonthname(theyear, themonth, withyear=withyear))
         a('\n')

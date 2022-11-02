@@ -2,13 +2,23 @@
 {% block title %} Посты {% endblock %}
 
 {% block content %}
+    {% if messages %}
+        <div class="rounded alert alert-success col-md-6">
+            {% for message in messages %}
+                <p{% if message.tags %} class="{{ message.tags }}"{% endif %}><i
+                        class="fa fa-check"></i> {{ message }}</p>
+            {% endfor %}
+        </div>
+    {% endif %}
     <h1> Мои Каналы </h1>
     <div class="p-2 m-1">
         <a href="chat_create">
             <button class="btn btn-primary">+ Добавить Канал</button>
         </a>
     </div>
-    <div class="col-6">
+
+    <div class="col-12">
+
         {% for chat in chats %}
             <div class="card card-chart">
                 <div class="card-header ">

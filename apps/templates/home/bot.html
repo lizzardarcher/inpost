@@ -2,6 +2,14 @@
 {% block title %} Посты {% endblock %}
 
 {% block content %}
+    {% if messages %}
+        <div class="rounded alert alert-success col-md-6">
+            {% for message in messages %}
+                <p{% if message.tags %} class="{{ message.tags }}"{% endif %}><i
+                        class="fa fa-check"></i> {{ message }}</p>
+            {% endfor %}
+        </div>
+    {% endif %}
     <h1> Мои TG Боты </h1>
     <div class="p-2 m-1">
         <a href="bot_create">
@@ -9,12 +17,12 @@
         </a>
     </div>
     {% for bot in bots %}
-        <div class="col-8">
+        <div class="col-12">
             <div class="card card-chart">
                 <div class="card-header ">
                     <div class="row">
                         <div class="col-sm-2 text-left">
-                            <img class="img img-thumbnail" width="90px" height="90px" src="{{ MEDIA_URL }}/B.svg.png" />
+                            <img class="img img-thumbnail" width="90px" height="90px" src="{{ MEDIA_URL }}/B.svg.png"/>
                         </div>
                         <div class="col-sm-6 text-left">
                             <h4 class="card-title">Название Бота: {{ bot.name }}</h4>

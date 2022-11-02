@@ -25,14 +25,14 @@ class PostCalendarMini(HTMLCalendar, ListView):
             if i.schedule.year == num_year and i.schedule.month == num_month and i.schedule.day == num_day:
                 s.append((i.post.name, i.schedule.strftime('%H:%M'), i.id))
         schedule_data = ''
-        for data in s:
-            schedule_data += f'<p><a href="/schedule_update/{data[2]}">{data[0],data[1]}</a></p>'
+        # for data in s:
+        #     schedule_data += f'<p><a href="/schedule_update/{data[2]}">{data[0],data[1]}</a></p>'
+        if s:
+            schedule_data += f'<p class="badge badge-secondary"><a href="/calendar_event_create/{num_year}/{num_month}/{num_day}/">{len(s)}</a></p>'
         if date_row.month != self.month:
             return '<td class="noday">&nbsp;</td>'  # day outside month
         else:
-            return f'<td class="{week_day}"><a href="/calendar_event_create/{num_year}/{num_month}/{num_day}/">{num_day}</a><br/> ' \
-                   f'{schedule_data}</td>'
-                   # f'{str(s).replace("[","").replace("]","").replace(",","<br/>")}</td>'
+            return f'<td class="{week_day}"><a href="/calendar_event_create/{num_year}/{num_month}/{num_day}/">{num_day}</a><br/> {schedule_data}</td>'
 
     def formatweek(self, theweek):
         """

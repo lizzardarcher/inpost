@@ -1,6 +1,8 @@
 # -*- encoding: utf-8 -*-
 
 from datetime import datetime
+
+from django.contrib.messages.views import SuccessMessageMixin
 from django.http import HttpResponse
 from django.template import loader
 from django.urls import reverse, reverse_lazy
@@ -13,6 +15,7 @@ from .models import (Post, Bot, Chat, Media, Button, User, PostSchedule, PostPho
 from .forms import (PostForm, PostPhotoForm, PostCreationMultiForm, PostScheduleForm, PostScheduleMultiForm,
                     PostVideoForm, PostDocumentForm, PostMusicForm, BotForm, ChatForm)
 from .calendar import PostCalendar
+from .calendar_mini import PostCalendarMini
 
 from django.shortcuts import render
 from django.forms import modelformset_factory
@@ -23,11 +26,13 @@ from django.http import HttpResponseRedirect
 
 # USER ##############################################
 
-class UserUpdateView(UpdateView):
+class UserUpdateView(SuccessMessageMixin, LoginRequiredMixin, UpdateView):
     template_name = 'home/user_profile.html'
     model = User
     fields = ['username', 'email', 'first_name', 'last_name']
     success_url = '/user_profile'
+    extra_context = {'segment': 'user'}
+    success_message = 'Профиль успешно обновлён'
 
     def user_profile(request):
         return redirect('/user_profile/1')
@@ -239,69 +244,74 @@ class PostDeleteView(LoginRequiredMixin, DeleteView):
     template_name = 'crud/post_delete.html'
 
 
-class PostPhotoUpdateView(LoginRequiredMixin, UpdateView):
+class PostPhotoUpdateView(SuccessMessageMixin, LoginRequiredMixin, UpdateView):
     model = PostPhoto
     form_class = PostPhotoForm
     template_name = 'crud/post_photo_update.html'
     success_url = '/post'
+    success_message = 'Фото успешно обновлено'
 
     def form_valid(self, form):
         form.instance.user = self.request.user
         return super().form_valid(form)
 
 
-class PostPhotoDeleteView(LoginRequiredMixin, DeleteView):
+class PostPhotoDeleteView(SuccessMessageMixin, LoginRequiredMixin, DeleteView):
     model = PostPhoto
     success_url = '/post'
     template_name = 'crud/post_photo_delete.html'
+    success_message = 'Фото успешно удалено'
 
 
-class PostVideoUpdateView(LoginRequiredMixin, UpdateView):
+class PostVideoUpdateView(SuccessMessageMixin, LoginRequiredMixin, UpdateView):
     model = PostVideo
     form_class = PostVideoForm
     template_name = 'crud/post_video_update.html'
     success_url = '/post'
+    success_message = 'Видео успешно обновлено'
 
     def form_valid(self, form):
         form.instance.user = self.request.user
         return super().form_valid(form)
 
 
-class PostVideoDeleteView(LoginRequiredMixin, DeleteView):
+class PostVideoDeleteView(SuccessMessageMixin, LoginRequiredMixin, DeleteView):
     model = PostVideo
     success_url = '/post'
     template_name = 'crud/post_video_delete.html'
 
 
-class PostMusicUpdateView(LoginRequiredMixin, UpdateView):
+class PostMusicUpdateView(SuccessMessageMixin, LoginRequiredMixin, UpdateView):
     model = PostMusic
     form_class = PostMusicForm
     template_name = 'crud/post_music_update.html'
     success_url = '/post'
+    success_message = 'Трек успешно обновлен'
 
     def form_valid(self, form):
         form.instance.user = self.request.user
         return super().form_valid(form)
 
 
-class PostMusicDeleteView(LoginRequiredMixin, DeleteView):
+class PostMusicDeleteView(SuccessMessageMixin, LoginRequiredMixin, DeleteView):
     model = PostMusic
     success_url = '/post'
     template_name = 'crud/post_music_delete.html'
 
 
-class PostDocumentUpdateView(LoginRequiredMixin, UpdateView):
+class PostDocumentUpdateView(SuccessMessageMixin, LoginRequiredMixin, UpdateView):
     model = PostDocument
     form_class = PostDocumentForm
     template_name = 'crud/post_document_update.html'
     success_url = '/post'
+    success_message = 'Документ успешно обновлен'
 
     def form_valid(self, form):
         form.instance.user = self.request.user
         return super().form_valid(form)
 
 
-class PostDocumentDeleteView(LoginRequiredMixin, DeleteView):
+class PostDocumentDeleteView(SuccessMessageMixin, LoginRequiredMixin, DeleteView):
     model = PostDocument
     success_url = '/post'
     template_name = 'crud/post_document_delete.html'
@@ -320,32 +330,35 @@ class BotListView(LoginRequiredMixin, ListView):
         return Bot.objects.filter(user=self.request.user)
 
 
-class BotCreateView(LoginRequiredMixin, CreateView):
+class BotCreateView(SuccessMessageMixin, LoginRequiredMixin, CreateView):
     model = Bot
     form_class = BotForm
     template_name = 'crud/bot_create.html'
     success_url = 'bot'
+    success_message = 'Бот успешно создан'
 
     def form_valid(self, form):
         form.instance.user = self.request.user
         return super().form_valid(form)
 
 
-class BotUpdateView(LoginRequiredMixin, UpdateView):
+class BotUpdateView(SuccessMessageMixin, LoginRequiredMixin, UpdateView):
     model = Bot
     form_class = BotForm
     template_name = 'crud/bot_create.html'
     success_url = '/bot'
+    success_message = 'Бот успешно обновлен'
 
     def form_valid(self, form):
         form.instance.user = self.request.user
         return super().form_valid(form)
 
 
-class BotDeleteView(LoginRequiredMixin, DeleteView):
+class BotDeleteView(SuccessMessageMixin, LoginRequiredMixin, DeleteView):
     model = Bot
     success_url = '/bot'
     template_name = 'crud/bot_delete.html'
+    success_message = 'Бот успешно удалён'
 
 
 # CHANNEL ###############################################
@@ -360,47 +373,52 @@ class ChatListView(LoginRequiredMixin, ListView):
         return Chat.objects.filter(user=self.request.user)
 
 
-class ChatCreateView(LoginRequiredMixin, CreateView):
+class ChatCreateView(SuccessMessageMixin, LoginRequiredMixin, CreateView):
     model = Chat
     form_class = ChatForm
     template_name = 'crud/chat_create.html'
     success_url = '/chat'
+    success_message = 'Чат успешно создан'
 
     def form_valid(self, form):
         form.instance.user = self.request.user
         return super().form_valid(form)
 
 
-class ChatUpdateView(LoginRequiredMixin, UpdateView):
+class ChatUpdateView(SuccessMessageMixin, LoginRequiredMixin, UpdateView):
     model = Chat
     form_class = ChatForm
     template_name = 'crud/chat_create.html'
     success_url = '/chat'
+    success_message = 'Чат успешно обновлён'
 
     def form_valid(self, form):
         form.instance.user = self.request.user
         return super().form_valid(form)
 
 
-class ChatDeleteView(LoginRequiredMixin, DeleteView):
+class ChatDeleteView(SuccessMessageMixin, LoginRequiredMixin, DeleteView):
     model = Chat
     success_url = '/chat'
     template_name = 'crud/chat_delete.html'
+    success_message = 'Чат успешно удалён'
 
 
 # CALENDAR ###############################################
 
-class CalendarView(TemplateView):
+class CalendarView(LoginRequiredMixin, TemplateView):
     template_name = 'crud/calendar.html'
 
     def get(self, request, year, month, *args, **kwargs):
         cal = PostCalendar().formatmonth(theyear=int(year), themonth=int(month))
-        context = {'cal': cal}
+        cal_mini = PostCalendarMini().formatmonth(theyear=int(year), themonth=int(month))
+        context = {'cal': cal, 'cal_mini': cal_mini, 'segment': 'calendar'}
         return render(request, 'home/calendar.html', context=context)
 
     def post(self, request, year, month, *args, **kwargs):
         cal = PostCalendar().formatmonth(theyear=int(year), themonth=int(month))
-        context = {'cal': cal}
+        cal_mini = PostCalendarMini().formatmonth(theyear=int(year), themonth=int(month))
+        context = {'cal': cal, 'cal_mini': cal_mini, 'segment': 'calendar'}
         return render(request, 'home/calendar.html', context=context)
 
     def form_valid(self, form):
@@ -414,6 +432,7 @@ def calendar_event(request, year, month, day):
     if form.is_valid():
         print(form)
         form.save()
+        messages.success(request, "Успешно обновлено")
         # return redirect(f"/calendar/{datetime.now().year}/{datetime.now().month}/")
     return render(request, 'home/calendar_event.html', context={
         'posts': post,
@@ -423,28 +442,38 @@ def calendar_event(request, year, month, day):
     })
 
 
-class CalendarEventCreate(CreateView):
+class CalendarEventCreate(SuccessMessageMixin, LoginRequiredMixin, CreateView):
     model = PostSchedule
     form_class = PostScheduleForm
     template_name = 'crud/calendar_event_create.html'
     success_url = f'/calendar/{datetime.now().year}/{datetime.now().month}/'
+    success_message = 'Распиание обновлено'
+
+    # extra_context = {'sch': PostSchedule.objects.filter(user=)}
+
+    def get_context_data(self, **kwargs):
+        context = super(CalendarEventCreate, self).get_context_data(**kwargs)
+        context['sch'] = PostSchedule.objects.filter(user=self.request.user)
+        return context
 
     def form_valid(self, form):
         form.instance.user = self.request.user
         return super().form_valid(form)
 
 
-class ScheduleUpdateView(UpdateView):
+class ScheduleUpdateView(SuccessMessageMixin, LoginRequiredMixin, UpdateView):
     model = PostSchedule
     template_name = 'crud/schedule_update.html'
     form_class = PostScheduleForm
     success_url = f'/calendar/{datetime.now().year}/{datetime.now().month}/'
+    success_message = 'Расписание обновлено'
 
 
-class ScheduleDeleteView(LoginRequiredMixin, DeleteView):
+class ScheduleDeleteView(SuccessMessageMixin, LoginRequiredMixin, DeleteView):
     model = PostSchedule
     success_url = f'/calendar/{datetime.now().year}/{datetime.now().month}/'
     template_name = 'crud/schedule_delete.html'
+    success_message = 'Пост удален из расписания'
 
 
 @login_required(login_url="/login/")
