@@ -40,10 +40,11 @@ class Bot(models.Model):
 class Post(models.Model):
     name = models.CharField(max_length=100, null=True, verbose_name='Заголовок поста', validators=[validators.validate_post_name])
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True, verbose_name='Пользователь')
-    bot = models.ForeignKey(Bot, on_delete=models.CASCADE, null=True, blank=True, verbose_name='Бот')
+    bot = models.ForeignKey(Bot, on_delete=models.CASCADE, null=True, blank=False, verbose_name='Бот')
     post_type = models.CharField(max_length=20, choices=[('Пост', 'Пост'), ('Опрос', 'Опрос')], null=True, blank=False, verbose_name='Тип поста')
     text = models.TextField(max_length=5000, null=True, blank=True, verbose_name='Текст')
     is_active = models.BooleanField(null=True, blank=True, default=False, verbose_name='Активно')
+    # reference = models.CharField(max_length=300, null=True, blank=True, verbose_name='Ссылка')
     id = models.AutoField(primary_key=True, editable=False)
 
     def __str__(self):
@@ -126,13 +127,43 @@ class PostDocument(models.Model):
         verbose_name_plural = "Документы"
 
 
-class Button(models.Model):
-    name = models.CharField(max_length=100, null=True, blank=True, verbose_name='Название кнопки')
+class PostDocument(models.Model):
     post = models.ForeignKey(Post, on_delete=models.CASCADE, null=True, blank=True, verbose_name='Пост')
+    document = models.FileField(verbose_name='Документ')
     id = models.AutoField(primary_key=True, editable=False)
 
     def __str__(self):
-        return self.name
+        return self.post.name + ' - ' + str(self.id)
+
+    class Meta:
+        ordering = ['id']
+        verbose_name = "Документ"
+        verbose_name_plural = "Документы"
+
+
+class PostReference(models.Model):
+    post = models.ForeignKey(Post, on_delete=models.CASCADE, null=True, blank=True, verbose_name='Пост')
+    reference = models.CharField(max_length=300, null=True, blank=False, verbose_name='Ссылка', validators=[validators.post_ref_validator])
+    text = models.CharField(max_length=300, null=True, blank=False, verbose_name='Текст внутри ссылки')
+    id = models.AutoField(primary_key=True, editable=False)
+
+    def __str__(self):
+        return self.post.name + ' - ' + str(self.id) + ' - ' + str(self.reference)
+
+    class Meta:
+        ordering = ['id']
+        verbose_name = "Ссылка"
+        verbose_name_plural = "Ссылки"
+
+
+class Button(models.Model):
+    name = models.CharField(max_length=100, null=True, blank=True, verbose_name='Название кнопки')
+    post = models.ForeignKey(Post, on_delete=models.CASCADE, null=True, blank=True, verbose_name='Пост')
+    rating = models.IntegerField(null=True, blank=True, verbose_name='Рейтинг')
+    id = models.AutoField(primary_key=True, editable=False)
+
+    def __str__(self):
+        return self.name + ' --- Пост-' + self.post.name + ' Рейтинг-' + str(self.rating)
 
     class Meta:
         ordering = ['id']

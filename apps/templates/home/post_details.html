@@ -1,0 +1,63 @@
+{% extends "layouts/base.html" %}
+{% block title %} Пост {{ post.name }} {% endblock %}
+{% block stylesheets %}
+    <style type="text/css">
+        #preview {
+            background-image: url("{{ MEDIA_URL }}/tg-background.jpg");
+        }
+    </style>
+{% endblock stylesheets %}
+
+{% block content %}
+
+    <div class="col-sm-6">
+        <a href="/post" class="text-black"><h3>Назад</h3></a>
+        <div id="preview" class="card card-chart">
+            {% if photos %}
+                <div class="row">
+
+                    {% for photo in photos %}
+                        {% if photo.post == post %}
+
+                            <img class="img img-raised mt-1 ml-5 col-4 rounded"
+                                 src="{{ MEDIA_URL }}/{{ photo.photos }}"/>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            {% endif %}
+            <br/>
+
+            {% if videos %}
+                <div class="row">
+                    {% for video in videos %}
+                        {% if video.post == post %}
+                            <img class="img img-raised mt-1 ml-1 col-4 rounded"
+                                 src="{{ MEDIA_URL }}/{{ video.video }}"/>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            {% endif %}
+
+            <div class="row">
+                <div class="col-1"></div>
+                <div class="col-10 bg-white rounded mb-2">
+                    {{ post.text }}
+                </div>
+                <div class="col-10">
+                    {% if references %}
+                        {% for ref in references %}
+                            {% if ref.post == post %}
+                                <div class="container ml-5 mt-1 text-center bg-dark opacity-5 rounded"
+                                     style="width: 100%">
+                                    <h3>{{ ref.text }}</h3>
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}
+
+{% block javascripts %}{% endblock javascripts %}

@@ -4,6 +4,7 @@
 {% block stylesheets %}{% endblock stylesheets %}
 
 {% block content %}
+
     {% if messages %}
         <div class="rounded alert alert-success col-md-6">
             {% for message in messages %}
@@ -13,7 +14,6 @@
         </div>
     {% endif %}
 
-
     <div class="row">
         <div class="col-md-8">
             <div class="p-2 m-1">
@@ -22,95 +22,222 @@
                     <button class="btn btn-primary">+ Добавить Пост</button>
                 </a>
             </div>
-            {% for post in posts %}
-                <div class="card card-chart">
-                    <div class="card-header ">
-                        <div class="row">
+            <div id="accordion-post">
+                {% for post in posts %}
+                    <div class="card card-chart">
+                        <div class="card-header ">
+                            <h5 class="mb-0 row">
+                                <button class="col-4 btn btn-link collapsed" data-toggle="collapse"
+                                        data-target="#collapse{{ post.id }}"
+                                        aria-expanded="true"
+                                        aria-controls="collapse{{ post.id }}">
+                                    <h4>{{ post.name }}</h4>
+                                </button>
+                                <div class="btn btn-info col-sm-2"><a href="/post_details/{{ post.id }}"><span>Превью</span></a></div>
 
-                            <div class="col-sm-4">
-                                <h4 class="card-title">{{ post.name }}</h4>
-                                <p class="card-text badge badge-info">Бот отправляющий посты - @{{ post.bot }}</p>
-                                <p class="card-text">{{ post.text|truncatechars:100 }}</p>
-                            </div>
+                            </h5>
+                            <hr class="bg-light">
+                            <div id="collapse{{ post.id }}" class="collapse" aria-labelledby="heading{{ post.id }}"
+                                 data-parent="#accordion-post">
+                                <div class="row">
+                                    <div class="col-sm-4">
+                                        <p class="card-text badge badge-info">Бот отправляющий посты -
+                                            @{{ post.bot }}</p>
+                                        <p class="card-text">{{ post.text|truncatechars:100 }}</p>
+                                        {% if references %}
+                                            {% for ref in references %}
+                                                {% if ref.post == post %}
+                                                    <div class="badge badge-dark">
+                                                        <p>Ссылка:
+                                                            <a class="card-text" href="{{ ref.reference }}">
+                                                        <span class="card-text">{{ ref.text }}<i
+                                                                class="fa fa-chevron-right"></i></span>
+                                                            </a>
+                                                        </p>
+                                                    </div>
+                                                {% endif %}
+                                            {% endfor %}
+                                        {% endif %}
+                                    </div>
 
-                            <div class="col-sm-6">
-                                <p>Изображения:</p>
-                                {% if photos %}
-                                    {% for photo in photos %}
-                                        {% if photo.post == post %}
-                                            <a href="/post_photo_update/{{ photo.id }}"><img class="img-thumbnail"
-                                                                                             width="75px"
-                                                                                             height="60px" src="
+                                    <div class="col-sm-6">
+                                        <p>Изображения:</p>
+                                        {% if photos %}
+                                            {% for photo in photos %}
+                                                {% if photo.post == post %}
+                                                    <a href="/post_photo_update/{{ photo.id }}"><img
+                                                            class="img-thumbnail"
+                                                            width="75px"
+                                                            height="60px" src="
                                     {{ MEDIA_URL }}{{ photo.photos }}"></a>
+                                                {% endif %}
+                                            {% endfor %}
                                         {% endif %}
-                                    {% endfor %}
-                                {% endif %}
-                                <br/>
+                                        <br/>
 
-                                <p>Видео файлы:</p>
-                                {% if videos %}
-                                    {% for video in videos %}
-                                        {% if video.post == post %}
-                                            <a href="/post_video_update/{{ video.id }}">{{ video.video }}</a>
-                                            {#                                        <video width="150px" height="120px" controls>#}
-                                            {#                                            <source src="{{ MEDIA_URL }}{{ video.video }}">#}
-                                            {#                                        </video>#}
-
+                                        <p>Видео файлы:</p>
+                                        {% if videos %}
+                                            {% for video in videos %}
+                                                {% if video.post == post %}
+                                                    <a href="/post_video_update/{{ video.id }}">{{ video.video }}</a>
+                                                {% endif %}
+                                            {% endfor %}
                                         {% endif %}
-                                    {% endfor %}
-                                {% endif %}
-                                <br/>
+                                        <br/>
 
-                                <p>Аудио файлы:</p>
-                                {% if musics %}
-                                    {% for music in musics %}
-                                        {% if music.post == post %}
-                                            <a href="/post_music_update/{{ music.id }}">{{ music.music }}</a>
-                                            {#                                        <audio controls>#}
-                                            {#                                            <source src="{{ MEDIA_URL }}{{ music.music }}">#}
-                                            {#                                        </audio>#}
+                                        <p>Аудио файлы:</p>
+                                        {% if musics %}
+                                            {% for music in musics %}
+                                                {% if music.post == post %}
+                                                    <a href="/post_music_update/{{ music.id }}">{{ music.music }}</a>
+                                                {% endif %}
+                                            {% endfor %}
                                         {% endif %}
-                                    {% endfor %}
-                                {% endif %}
-                                <br/>
+                                        <br/>
 
-                                <p>Документы:</p>
-                                {% if documents %}
-                                    {% for document in documents %}
-                                        {% if document.post == post %}
-                                            <a href="/post_document_update/{{ document.id }}">{{ document.document }}</a>
+                                        <p>Документы:</p>
+                                        {% if documents %}
+                                            {% for document in documents %}
+                                                {% if document.post == post %}
+                                                    <a href="/post_document_update/{{ document.id }}">{{ document.document }}</a>
+                                                {% endif %}
+                                            {% endfor %}
                                         {% endif %}
-                                    {% endfor %}
-                                {% endif %}
-                            </div>
+                                    </div>
 
-                            <div class="col-sm-2">
-                                <a href="post_update/{{ post.id }}">
-                                    <button class="btn btn-success text-dark text-center col-12">
-                                        <i class="fa fa-edit"></i>
-                                    </button>
-                                </a>
-                                <a href="post_delete/{{ post.id }}">
-                                    <button class="btn btn-danger text-dark text-center col-12">
-                                        <i class="fa fa-trash"></i>
-                                    </button>
-                                </a>
+                                    <div class="col-sm-2">
+                                        <a href="post_update/{{ post.id }}">
+                                            <button class="btn btn-success text-dark text-center col-12">
+                                                <i class="fa fa-edit"></i>
+                                            </button>
+                                        </a>
+                                        <a href="post_delete/{{ post.id }}">
+                                            <button class="btn btn-danger text-dark text-center col-12">
+                                                <i class="fa fa-trash"></i>
+                                            </button>
+                                        </a>
+                                    </div>
+
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-            {% endfor %}
+                {% endfor %}
+            </div>
         </div>
-
-        {#        <div class="col-md-6">{{ cal|safe }}</div>#}
+        <div id="cal_mini" class="col-md-4 rounded" style="background-color: #2d223e">
+            <br/>
+            <div class="col-12" style="display: block">{{ cal_mini|safe }}</div>
+        </div>
     </div>
 
-
+    {#    <div class="row">#}
+    {#        <div class="col-md-8">#}
+    {#            <div class="p-2 m-1">#}
+    {#                <h1> Мои Посты </h1>#}
+    {#                <a href="post_create">#}
+    {#                    <button class="btn btn-primary">+ Добавить Пост</button>#}
+    {#                </a>#}
+    {#            </div>#}
+    {#            {% for post in posts %}#}
+    {#                <div class="card card-chart">#}
+    {#                    <div class="card-header ">#}
+    {#                        <div class="row">#}
+    {##}
+    {#                            <div class="col-sm-4">#}
+    {#                                <h4 class="card-title">{{ post.name }}</h4>#}
+    {#                                <p class="card-text badge badge-info">Бот отправляющий посты - @{{ post.bot }}</p>#}
+    {#                                <p class="card-text">{{ post.text|truncatechars:100 }}</p>#}
+    {#                                {% if references %}#}
+    {#                                    {% for ref in references %}#}
+    {#                                        {% if ref.post == post %}#}
+    {#                                            <div class="badge badge-dark">#}
+    {#                                                <p>Ссылка:#}
+    {#                                                    <a class="card-text" href="{{ ref.reference }}">#}
+    {#                                                        <span class="card-text">{{ ref.text }}<i#}
+    {#                                                                class="fa fa-chevron-right"></i></span>#}
+    {#                                                    </a>#}
+    {#                                                </p>#}
+    {#                                            </div>#}
+    {#                                        {% endif %}#}
+    {#                                    {% endfor %}#}
+    {#                                {% endif %}#}
+    {#                            </div>#}
+    {##}
+    {#                            <div class="col-sm-6">#}
+    {#                                <p>Изображения:</p>#}
+    {#                                {% if photos %}#}
+    {#                                    {% for photo in photos %}#}
+    {#                                        {% if photo.post == post %}#}
+    {#                                            <a href="/post_photo_update/{{ photo.id }}"><img class="img-thumbnail"#}
+    {#                                                                                             width="75px"#}
+    {#                                                                                             height="60px" src="#}
+    {#                                    {{ MEDIA_URL }}{{ photo.photos }}"></a>#}
+    {#                                        {% endif %}#}
+    {#                                    {% endfor %}#}
+    {#                                {% endif %}#}
+    {#                                <br/>#}
+    {##}
+    {#                                <p>Видео файлы:</p>#}
+    {#                                {% if videos %}#}
+    {#                                    {% for video in videos %}#}
+    {#                                        {% if video.post == post %}#}
+    {#                                            <a href="/post_video_update/{{ video.id }}">{{ video.video }}</a>#}
+    {#                                        {% endif %}#}
+    {#                                    {% endfor %}#}
+    {#                                {% endif %}#}
+    {#                                <br/>#}
+    {##}
+    {#                                <p>Аудио файлы:</p>#}
+    {#                                {% if musics %}#}
+    {#                                    {% for music in musics %}#}
+    {#                                        {% if music.post == post %}#}
+    {#                                            <a href="/post_music_update/{{ music.id }}">{{ music.music }}</a>#}
+    {#                                        {% endif %}#}
+    {#                                    {% endfor %}#}
+    {#                                {% endif %}#}
+    {#                                <br/>#}
+    {##}
+    {#                                <p>Документы:</p>#}
+    {#                                {% if documents %}#}
+    {#                                    {% for document in documents %}#}
+    {#                                        {% if document.post == post %}#}
+    {#                                            <a href="/post_document_update/{{ document.id }}">{{ document.document }}</a>#}
+    {#                                        {% endif %}#}
+    {#                                    {% endfor %}#}
+    {#                                {% endif %}#}
+    {#                            </div>#}
+    {##}
+    {#                            <div class="col-sm-2">#}
+    {#                                <a href="post_update/{{ post.id }}">#}
+    {#                                    <button class="btn btn-success text-dark text-center col-12">#}
+    {#                                        <i class="fa fa-edit"></i>#}
+    {#                                    </button>#}
+    {#                                </a>#}
+    {#                                <a href="post_delete/{{ post.id }}">#}
+    {#                                    <button class="btn btn-danger text-dark text-center col-12">#}
+    {#                                        <i class="fa fa-trash"></i>#}
+    {#                                    </button>#}
+    {#                                </a>#}
+    {#                            </div>#}
+    {##}
+    {#                        </div>#}
+    {#                    </div>#}
+    {#                </div>#}
+    {#            {% endfor %}#}
+    {#        </div>#}
+    {#        <div id="cal_mini" class="col-md-4 rounded" style="background-color: #2d223e">#}
+    {#            <br/>#}
+    {#            <div class="col-12" style="display: block">{{ cal_mini|safe }}</div>#}
+    {#        </div>#}
+    {#    </div>#}
 {% endblock content %}
 
 {% block javascripts %}
     <script>
-
+        if (window.innerWidth < 960) {
+            const cal_mini = document.getElementById('cal_mini');
+            cal_mini.setAttribute('style', 'display: none');
+        }
     </script>
-
 {% endblock javascripts %}

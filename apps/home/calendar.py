@@ -26,7 +26,7 @@ class PostCalendar(HTMLCalendar, ListView):
             if i.schedule.year == num_year and i.schedule.month == num_month and i.schedule.day == num_day:
                 s.append((i.post.name, i.schedule.strftime('%H:%M'), i.id, i.schedule.strftime('%Y-%m-%d %H:%M')))
         schedule_data = ''
-        for data in s:
+        for data in sorted(s):
             if data[3] >= datetime.now().strftime('%Y-%m-%d %H:%M'):
                 schedule_data += f'<a href="/schedule_update/{data[2]}"><p class="badge badge-warning text-dark">{data[0]} | {data[1]}</p></a><br/>'
             else:

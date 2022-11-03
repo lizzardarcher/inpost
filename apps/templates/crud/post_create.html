@@ -9,7 +9,7 @@
 {% block content %}
 
     <div class="row">
-        <div class="col-md-4">
+        <div class="col-md-8">
             <div class="card">
                 <div class="card-header">
                     <h3 class="title">Создание поста</h3>
@@ -26,7 +26,7 @@
                                     {{ postForm.post_type }}
                                 </div>
                             </div>
-                            <div class="col-md-8 px-md-3">
+                            <div class="col-md-12 px-md-3">
                                 <div class="form-group">
                                     <h4><b>Заголовок сообщения: </b><small>
                                         <i type="button" class="fa fa-question" data-toggle="tooltip"
@@ -36,13 +36,32 @@
                                     {{ postForm.name }}
                                 </div>
                             </div>
-                            <div class="col-md-8 px-md-3">
+                            <div class="col-md-12 px-md-3">
                                 <div class="form-group">
                                     <h4><b>Текст сообщения: </b><small>
                                         <i type="button" class="fa fa-question" data-toggle="tooltip"
                                            data-placement="top" title="Можете добавлять в тескт Emoji">
                                         </i></small></h4>
                                     {{ postForm.text }}
+                                </div>
+                            </div>
+                            <div class="col-md-12 px-md-3">
+                                <div class="form-group">
+                                    <p>
+                                        <a class="btn btn-primary" data-toggle="collapse" href="#collapseReference"
+                                           role="button"
+                                           aria-expanded="false" aria-controls="collapseReference">
+                                            + Добавить ссылку
+                                        </a>
+                                    </p>
+                                    <div class="collapse" id="collapseReference">
+                                        <div class="card card-body">
+                                            {{ formsetR.management_form }}
+                                            {% for form in formsetR %}
+                                                {{ form }}
+                                            {% endfor %}
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                             <div class="col-md-8 px-md-3">
@@ -65,16 +84,6 @@
                                                        Максимум 10 вложений в один пост">
                         </i></small>
 
-                        {#                        <div class="collapse" id="collapseMedia">#}
-                        {#                            <div class="row">#}
-                        {#                                <div class="col-md-8 px-md-3">#}
-                        {#                                                                {{ formset.management_form }}#}
-                        {#                                    {% for form in formset %}#}
-                        {#                                        {{ form }}#}
-                        {#                                    {% endfor %}#}
-                        {#                                </div>#}
-                        {#                            </div>#}
-                        {#                        </div>#}
                         <div class="collapse" id="collapseMedia">
                             <div class="row">
                                 <div class="col-md-8 px-md-3">
@@ -127,7 +136,7 @@
                                 </div>
                             </div>
                         </div>
-
+                        <br/>
                         <button class="btn btn-primary" type="submit" name="submit">Подтвердить</button>
                     </form>
                 </div>

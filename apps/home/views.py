@@ -7,13 +7,13 @@ from django.http import HttpResponse
 from django.template import loader
 from django.urls import reverse, reverse_lazy
 from django.shortcuts import render, redirect, get_object_or_404
-from django.views.generic import (ListView, DeleteView, UpdateView, CreateView, TemplateView)
+from django.views.generic import (ListView, DeleteView, UpdateView, CreateView, TemplateView, DetailView)
 from django.contrib.auth.mixins import LoginRequiredMixin
 
 from .models import (Post, Bot, Chat, Media, Button, User, PostSchedule, PostPhoto, UserStatus, PostDocument, PostVideo,
-                     PostMusic)
+                     PostMusic, PostReference)
 from .forms import (PostForm, PostPhotoForm, PostCreationMultiForm, PostScheduleForm, PostScheduleMultiForm,
-                    PostVideoForm, PostDocumentForm, PostMusicForm, BotForm, ChatForm)
+                    PostVideoForm, PostDocumentForm, PostMusicForm, BotForm, ChatForm, PostReferenceForm)
 from .calendar import PostCalendar
 from .calendar_mini import PostCalendarMini
 
@@ -57,7 +57,29 @@ class PostListView(LoginRequiredMixin, ListView):
             'videos': PostVideo.objects.filter(post__user=self.request.user),
             'musics': PostMusic.objects.filter(post__user=self.request.user),
             'documents': PostDocument.objects.filter(post__user=self.request.user),
-            'cal': PostCalendar().formatmonth(theyear=int(datetime.now().year), themonth=int(datetime.now().month)),
+            'references': PostReference.objects.filter(post__user=self.request.user),
+            'cal_mini': PostCalendarMini().formatmonth(theyear=int(datetime.now().year), themonth=int(datetime.now().month)),
+        })
+        return context
+
+
+class PostDetailsView(LoginRequiredMixin, DetailView):
+    model = Post
+
+    context_object_name = 'post'
+    template_name = 'home/post_details.html'
+
+    # def get_queryset(self, pk):
+    #     return Post.objects.get(id=pk)
+    #
+    def get_context_data(self, **kwargs):
+        context = super(PostDetailsView, self).get_context_data(**kwargs)
+        context.update({
+            'photos': PostPhoto.objects.filter(post__user=self.request.user),
+            'videos': PostVideo.objects.filter(post__user=self.request.user),
+            'musics': PostMusic.objects.filter(post__user=self.request.user),
+            'documents': PostDocument.objects.filter(post__user=self.request.user),
+            'references': PostReference.objects.filter(post__user=self.request.user),
         })
         return context
 
@@ -74,22 +96,27 @@ class PostCreateView(LoginRequiredMixin, CreateView):
         return super().form_valid(form)
 
     def get(self, request):
-        extra = 10
+        extra = 3
         ImageFormSet = modelformset_factory(PostPhoto, form=PostPhotoForm, extra=extra)
         MusicFormSet = modelformset_factory(PostMusic, form=PostMusicForm, extra=extra)
         VideoFormSet = modelformset_factory(PostVideo, form=PostVideoForm, extra=extra)
         DocumentFormSet = modelformset_factory(PostDocument, form=PostDocumentForm, extra=extra)
+        ReferenceFormSet = modelformset_factory(PostReference, form=PostReferenceForm, extra=1)
+
         postForm = PostForm()
         formsetI = ImageFormSet(queryset=PostPhoto.objects.none())
         formsetV = MusicFormSet(queryset=PostMusic.objects.none())
         formsetM = VideoFormSet(queryset=PostVideo.objects.none())
         formsetD = DocumentFormSet(queryset=PostDocument.objects.none())
+        formsetR = ReferenceFormSet(queryset=PostReference.objects.none())
+
         return render(request, 'crud/post_create.html', {
             'postForm': postForm,
             'formsetI': formsetI,
             'formsetV': formsetV,
             'formsetM': formsetM,
             'formsetD': formsetD,
+            'formsetR': formsetR,
         })
 
     def post(self, request):
@@ -97,11 +124,12 @@ class PostCreateView(LoginRequiredMixin, CreateView):
         Пример взят отсюда:
         https://stackoverflow.com/questions/34006994/how-to-upload-multiple-images-to-a-blog-post-in-django
         """
-        extra = 10
+        extra = 3
         ImageFormSet = modelformset_factory(PostPhoto, form=PostPhotoForm, extra=extra)
         MusicFormSet = modelformset_factory(PostMusic, form=PostMusicForm, extra=extra)
         VideoFormSet = modelformset_factory(PostVideo, form=PostVideoForm, extra=extra)
         DocumentFormSet = modelformset_factory(PostDocument, form=PostDocumentForm, extra=extra)
+        ReferenceFormSet = modelformset_factory(PostReference, form=PostReferenceForm, extra=1)
 
         if request.method == 'POST':
 
@@ -111,6 +139,7 @@ class PostCreateView(LoginRequiredMixin, CreateView):
             formsetV = VideoFormSet(request.POST, request.FILES, queryset=PostVideo.objects.none())
             formsetM = MusicFormSet(request.POST, request.FILES, queryset=PostMusic.objects.none())
             formsetD = DocumentFormSet(request.POST, request.FILES, queryset=PostMusic.objects.none())
+            formsetR = ReferenceFormSet(request.POST, queryset=PostReference.objects.none())
 
             if postForm.is_valid():
                 post_form = postForm.save(commit=False)
@@ -141,6 +170,21 @@ class PostCreateView(LoginRequiredMixin, CreateView):
                         doc = PostDocument(post=post_form, document=doc_file)
                         doc.save()
 
+                for form in formsetR.cleaned_data:
+                    print('Im in formsetR')
+                    print(formsetR)
+                    print(formsetR.cleaned_data)
+                    if form:
+                        print('im in form')
+                        ref = form['reference']
+                        print(ref)
+                        text = form['text']
+                        print(text)
+                        r = PostReference(post=post_form, reference=ref, text=text)
+                        print(r)
+                        r.save()
+                        print('r Saved')
+
                 # use django messages framework
                 messages.success(request, "Пост успешно добавлен!")
                 return HttpResponseRedirect("/post")
@@ -152,12 +196,14 @@ class PostCreateView(LoginRequiredMixin, CreateView):
             formsetV = MusicFormSet(queryset=PostMusic.objects.none())
             formsetM = VideoFormSet(queryset=PostVideo.objects.none())
             formsetD = DocumentFormSet(queryset=PostDocument.objects.none())
+            formsetR = ReferenceFormSet(queryset=PostReference.objects.none())
         return render(request, 'crud/post_create.html', {
             'postForm': postForm,
             'formsetI': formsetI,
             'formsetV': formsetV,
             'formsetM': formsetM,
             'formsetD': formsetD,
+            'formsetR': formsetR,
         })
 
 

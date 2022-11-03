@@ -23,9 +23,13 @@ class PostDocumentAdmin(admin.StackedInline):
     model = PostDocument
 
 
+class PostReferenceAdmin(admin.StackedInline):
+    model = PostReference
+
+
 @admin.register(Post)
 class PostAdmin(admin.ModelAdmin):
-    inlines = [PostPhotoAdmin, PostMusicAdmin, PostVideoAdmin, PostDocumentAdmin]
+    inlines = [PostPhotoAdmin, PostMusicAdmin, PostVideoAdmin, PostDocumentAdmin, PostReferenceAdmin]
 
     class Meta:
         model = Post
@@ -48,6 +52,11 @@ class PostVideoAdmin(admin.ModelAdmin):
 
 @admin.register(PostDocument)
 class PostDocumentAdmin(admin.ModelAdmin):
+    pass
+
+
+@admin.register(PostReference)
+class PostReferenceAdmin(admin.ModelAdmin):
     pass
 
 

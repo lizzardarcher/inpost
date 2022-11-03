@@ -52,6 +52,16 @@ class PostDocumentForm(forms.ModelForm):
         }
 
 
+class PostReferenceForm(forms.ModelForm):
+    class Meta:
+        model = PostReference
+        fields = ['reference', 'text']
+        widgets = {
+            'reference': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'https://t.me/your_group'}),
+            'text': forms.TextInput(attrs={'class': 'form-control', 'placeholder': '...'}),
+        }
+
+
 class PostCreationMultiForm(MultiModelForm):
     form_classes = {
         'post': PostForm,

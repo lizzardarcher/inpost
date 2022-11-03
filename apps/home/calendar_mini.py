@@ -28,11 +28,11 @@ class PostCalendarMini(HTMLCalendar, ListView):
         # for data in s:
         #     schedule_data += f'<p><a href="/schedule_update/{data[2]}">{data[0],data[1]}</a></p>'
         if s:
-            schedule_data += f'<p class="badge badge-secondary"><a href="/calendar_event_create/{num_year}/{num_month}/{num_day}/">{len(s)}</a></p>'
+            schedule_data += f'<a href="/calendar_event_create/{num_year}/{num_month}/{num_day}/"><p class="badge badge-secondary">{len(s)}</p></a>'
         if date_row.month != self.month:
             return '<td class="noday">&nbsp;</td>'  # day outside month
         else:
-            return f'<td class="{week_day}"><a href="/calendar_event_create/{num_year}/{num_month}/{num_day}/">{num_day}</a><br/> {schedule_data}</td>'
+            return f'<td class="{week_day}"><a class="text-white font-weight-bold" href="/calendar_event_create/{num_year}/{num_month}/{num_day}/">{num_day}</a><br/> {schedule_data}</td>'
 
     def formatweek(self, theweek):
         """
@@ -47,7 +47,7 @@ class PostCalendarMini(HTMLCalendar, ListView):
         """
         v = []
         a = v.append
-        a('<table border="1" cellpadding="1" cellspacing="1" class="month table fixed">')
+        a('<table style="background-color:#1e1433" border="0" cellpadding="0" cellspacing="0" class="month table p-3 mb-2 text-white rounded">')
         a('\n')
         a(self.formatmonthname(theyear, themonth, withyear=withyear))
         a('\n')
