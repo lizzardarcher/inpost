@@ -10,12 +10,11 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic import (ListView, DeleteView, UpdateView, CreateView, TemplateView, DetailView)
 from django.contrib.auth.mixins import LoginRequiredMixin
 
-from .models import (Post, Bot, Chat, Media, Button, User, PostSchedule, PostPhoto, UserStatus, PostDocument, PostVideo,
-                     PostMusic, PostReference)
-from .forms import (PostForm, PostPhotoForm, PostCreationMultiForm, PostScheduleForm, PostScheduleMultiForm,
-                    PostVideoForm, PostDocumentForm, PostMusicForm, BotForm, ChatForm, PostReferenceForm)
+from .models import *
+from .forms import *
 from .calendar import PostCalendar
 from .calendar_mini import PostCalendarMini
+from apps.middleware import current_user
 
 from django.shortcuts import render
 from django.forms import modelformset_factory
@@ -57,8 +56,10 @@ class PostListView(LoginRequiredMixin, ListView):
             'videos': PostVideo.objects.filter(post__user=self.request.user),
             'musics': PostMusic.objects.filter(post__user=self.request.user),
             'documents': PostDocument.objects.filter(post__user=self.request.user),
+            'buttons': Button.objects.filter(post__user=self.request.user),
             'references': PostReference.objects.filter(post__user=self.request.user),
-            'cal_mini': PostCalendarMini().formatmonth(theyear=int(datetime.now().year), themonth=int(datetime.now().month)),
+            'cal_mini': PostCalendarMini().formatmonth(theyear=int(datetime.now().year),
+                                                       themonth=int(datetime.now().month)),
         })
         return context
 
@@ -79,132 +80,147 @@ class PostDetailsView(LoginRequiredMixin, DetailView):
             'videos': PostVideo.objects.filter(post__user=self.request.user),
             'musics': PostMusic.objects.filter(post__user=self.request.user),
             'documents': PostDocument.objects.filter(post__user=self.request.user),
+            'buttons': Button.objects.filter(post__user=self.request.user),
             'references': PostReference.objects.filter(post__user=self.request.user),
         })
         return context
 
 
-class PostCreateView(LoginRequiredMixin, CreateView):
-    model = Post
-    form_class = PostForm
-    template_name = 'crud/test_post.html'
+# class PostCreateView(LoginRequiredMixin, CreateView):
+#     model = Post
+#     form_class = PostForm
+#     template_name = 'crud/test_post.html'
+#     success_url = 'post'
+#
+#     def form_valid(self, form):
+#         print(form.instance.user)
+#         form.instance.user = self.request.user
+#         return super().form_valid(form)
+#
+#     def get(self, request):
+#         extra = 3
+#         ImageFormSet = modelformset_factory(PostPhoto, form=PostPhotoForm, extra=extra)
+#         MusicFormSet = modelformset_factory(PostMusic, form=PostMusicForm, extra=extra)
+#         VideoFormSet = modelformset_factory(PostVideo, form=PostVideoForm, extra=extra)
+#         DocumentFormSet = modelformset_factory(PostDocument, form=PostDocumentForm, extra=extra)
+#         ReferenceFormSet = modelformset_factory(PostReference, form=PostReferenceForm, extra=1)
+#         ButtonFormSet = modelformset_factory(Button, form=PostButtonForm, extra=5)
+#
+#         postForm = PostForm()
+#         formsetI = ImageFormSet(queryset=PostPhoto.objects.none())
+#         formsetV = MusicFormSet(queryset=PostMusic.objects.none())
+#         formsetM = VideoFormSet(queryset=PostVideo.objects.none())
+#         formsetD = DocumentFormSet(queryset=PostDocument.objects.none())
+#         formsetR = ReferenceFormSet(queryset=PostReference.objects.none())
+#         formsetB = ButtonFormSet(queryset=Button.objects.none())
+#
+#         return render(request, 'crud/post_create.html', {
+#             'postForm': postForm,
+#             'formsetI': formsetI,
+#             'formsetV': formsetV,
+#             'formsetM': formsetM,
+#             'formsetD': formsetD,
+#             'formsetR': formsetR,
+#             'formsetB': formsetB,
+#         })
+#
+#     def post(self, request):
+#         """
+#         Пример взят отсюда:
+#         https://stackoverflow.com/questions/34006994/how-to-upload-multiple-images-to-a-blog-post-in-django
+#         """
+#         extra = 3
+#         ImageFormSet = modelformset_factory(PostPhoto, form=PostPhotoForm, extra=extra)
+#         MusicFormSet = modelformset_factory(PostMusic, form=PostMusicForm, extra=extra)
+#         VideoFormSet = modelformset_factory(PostVideo, form=PostVideoForm, extra=extra)
+#         DocumentFormSet = modelformset_factory(PostDocument, form=PostDocumentForm, extra=extra)
+#         ReferenceFormSet = modelformset_factory(PostReference, form=PostReferenceForm, extra=1)
+#         ButtonFormSet = modelformset_factory(Button, form=PostButtonForm, extra=5)
+#
+#         if request.method == 'POST':
+#
+#             postForm = PostForm(request.POST)
+#
+#             formsetI = ImageFormSet(request.POST, request.FILES, queryset=PostPhoto.objects.none())
+#             formsetV = VideoFormSet(request.POST, request.FILES, queryset=PostVideo.objects.none())
+#             formsetM = MusicFormSet(request.POST, request.FILES, queryset=PostMusic.objects.none())
+#             formsetD = DocumentFormSet(request.POST, request.FILES, queryset=PostMusic.objects.none())
+#             formsetR = ReferenceFormSet(request.POST, queryset=PostReference.objects.none())
+#             formsetB = ButtonFormSet(request.POST, queryset=Button.objects.none())
+#
+#             if postForm.is_valid():
+#                 post_form = postForm.save(commit=False)
+#                 post_form.user = request.user
+#                 post_form.save()
+#
+#                 # for form in formsetI.cleaned_data:
+#                 #     if form:
+#                 #         image = form['photos']
+#                 #         photo = PostPhoto(post=post_form, photos=image)
+#                 #         photo.save()
+#                 #
+#                 # for form in formsetV.cleaned_data:
+#                 #     if form:
+#                 #         video_file = form['video']
+#                 #         video = PostVideo(post=post_form, video=video_file)
+#                 #         video.save()
+#                 #
+#                 # for form in formsetM.cleaned_data:
+#                 #     if form:
+#                 #         music_file = form['music']
+#                 #         music = PostMusic(post=post_form, music=music_file)
+#                 #         music.save()
+#                 #
+#                 # for form in formsetD.cleaned_data:
+#                 #     if form:
+#                 #         doc_file = form['document']
+#                 #         doc = PostDocument(post=post_form, document=doc_file)
+#                 #         doc.save()
+#                 #
+#                 # for form in formsetR.cleaned_data:
+#                 #     if form:
+#                 #         ref = form['reference']
+#                 #         text = form['text']
+#                 #         r = PostReference(post=post_form, reference=ref, text=text)
+#                 #         r.save()
+#                 #
+#                 # for form in formsetB.cleaned_data:
+#                 #     if form:
+#                 #         btn = form['name']
+#                 #         b = Button(post=post_form, name=btn)
+#                 #         b.save()
+#
+#                 # use django messages framework
+#                 messages.success(request, "Пост успешно добавлен!")
+#                 return HttpResponseRedirect("/post")
+#             else:
+#                 print(postForm.errors)
+#         else:
+#             postForm = PostForm()
+#             formsetI = ImageFormSet(queryset=PostPhoto.objects.none())
+#             formsetV = MusicFormSet(queryset=PostMusic.objects.none())
+#             formsetM = VideoFormSet(queryset=PostVideo.objects.none())
+#             formsetD = DocumentFormSet(queryset=PostDocument.objects.none())
+#             formsetR = ReferenceFormSet(queryset=PostReference.objects.none())
+#             formsetB = ButtonFormSet(queryset=Button.objects.none())
+#         return render(request, 'crud/post_create.html', {
+#             'postForm': postForm,
+#             'formsetI': formsetI,
+#             'formsetV': formsetV,
+#             'formsetM': formsetM,
+#             'formsetD': formsetD,
+#             'formsetR': formsetR,
+#             'formsetB': formsetB,
+#         })
+class PostCreateView(SuccessMessageMixin, LoginRequiredMixin, CreateView):
+    form_class = PostCreationMultiForm
     success_url = 'post'
+    success_message = 'Пост успешно создан!'
+    template_name = 'crud/post_create.html'
 
     def form_valid(self, form):
-        print(form.instance.user)
-        form.instance.user = self.request.user
+        form.instances.user = self.request.user
         return super().form_valid(form)
-
-    def get(self, request):
-        extra = 3
-        ImageFormSet = modelformset_factory(PostPhoto, form=PostPhotoForm, extra=extra)
-        MusicFormSet = modelformset_factory(PostMusic, form=PostMusicForm, extra=extra)
-        VideoFormSet = modelformset_factory(PostVideo, form=PostVideoForm, extra=extra)
-        DocumentFormSet = modelformset_factory(PostDocument, form=PostDocumentForm, extra=extra)
-        ReferenceFormSet = modelformset_factory(PostReference, form=PostReferenceForm, extra=1)
-
-        postForm = PostForm()
-        formsetI = ImageFormSet(queryset=PostPhoto.objects.none())
-        formsetV = MusicFormSet(queryset=PostMusic.objects.none())
-        formsetM = VideoFormSet(queryset=PostVideo.objects.none())
-        formsetD = DocumentFormSet(queryset=PostDocument.objects.none())
-        formsetR = ReferenceFormSet(queryset=PostReference.objects.none())
-
-        return render(request, 'crud/post_create.html', {
-            'postForm': postForm,
-            'formsetI': formsetI,
-            'formsetV': formsetV,
-            'formsetM': formsetM,
-            'formsetD': formsetD,
-            'formsetR': formsetR,
-        })
-
-    def post(self, request):
-        """
-        Пример взят отсюда:
-        https://stackoverflow.com/questions/34006994/how-to-upload-multiple-images-to-a-blog-post-in-django
-        """
-        extra = 3
-        ImageFormSet = modelformset_factory(PostPhoto, form=PostPhotoForm, extra=extra)
-        MusicFormSet = modelformset_factory(PostMusic, form=PostMusicForm, extra=extra)
-        VideoFormSet = modelformset_factory(PostVideo, form=PostVideoForm, extra=extra)
-        DocumentFormSet = modelformset_factory(PostDocument, form=PostDocumentForm, extra=extra)
-        ReferenceFormSet = modelformset_factory(PostReference, form=PostReferenceForm, extra=1)
-
-        if request.method == 'POST':
-
-            postForm = PostForm(request.POST)
-
-            formsetI = ImageFormSet(request.POST, request.FILES, queryset=PostPhoto.objects.none())
-            formsetV = VideoFormSet(request.POST, request.FILES, queryset=PostVideo.objects.none())
-            formsetM = MusicFormSet(request.POST, request.FILES, queryset=PostMusic.objects.none())
-            formsetD = DocumentFormSet(request.POST, request.FILES, queryset=PostMusic.objects.none())
-            formsetR = ReferenceFormSet(request.POST, queryset=PostReference.objects.none())
-
-            if postForm.is_valid():
-                post_form = postForm.save(commit=False)
-                post_form.user = request.user
-                post_form.save()
-
-                for form in formsetI.cleaned_data:
-                    if form:
-                        image = form['photos']
-                        photo = PostPhoto(post=post_form, photos=image)
-                        photo.save()
-
-                for form in formsetV.cleaned_data:
-                    if form:
-                        video_file = form['video']
-                        video = PostVideo(post=post_form, video=video_file)
-                        video.save()
-
-                for form in formsetM.cleaned_data:
-                    if form:
-                        music_file = form['music']
-                        music = PostMusic(post=post_form, music=music_file)
-                        music.save()
-
-                for form in formsetD.cleaned_data:
-                    if form:
-                        doc_file = form['document']
-                        doc = PostDocument(post=post_form, document=doc_file)
-                        doc.save()
-
-                for form in formsetR.cleaned_data:
-                    print('Im in formsetR')
-                    print(formsetR)
-                    print(formsetR.cleaned_data)
-                    if form:
-                        print('im in form')
-                        ref = form['reference']
-                        print(ref)
-                        text = form['text']
-                        print(text)
-                        r = PostReference(post=post_form, reference=ref, text=text)
-                        print(r)
-                        r.save()
-                        print('r Saved')
-
-                # use django messages framework
-                messages.success(request, "Пост успешно добавлен!")
-                return HttpResponseRedirect("/post")
-            else:
-                print(postForm.errors)
-        else:
-            postForm = PostForm()
-            formsetI = ImageFormSet(queryset=PostPhoto.objects.none())
-            formsetV = MusicFormSet(queryset=PostMusic.objects.none())
-            formsetM = VideoFormSet(queryset=PostVideo.objects.none())
-            formsetD = DocumentFormSet(queryset=PostDocument.objects.none())
-            formsetR = ReferenceFormSet(queryset=PostReference.objects.none())
-        return render(request, 'crud/post_create.html', {
-            'postForm': postForm,
-            'formsetI': formsetI,
-            'formsetV': formsetV,
-            'formsetM': formsetM,
-            'formsetD': formsetD,
-            'formsetR': formsetR,
-        })
 
 
 class PostUpdateView(LoginRequiredMixin, UpdateView):
@@ -221,17 +237,24 @@ class PostUpdateView(LoginRequiredMixin, UpdateView):
         VideoFormSet = modelformset_factory(PostVideo, form=PostVideoForm, extra=self.extra)
         MusicFormSet = modelformset_factory(PostMusic, form=PostMusicForm, extra=self.extra)
         DocumentFormSet = modelformset_factory(PostDocument, form=PostDocumentForm, extra=self.extra)
+        ReferenceFormSet = modelformset_factory(PostReference, form=PostReferenceForm, extra=0)
+        ButtonFormSet = modelformset_factory(Button, form=PostButtonForm, extra=0)
 
         formsetI = ImageFormSet(queryset=PostPhoto.objects.filter(post__id=pk))
         formsetV = VideoFormSet(queryset=PostVideo.objects.filter(post__id=pk))
         formsetM = MusicFormSet(queryset=PostMusic.objects.filter(post__id=pk))
         formsetD = DocumentFormSet(queryset=PostDocument.objects.filter(post__id=pk))
+        formsetR = ReferenceFormSet(queryset=PostReference.objects.filter(post__id=pk))
+        formsetB = ButtonFormSet(queryset=Button.objects.filter(post__id=pk))
+
         return render(request, 'crud/post_update.html', {
             'postForm': form,
             'formsetI': formsetI,
             'formsetV': formsetV,
             'formsetM': formsetM,
             'formsetD': formsetD,
+            'formsetR': formsetR,
+            'formsetB': formsetB,
         })
 
     def post(self, request, pk):
@@ -239,11 +262,15 @@ class PostUpdateView(LoginRequiredMixin, UpdateView):
         VideoFormSet = modelformset_factory(PostVideo, form=PostVideoForm, extra=self.extra)
         MusicFormSet = modelformset_factory(PostMusic, form=PostMusicForm, extra=self.extra)
         DocumentFormSet = modelformset_factory(PostDocument, form=PostDocumentForm, extra=self.extra)
+        ReferenceFormSet = modelformset_factory(PostReference, form=PostReferenceForm, extra=0)
+        ButtonFormSet = modelformset_factory(Button, form=PostButtonForm, extra=0)
 
         formsetI = ImageFormSet(request.POST, request.FILES, queryset=PostPhoto.objects.filter(post__id=pk))
         formsetV = VideoFormSet(request.POST, request.FILES, queryset=PostVideo.objects.filter(post__id=pk))
         formsetM = MusicFormSet(request.POST, request.FILES, queryset=PostMusic.objects.filter(post__id=pk))
         formsetD = DocumentFormSet(request.POST, request.FILES, queryset=PostDocument.objects.filter(post__id=pk))
+        formsetR = ReferenceFormSet(request.POST, queryset=PostReference.objects.filter(post__id=pk))
+        formsetB = ButtonFormSet(request.POST, queryset=Button.objects.filter(post__id=pk))
 
         obj = get_object_or_404(Post, id=pk)
         form = PostForm(data=request.POST or None, files=request.FILES or None, instance=obj)
@@ -253,35 +280,56 @@ class PostUpdateView(LoginRequiredMixin, UpdateView):
             post_form.user = request.user
             post_form.save()
 
-            for form in formsetI.cleaned_data:
-                if form:
-                    image = form['photos']
-                    photo = PostPhoto(post=post_form, photos=image)
-                    photo.save()
-
-            for form in formsetV.cleaned_data:
-                if form:
-                    video_file = form['video']
-                    video = PostVideo(post=post_form, video=video_file)
-                    video.save()
-
-            for form in formsetM.cleaned_data:
-                if form:
-                    music_file = form['music']
-                    music = PostMusic(post=post_form, music=music_file)
-                    music.save()
-
-            for form in formsetD.cleaned_data:
-                if form:
-                    doc_file = form['document']
-                    doc = PostDocument(post=post_form, document=doc_file)
-                    doc.save()
+            # for form in formsetI.cleaned_data:
+            #     if form:
+            #         image = form['photos']
+            #         photo = PostPhoto(post=post_form, photos=image)
+            #         photo.save()
+            #
+            # for form in formsetV.cleaned_data:
+            #     if form:
+            #         video_file = form['video']
+            #         video = PostVideo(post=post_form, video=video_file)
+            #         video.save()
+            #
+            # for form in formsetM.cleaned_data:
+            #     if form:
+            #         music_file = form['music']
+            #         music = PostMusic(post=post_form, music=music_file)
+            #         music.save()
+            #
+            # for form in formsetD.cleaned_data:
+            #     if form:
+            #         doc_file = form['document']
+            #         doc = PostDocument(post=post_form, document=doc_file)
+            #         doc.save()
+            #
+            # for form in formsetR.cleaned_data:
+            #     if form:
+            #         ref = form['reference']
+            #         text = form['text']
+            #         r = PostReference(post=post_form, reference=ref, text=text)
+            #         r.save()
+            #
+            # for form in formsetB.cleaned_data:
+            #     if form:
+            #         btn = form['name']
+            #         b = Button(post=post_form, name=btn)
+            #         b.save()
 
             messages.success(request, "Пост успешно обновлен!")
             return HttpResponseRedirect(f"/post_update/{pk}")
         else:
             print(form.errors)
-        return render(request, 'crud/post_update.html', {'postForm': form, 'formsetI': formsetI, })
+        return render(request, 'crud/post_update.html', {
+            'postForm': form,
+            'formsetI': formsetI,
+            'formsetV': formsetV,
+            'formsetM': formsetM,
+            'formsetD': formsetD,
+            'formsetR': formsetR,
+            'formsetB': formsetB,
+        })
 
 
 class PostDeleteView(LoginRequiredMixin, DeleteView):
@@ -292,7 +340,7 @@ class PostDeleteView(LoginRequiredMixin, DeleteView):
 
 class PostPhotoUpdateView(SuccessMessageMixin, LoginRequiredMixin, UpdateView):
     model = PostPhoto
-    form_class = PostPhotoForm
+    # form_class = PostPhotoForm
     template_name = 'crud/post_photo_update.html'
     success_url = '/post'
     success_message = 'Фото успешно обновлено'

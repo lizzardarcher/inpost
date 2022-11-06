@@ -47,12 +47,25 @@
                     {% if references %}
                         {% for ref in references %}
                             {% if ref.post == post %}
-                                <div class="container ml-5 mt-1 text-center bg-dark opacity-5 rounded"
+                                <div class="container ml-4 mt-1 text-center bg-dark opacity-8 rounded"
                                      style="width: 100%">
-                                    <h3>{{ ref.text }}</h3>
+                                    <p>{{ ref.text }}</p>
                                 </div>
                             {% endif %}
                         {% endfor %}
+                    {% endif %}
+                </div>
+                <div class="col-12">
+                    {% if buttons %}
+                        <div class="row">
+                            {% for btn in buttons %}
+                                {% if btn.post == post %}
+                                    <div class="col-4 ml-5 mt-1 text-center bg-dark opacity-8 rounded">
+                                        <p>{{ btn.name }}</p>
+                                    </div>
+                                {% endif %}
+                            {% endfor %}
+                        </div>
                     {% endif %}
                 </div>
             </div>

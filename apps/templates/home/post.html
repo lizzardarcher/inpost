@@ -27,13 +27,20 @@
                     <div class="card card-chart">
                         <div class="card-header ">
                             <h5 class="mb-0 row">
-                                <button class="col-4 btn btn-link collapsed" data-toggle="collapse"
+                                <button class="col-3 btn btn-link collapsed" data-toggle="collapse"
                                         data-target="#collapse{{ post.id }}"
                                         aria-expanded="true"
                                         aria-controls="collapse{{ post.id }}">
                                     <h4>{{ post.name }}</h4>
                                 </button>
-                                <div class="btn btn-info col-sm-2"><a href="/post_details/{{ post.id }}"><span>Превью</span></a></div>
+                                <div class="col-5"></div>
+                                <button class="col-3 btn btn-link">
+{#                                    <small>Предпросмотр</small>#}
+                                    <a href="/post_details/{{ post.id }}">
+                                        <h1><i class="tim-icons icon-image-02"></i></h1>
+                                    </a>
+
+                                </button>
 
                             </h5>
                             <hr class="bg-light">

@@ -73,7 +73,16 @@ class PostSchedule(models.Model):
 
 class PostPhoto(models.Model):
     post = models.ForeignKey(Post, on_delete=models.CASCADE, null=True, blank=True, verbose_name='Пост')
-    photos = models.ImageField(verbose_name='Фото')
+    photo_1 = models.ImageField(null=True, blank=True, verbose_name='Фото 1')
+    photo_2 = models.ImageField(null=True, blank=True, verbose_name='Фото 2')
+    photo_3 = models.ImageField(null=True, blank=True, verbose_name='Фото 3')
+    photo_4 = models.ImageField(null=True, blank=True, verbose_name='Фото 4')
+    photo_5 = models.ImageField(null=True, blank=True, verbose_name='Фото 5')
+    # photo_6 = models.ImageField(null=True, blank=True, verbose_name='Фото 6')
+    # photo_7 = models.ImageField(null=True, blank=True, verbose_name='Фото 7')
+    # photo_8 = models.ImageField(null=True, blank=True, verbose_name='Фото 8')
+    # photo_9 = models.ImageField(null=True, blank=True, verbose_name='Фото 9')
+    # photo_10 = models.ImageField(null=True, blank=True, verbose_name='Фото 10')
     id = models.AutoField(primary_key=True, editable=False)
 
     def __str__(self):
@@ -157,8 +166,8 @@ class PostReference(models.Model):
 
 
 class Button(models.Model):
-    name = models.CharField(max_length=100, null=True, blank=True, verbose_name='Название кнопки')
     post = models.ForeignKey(Post, on_delete=models.CASCADE, null=True, blank=True, verbose_name='Пост')
+    name = models.CharField(max_length=100, null=True, blank=True, verbose_name='')
     rating = models.IntegerField(null=True, blank=True, verbose_name='Рейтинг')
     id = models.AutoField(primary_key=True, editable=False)
 

@@ -1,8 +1,14 @@
 {% extends 'layouts/base.html' %}
 
+{% block stylesheets %}
+    <!-- Emoji CSS Area -->
+    <link rel="stylesheet" href="/static/assets/css/emojionearea.css"/>
+
+{% endblock stylesheets %}
+
 {% block content %}
     <div class="row">
-        <div class="col-md-6">
+        <div class="col-md-8">
             {% if messages %}
                 <div class="rounded alert alert-success col-md-12">
                     {% for message in messages %}
@@ -45,13 +51,36 @@
                                     {{ postForm.post_type }}
                                 </div>
                             </div>
-                            <a class="btn btn-social" data-toggle="collapse" href="#collapseMedia" role="button"
-                               aria-expanded="false" aria-controls="collapseExample">
-                                Редактировать Медиа Файлы
-                            </a>
-                            <div class="collapse" id="collapseMedia">
+                            <div class="col-md-12 px-md-3">
                                 <div class="row">
-                                    <div class="col-md-8 px-md-3">
+                                    <div class="px-md-3">
+                                        <a class="btn btn-social" data-toggle="collapse" href="#collapseBtn"
+                                           role="button"
+                                           aria-expanded="false" aria-controls="collapseBtn">
+                                            Кнопки
+                                        </a>
+                                        <div class="collapse" id="collapseBtn">
+                                            <div class="row">
+                                                {{ formsetB.management_form }}
+                                                {% for form in formsetB %}
+                                                    <div class="col-3">
+                                                        {{ form }}
+                                                    </div>
+                                                {% endfor %}
+                                            </div>
+
+                                        </div>
+                                        <a class="btn btn-social" data-toggle="collapse" href="#collapseRef"
+                                           role="button"
+                                           aria-expanded="false" aria-controls="collapseExample">
+                                            Ссылка
+                                        </a>
+                                        <div class="collapse" id="collapseRef">
+                                            {{ formsetR.management_form }}
+                                            {% for form in formsetR %}
+                                                {{ form }}
+                                            {% endfor %}
+                                        </div>
                                         <a id="photoCollapse" class="btn btn-social" data-toggle="collapse"
                                            href="#collapsePhoto" role="button"
                                            aria-expanded="false" aria-controls="collapseExample">
@@ -98,10 +127,12 @@
                                             {% endfor %}
                                         </div>
 
-                                        <div class="col-md-8 px-md-3">
-                                            <button class="btn btn-primary" type="submit" name="submit">Подтвердить
-                                            </button>
-                                        </div>
+
+                                    </div>
+                                    <div class="col-md-12 px-md-3">
+                                        <button class="btn btn-primary" type="submit" name="submit">
+                                            Подтвердить
+                                        </button>
                                     </div>
                                 </div>
                             </div>
@@ -115,8 +146,15 @@
 {% endblock content %}
 
 {% block javascripts %}
-
+    <script src="https://cdn.rawgit.com/yuku-t/jquery-textcomplete/v1.3.4/dist/jquery.textcomplete.js"></script>
     <script>
+        $('[id*="id_form-0-name"]').emojioneArea()
+        $('[id*="id_form-1-name"]').emojioneArea()
+        $('[id*="id_form-2-name"]').emojioneArea()
+        $('[id*="id_form-3-name"]').emojioneArea()
+        $('[id*="id_form-4-name"]').emojioneArea()
+
+
         const photo_inputs = document.querySelectorAll('input[name$="photos"]');
         const photo_labels = document.querySelectorAll('label[for$="photos"]');
         const music_inputs = document.querySelectorAll('input[name$="music"]');
@@ -125,6 +163,8 @@
         const video_labels = document.querySelectorAll('label[for$="video"]');
         const document_inputs = document.querySelectorAll('input[name$="document"]');
         const document_labels = document.querySelectorAll('label[for$="document"]');
+        const btn_inputs = document.querySelectorAll('input[name$="name"]');
+        const btn_labels = document.querySelectorAll('label[for$="name"]');
 
         function inputHandler(inputs, labels) {
             for (let index = 0; index < inputs.length; ++index) {
@@ -133,7 +173,9 @@
                 label.setAttribute('style', 'display:none')
             }
         }
+
         inputHandler(photo_inputs, photo_labels)
+        {#inputHandler(btn_inputs, btn_labels)#}
 
         const a_to_img = document.querySelectorAll('a[href*="/media/"]')
         for (let index = 0; index < a_to_img.length; ++index) {
@@ -141,6 +183,11 @@
             const image = link.textContent
             link.textContent = ''
             link.insertAdjacentHTML('afterbegin', `<img class="img-thumbnail" width="60px" height="45px" src="{{ MEDIA_URL }}/${image}"/>`)
+        }
+
+        const selectors = document.getElementsByTagName('select');
+        for (let i = 0; i <= selectors.length; i++) {
+            selectors[i].setAttribute('class', 'rounded')
         }
     </script>
 

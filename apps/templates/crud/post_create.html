@@ -7,7 +7,6 @@
 {% endblock stylesheets %}
 
 {% block content %}
-
     <div class="row">
         <div class="col-md-8">
             <div class="card">
@@ -20,12 +19,16 @@
 
                         <div class="row">
                             {% csrf_token %}
+                            <!-- Тип поста -->
                             <div class="col-md-8 px-md-3">
                                 <div class="form-group">
                                     <h4><b>Выберите тип сообщения:</b></h4>
-                                    {{ postForm.post_type }}
+                                    {{ form.post.post_type }}
+
                                 </div>
                             </div>
+
+                            <!-- Заголовок -->
                             <div class="col-md-12 px-md-3">
                                 <div class="form-group">
                                     <h4><b>Заголовок сообщения: </b><small>
@@ -33,48 +36,85 @@
                                            data-placement="top"
                                            title="Необходим для более понятного добавления поста в расписание">
                                         </i></small></h4>
-                                    {{ postForm.name }}
+                                    {{ form.post.name }}
                                 </div>
                             </div>
+
+                            <!-- Текст -->
                             <div class="col-md-12 px-md-3">
                                 <div class="form-group">
                                     <h4><b>Текст сообщения: </b><small>
                                         <i type="button" class="fa fa-question" data-toggle="tooltip"
                                            data-placement="top" title="Можете добавлять в тескт Emoji">
                                         </i></small></h4>
-                                    {{ postForm.text }}
+                                    {{ form.post.text }}
                                 </div>
                             </div>
+
+                            <!-- Кнопки -->
+                            <div class="col-md-12 px-md-3">
+                                <div class="form-group">
+                                    <div class="collapse" id="collapseBtn">
+                                        <div class="card card-body">
+                                            <p class="badge badge-info">Можно добавить до пяти кнопок</p>
+                                            <div class="row">
+                                                <div class="col-4 col-sm-3">
+                                                    {{ form.button.name }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <p>
+                                        <a class="col-md-4 btn btn-primary" data-toggle="collapse" href="#collapseBtn"
+                                           role="button"
+                                           aria-expanded="false" aria-controls="collapseBtn">
+                                            <span id="add-btn"
+                                                  onclick="addReferenceHandler(add_btn, no_btn)">+ Добавить кнопки</span>
+                                            <span id="no-btn"
+                                                  onclick="addReferenceHandler(no_btn, add_btn)"
+                                                  style="display: none">- Добавить кнопки</span>
+                                        </a>
+                                    </p>
+
+                                </div>
+                            </div>
+
+                            <!-- Ссылки -->
                             <div class="col-md-12 px-md-3">
                                 <div class="form-group">
                                     <p>
                                         <a class="btn btn-primary" data-toggle="collapse" href="#collapseReference"
                                            role="button"
                                            aria-expanded="false" aria-controls="collapseReference">
-                                            + Добавить ссылку
+                                            <span id="add-reference"
+                                                  onclick="addReferenceHandler(add_reference, no_reference)">+ Добавить ссылку</span>
+                                            <span id="no-reference"
+                                                  onclick="addReferenceHandler(no_reference, add_reference)"
+                                                  style="display: none">- Добавить ссылку</span>
                                         </a>
                                     </p>
                                     <div class="collapse" id="collapseReference">
                                         <div class="card card-body">
-                                            {{ formsetR.management_form }}
-                                            {% for form in formsetR %}
-                                                {{ form }}
-                                            {% endfor %}
+                                            {{ form.reference.reference }}
+                                            {{ form.reference.text }}
                                         </div>
                                     </div>
                                 </div>
                             </div>
+
+                            <!-- Выбор Бота -->
                             <div class="col-md-8 px-md-3">
                                 <div class="form-group">
                                     <h4><b>Выберите бота: </b><small>
                                         <i type="button" class="fa fa-question" data-toggle="tooltip"
                                            data-placement="top" title="Выберите из списка ваших ботов">
                                         </i></small></h4>
-                                    {{ postForm.bot }}
+                                    {{ form.post.bot }}
                                 </div>
                             </div>
                         </div>
 
+                        <!-- Toggle-Collapse     для Медиа Файлов -->
                         <a class="btn btn-social" data-toggle="collapse" href="#collapseMedia" role="button"
                            aria-expanded="false" aria-controls="collapseExample">
                             Добавить Медиа Файлы
@@ -92,10 +132,11 @@
                                        aria-expanded="false" aria-controls="collapseExample">
                                         + Фото</a>
                                     <div class="collapse" id="collapsePhoto">
-                                        {{ formsetI.management_form }}
-                                        {% for form in formsetI %}
-                                            {{ form }}
-                                        {% endfor %}
+                                        {{ form.photo.photo_1 }}
+                                        {{ form.photo.photo_2 }}
+                                        {{ form.photo.photo_3 }}
+                                        {{ form.photo.photo_4 }}
+                                        {{ form.photo.photo_5 }}
                                     </div>
 
                                     <a id="videoCollapse" class="btn btn-social" data-toggle="collapse"
@@ -104,10 +145,7 @@
                                         + Видео
                                     </a>
                                     <div class="collapse" id="collapseVideo">
-                                        {{ formsetV.management_form }}
-                                        {% for form in formsetV %}
-                                            {{ form }}
-                                        {% endfor %}
+                                        {{ form.video.video }}
                                     </div>
 
                                     <a id="MusicCollapse" class="btn btn-social" data-toggle="collapse"
@@ -116,10 +154,7 @@
                                         + Музыка
                                     </a>
                                     <div class="collapse" id="collapseMusic">
-                                        {{ formsetM.management_form }}
-                                        {% for form in formsetM %}
-                                            {{ form }}
-                                        {% endfor %}
+                                        {{ form.music.music }}
                                     </div>
 
                                     <a id="docCollapse" class="btn btn-social" data-toggle="collapse"
@@ -128,10 +163,7 @@
                                         + Документы
                                     </a>
                                     <div class="collapse" id="collapseDocs">
-                                        {{ formsetD.management_form }}
-                                        {% for form in formsetD %}
-                                            {{ form }}
-                                        {% endfor %}
+                                        {{ form.document.document }}
                                     </div>
                                 </div>
                             </div>
@@ -153,37 +185,23 @@
 {% block javascripts %}
     <script src="https://cdn.rawgit.com/yuku-t/jquery-textcomplete/v1.3.4/dist/jquery.textcomplete.js"></script>
     <script>
-        const text_input = document.querySelector('[name*="text"]');
-        const name_input = document.querySelector('[name*="name"]');
 
-        {#text_input.addEventListener('change', () => {text_load.textContent = text_input.value});#}
         $('[name*="text"]').emojioneArea()
-        {#$('[name*="text"]').addEventListener('input', () => {text_load.textContent = text_input.value});#}
+        $('[id*="id_button-name"]').emojioneArea()
 
-        const load = document.querySelector('.load');
-        const text_load = document.querySelector('#text_load');
+        const add_reference = document.getElementById('add-reference');
+        const add_btn = document.getElementById('add-btn');
+        const no_reference = document.getElementById('no-reference');
+        const no_btn = document.getElementById('no-btn');
 
-        const photo_inputs = document.querySelectorAll('input[name$="photos"]');
-        const photo_labels = document.querySelectorAll('label[for$="photos"]');
+        const selectors = document.getElementsByTagName('select');
+        for (let i = 0; i <= selectors.length; i++) {
+            selectors[i].setAttribute('class', 'rounded')
+        }
 
-        const music_inputs = document.querySelectorAll('input[name$="music"]');
-        const music_labels = document.querySelectorAll('label[for$="music"]');
-
-        const video_inputs = document.querySelectorAll('input[name$="video"]');
-        const video_labels = document.querySelectorAll('label[for$="video"]');
-
-        const document_inputs = document.querySelectorAll('input[name$="document"]');
-        const document_labels = document.querySelectorAll('label[for$="document"]');
-
-        const photo_collapse = document.querySelector('#photoCollapse')
-        const video_collapse = document.querySelector('#videoCollapse')
-        const music_collapse = document.querySelector('#musicCollapse')
-        const doc_collapse = document.querySelector('#docCollapse')
-
-        function inputHandler(inputs, labels) {
+        function photoInputHandler(inputs, labels) {
             for (let index = 0; index < inputs.length; ++index) {
                 const input = inputs[index];
-                input.setAttribute('style', 'display:none')
                 input.addEventListener('change', (e) => {
                     try {
                         let item = inputs[index + 1];
@@ -208,21 +226,12 @@
                     }
                 });
 
-                const label = labels[index];
-                label.setAttribute('style', 'display:none');
             }
-            const init_input = inputs[0];
-            const init_label = labels[0];
-            init_input.setAttribute('style', '');
-            init_label.setAttribute('style', '');
-
         }
 
-        {
-            inputHandler(photo_inputs, photo_labels);
-            inputHandler(music_inputs, music_labels);
-            inputHandler(video_inputs, video_labels);
-            inputHandler(document_inputs, document_labels);
+        function addReferenceHandler(span, span2) {
+            span.setAttribute('style', 'display: none')
+            span2.setAttribute('style', 'display: block')
         }
 
 
