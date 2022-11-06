@@ -3,16 +3,31 @@ from django import forms
 from betterforms.multiform import MultiModelForm
 
 from .models import *
+from apps.middleware import current_user
 
 
 class PostForm(forms.ModelForm):
-
     class Meta:
         model = Post
-        fields = ['post_type', 'name', 'text', 'bot']
+        fields = ['post_type', 'name', 'text', 'bot',
+                  'photo_1', 'photo_2', 'photo_3', 'photo_4', 'photo_5',
+                  'music', 'video', 'document', 'url', 'url_text', 'btn_name'
+                  ]
         widgets = {
-            'name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Озаглавьте ваш пост, для более удобного управления'}),
-            'text': forms.Textarea(attrs={'class': 'form-control'}, ),
+            'name': forms.TextInput(
+                attrs={'class': 'form-control', 'placeholder': 'Озаглавьте ваш пост, для более удобного управления'}),
+            'text': forms.Textarea(attrs={'class': 'form-control'}),
+            'photo_1': forms.ClearableFileInput(attrs={'class': 'form-control'}),
+            'photo_2': forms.ClearableFileInput(attrs={'class': 'form-control'}),
+            'photo_3': forms.ClearableFileInput(attrs={'class': 'form-control'}),
+            'photo_4': forms.ClearableFileInput(attrs={'class': 'form-control'}),
+            'photo_5': forms.ClearableFileInput(attrs={'class': 'form-control'}),
+            'music': forms.ClearableFileInput(attrs={'class': 'form-control'}),
+            'video': forms.ClearableFileInput(attrs={'class': 'form-control'}),
+            'document': forms.ClearableFileInput(attrs={'class': 'form-control'}),
+            'url': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'https://t.me/your_group'}),
+            'url_text': forms.TextInput(attrs={'class': 'form-control', 'placeholder': '...'}),
+            'btn_name': forms.TextInput(attrs={'class': 'form-control', 'style': 'text-align: center;'}),
         }
 
 

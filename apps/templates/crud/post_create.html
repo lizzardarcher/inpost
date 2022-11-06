@@ -23,8 +23,7 @@
                             <div class="col-md-8 px-md-3">
                                 <div class="form-group">
                                     <h4><b>Выберите тип сообщения:</b></h4>
-                                    {{ form.post.post_type }}
-
+                                    {{ form.post_type }}
                                 </div>
                             </div>
 
@@ -36,7 +35,7 @@
                                            data-placement="top"
                                            title="Необходим для более понятного добавления поста в расписание">
                                         </i></small></h4>
-                                    {{ form.post.name }}
+                                    {{ form.name }}
                                 </div>
                             </div>
 
@@ -47,7 +46,7 @@
                                         <i type="button" class="fa fa-question" data-toggle="tooltip"
                                            data-placement="top" title="Можете добавлять в тескт Emoji">
                                         </i></small></h4>
-                                    {{ form.post.text }}
+                                    {{ form.text }}
                                 </div>
                             </div>
 
@@ -59,20 +58,20 @@
                                             <p class="badge badge-info">Можно добавить до пяти кнопок</p>
                                             <div class="row">
                                                 <div class="col-4 col-sm-3">
-                                                    {{ form.button.name }}
+                                                    {{ form.btn_name }}
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                     <p>
-                                        <a class="col-md-4 btn btn-primary" data-toggle="collapse" href="#collapseBtn"
+                                        <a class="btn btn-primary" data-toggle="collapse" href="#collapseBtn"
                                            role="button"
                                            aria-expanded="false" aria-controls="collapseBtn">
                                             <span id="add-btn"
-                                                  onclick="addReferenceHandler(add_btn, no_btn)">+ Добавить кнопки</span>
+                                                  onclick="addReferenceHandler(add_btn, no_btn)">+ Кнопки</span>
                                             <span id="no-btn"
                                                   onclick="addReferenceHandler(no_btn, add_btn)"
-                                                  style="display: none">- Добавить кнопки</span>
+                                                  style="display: none">- Кнопки</span>
                                         </a>
                                     </p>
 
@@ -87,16 +86,16 @@
                                            role="button"
                                            aria-expanded="false" aria-controls="collapseReference">
                                             <span id="add-reference"
-                                                  onclick="addReferenceHandler(add_reference, no_reference)">+ Добавить ссылку</span>
+                                                  onclick="addReferenceHandler(add_reference, no_reference)">+ Ссылки</span>
                                             <span id="no-reference"
                                                   onclick="addReferenceHandler(no_reference, add_reference)"
-                                                  style="display: none">- Добавить ссылку</span>
+                                                  style="display: none">- Ссылки</span>
                                         </a>
                                     </p>
                                     <div class="collapse" id="collapseReference">
                                         <div class="card card-body">
-                                            {{ form.reference.reference }}
-                                            {{ form.reference.text }}
+                                            {{ form.url }}
+                                            {{ form.url_text }}
                                         </div>
                                     </div>
                                 </div>
@@ -109,12 +108,12 @@
                                         <i type="button" class="fa fa-question" data-toggle="tooltip"
                                            data-placement="top" title="Выберите из списка ваших ботов">
                                         </i></small></h4>
-                                    {{ form.post.bot }}
+                                    {{ form.bot }}
                                 </div>
                             </div>
                         </div>
 
-                        <!-- Toggle-Collapse     для Медиа Файлов -->
+                        <!-- Toggle-Collapse для Медиа Файлов -->
                         <a class="btn btn-social" data-toggle="collapse" href="#collapseMedia" role="button"
                            aria-expanded="false" aria-controls="collapseExample">
                             Добавить Медиа Файлы
@@ -126,17 +125,62 @@
 
                         <div class="collapse" id="collapseMedia">
                             <div class="row">
-                                <div class="col-md-8 px-md-3">
+                                <div class="col-md-12 px-md-3">
                                     <a id="photoCollapse" class="btn btn-social" data-toggle="collapse"
                                        href="#collapsePhoto" role="button"
                                        aria-expanded="false" aria-controls="collapseExample">
                                         + Фото</a>
                                     <div class="collapse" id="collapsePhoto">
-                                        {{ form.photo.photo_1 }}
-                                        {{ form.photo.photo_2 }}
-                                        {{ form.photo.photo_3 }}
-                                        {{ form.photo.photo_4 }}
-                                        {{ form.photo.photo_5 }}
+                                        <div class="row">
+                                            <div id="load_photo_1"></div>
+                                            <div class="col-6 col-sm-6">
+                                                {{ form.photo_1 }}
+                                            </div>
+                                            <div class="col-3 col-sm-6" id="clear_photo_1"><a
+                                                    class="btn btn-danger btn-round ">
+                                                <i class="fa fa-times"></i></a></div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div id="load_photo_2"></div>
+                                            <div class="col-6 col-sm-6">
+                                                {{ form.photo_2 }}
+                                            </div>
+                                            <div class="col-3 col-sm-6" id="clear_photo_2"><a
+                                                    class="btn btn-danger btn-round ">
+                                                <i class="fa fa-times"></i></a></div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div id="load_photo_3"></div>
+                                            <div class="col-6 col-sm-6">
+                                                {{ form.photo_3 }}
+                                            </div>
+                                            <div class="col-3 col-sm-6" id="clear_photo_3"><a
+                                                    class="btn btn-danger btn-round ">
+                                                <i class="fa fa-times"></i></a></div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div id="load_photo_4"></div>
+                                            <div class="col-6 col-sm-6">
+                                                {{ form.photo_4 }}
+                                            </div>
+                                            <div class="col-3 col-sm-6" id="clear_photo_4"><a
+                                                    class="btn btn-danger btn-round ">
+                                                <i class="fa fa-times"></i></a></div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div id="load_photo_4"></div>
+                                            <div class="col-6 col-sm-6">
+                                                {{ form.photo_4 }}
+                                            </div>
+                                            <div class="col-3 col-sm-6" id="clear_photo_4"><a
+                                                    class="btn btn-danger btn-round ">
+                                                <i class="fa fa-times"></i></a></div>
+                                        </div>
+
                                     </div>
 
                                     <a id="videoCollapse" class="btn btn-social" data-toggle="collapse"
@@ -145,7 +189,15 @@
                                         + Видео
                                     </a>
                                     <div class="collapse" id="collapseVideo">
-                                        {{ form.video.video }}
+                                        <div class="row">
+                                            <div id="load_video"></div>
+                                            <div class="col-6 col-sm-6">
+                                                {{ form.video }}
+                                            </div>
+                                            <div class="col-3 col-sm-6" id="clear_video"><a
+                                                    class="btn btn-danger btn-round ">
+                                                <i class="fa fa-times"></i></a></div>
+                                        </div>
                                     </div>
 
                                     <a id="MusicCollapse" class="btn btn-social" data-toggle="collapse"
@@ -154,7 +206,15 @@
                                         + Музыка
                                     </a>
                                     <div class="collapse" id="collapseMusic">
-                                        {{ form.music.music }}
+                                        <div class="row">
+                                            <div id="load_music"></div>
+                                            <div class="col-6 col-sm-6">
+                                                {{ form.music }}
+                                            </div>
+                                            <div class="col-3 col-sm-6" id="clear_music"><a
+                                                    class="btn btn-danger btn-round ">
+                                                <i class="fa fa-times"></i></a></div>
+                                        </div>
                                     </div>
 
                                     <a id="docCollapse" class="btn btn-social" data-toggle="collapse"
@@ -163,7 +223,15 @@
                                         + Документы
                                     </a>
                                     <div class="collapse" id="collapseDocs">
-                                        {{ form.document.document }}
+                                        <div class="row">
+                                            <div id="load_document"></div>
+                                            <div class="col-6 col-sm-6">
+                                                {{ form.document }}
+                                            </div>
+                                            <div class="col-3 col-sm-6" id="clear_document"><a
+                                                    class="btn btn-danger btn-round ">
+                                                <i class="fa fa-times"></i></a></div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -186,29 +254,49 @@
     <script src="https://cdn.rawgit.com/yuku-t/jquery-textcomplete/v1.3.4/dist/jquery.textcomplete.js"></script>
     <script>
 
+        // Добавление emoji в text inputs
         $('[name*="text"]').emojioneArea()
-        $('[id*="id_button-name"]').emojioneArea()
+        $('[id*="id_btn_name"]').emojioneArea()
 
+        // Все inputs и  Buttons clear
+        const photo_inputs = document.querySelectorAll('input[name*="photo"]')
+        const clearBtns = document.querySelectorAll('div[id*="clear_photo"]')
+
+        const video_input = document.querySelector('input[name*="video"]')
+        const video_clear_btn = document.querySelector('div[id*="clear_video"]')
+
+        const music_input = document.querySelector('input[name*="music"]')
+        const music_clear_btn = document.querySelector('div[id*="clear_music"]')
+
+        const document_input = document.querySelector('input[name*="document"]')
+        const document_clear_btn = document.querySelector('div[id*="clear_document"]')
+
+
+        // Минусы и плюсы при сворачивании
         const add_reference = document.getElementById('add-reference');
         const add_btn = document.getElementById('add-btn');
         const no_reference = document.getElementById('no-reference');
         const no_btn = document.getElementById('no-btn');
 
-        const selectors = document.getElementsByTagName('select');
-        for (let i = 0; i <= selectors.length; i++) {
-            selectors[i].setAttribute('class', 'rounded')
+        // Свернуть-развернуть кнопки Buttons и Reference
+        function addReferenceHandler(span, span2) {
+            span.setAttribute('style', 'display: none')
+            span2.setAttribute('style', 'display: block')
         }
 
-        function photoInputHandler(inputs, labels) {
+        const selectors = document.getElementsByTagName('select');
+        for (let i = 0; i <= selectors.length; i++) {
+            try {
+                selectors[i].setAttribute('class', 'rounded')
+            } catch (e) {
+            }
+        }
+
+        //
+        function photoInputHandler(inputs) {
             for (let index = 0; index < inputs.length; ++index) {
                 const input = inputs[index];
                 input.addEventListener('change', (e) => {
-                    try {
-                        let item = inputs[index + 1];
-                        item.setAttribute('style', '');
-                    } catch (e) {
-                        console.log(e);
-                    }
                     let tgt = e.target || window.event.srcElement,
                         files = tgt.files;
 
@@ -229,9 +317,53 @@
             }
         }
 
-        function addReferenceHandler(span, span2) {
-            span.setAttribute('style', 'display: none')
-            span2.setAttribute('style', 'display: block')
+
+        // File input clear function
+        function clearInputFile(f) {
+            if (f.value) {
+                try {
+                    f.value = '';
+                } catch (err) {
+                }
+                if (f.value) {
+                    var form = document.createElement('form'), ref = f.nextSibling;
+                    form.appendChild(f);
+                    form.reset();
+                    ref.parentNode.insertBefore(f, ref);
+                }
+            }
+        }
+
+        // Назначаем clear на кнопки
+        {
+            for (let index = 0; index < photo_inputs.length; ++index) {
+                try {
+                    clearBtns[index].onclick = function () {
+                        clearInputFile(photo_inputs[index])
+                    }
+                } catch (e) {
+                }
+            }
+
+            video_clear_btn.onclick = function () {
+                clearInputFile(video_input)
+            }
+            music_clear_btn.onclick = function () {
+                clearInputFile(music_input)
+            }
+            document_clear_btn.onclick = function () {
+                clearInputFile(document_input)
+            }
+        }
+
+        // Убрать кнопки Clear если Update
+        if (document.URL.includes('update')) {
+            for (let index = 0; index < clearBtns.length; ++index) {
+                clearBtns[index].setAttribute('style', 'display: none')
+            }
+            video_clear_btn.setAttribute('style', 'display: none')
+            music_clear_btn.setAttribute('style', 'display: none')
+            document_clear_btn.setAttribute('style', 'display: none')
         }
 
 

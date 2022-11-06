@@ -35,7 +35,7 @@
                                 </button>
                                 <div class="col-5"></div>
                                 <button class="col-3 btn btn-link">
-{#                                    <small>Предпросмотр</small>#}
+                                    {#                                    <small>Предпросмотр</small>#}
                                     <a href="/post_details/{{ post.id }}">
                                         <h1><i class="tim-icons icon-image-02"></i></h1>
                                     </a>
@@ -68,47 +68,59 @@
                                     </div>
 
                                     <div class="col-sm-6">
-                                        <p>Изображения:</p>
-                                        {% if photos %}
-                                            {% for photo in photos %}
-                                                {% if photo.post == post %}
-                                                    <a href="/post_photo_update/{{ photo.id }}"><img
-                                                            class="img-thumbnail"
-                                                            width="75px"
-                                                            height="60px" src="
-                                    {{ MEDIA_URL }}{{ photo.photos }}"></a>
-                                                {% endif %}
-                                            {% endfor %}
+                                        {% if post.photo_1 %}
+                                            <p>Изображения:</p>
+                                            <a href="{{ MEDIA_URL }}{{ post.photo_1 }}"><img class="img-thumbnail"
+                                                                                                 width="75px"
+                                                                                                 height="60px" src="
+                                    {{ MEDIA_URL }}{{ post.photo_1 }}"></a>
+                                        {% endif %}
+                                        {% if post.photo_2 %}
+
+                                            <a href="{{ MEDIA_URL }}{{ post.photo_2 }}"><img class="img-thumbnail"
+                                                                                                 width="75px"
+                                                                                                 height="60px" src="
+                                    {{ MEDIA_URL }}{{ post.photo_2 }}"></a>
+                                        {% endif %}
+                                        {% if post.photo_3 %}
+
+                                            <a href="{{ MEDIA_URL }}{{ post.photo_3 }}"><img class="img-thumbnail"
+                                                                                                 width="75px"
+                                                                                                 height="60px" src="
+                                    {{ MEDIA_URL }}{{ post.photo_3 }}"></a>
+                                        {% endif %}
+                                        {% if post.photo_4 %}
+
+                                            <a href="{{ MEDIA_URL }}{{ post.photo_4 }}"><img class="img-thumbnail"
+                                                                                                 width="75px"
+                                                                                                 height="60px" src="
+                                    {{ MEDIA_URL }}{{ post.photo_4 }}"></a>
+                                        {% endif %}
+                                        {% if post.photo_5 %}
+
+                                            <a href="{{ MEDIA_URL }}{{ post.photo_5 }}"><img class="img-thumbnail"
+                                                                                                 width="75px"
+                                                                                                 height="60px" src="
+                                    {{ MEDIA_URL }}{{ post.photo_5 }}"></a>
+                                        {% endif %}
+
+                                        <br/>
+
+                                        {% if post.video %}
+                                            <p>Видео файлы:</p>
+                                            <a href="{{ MEDIA_URL }}{{ post.video }}">{{ post.video }}</a>
                                         {% endif %}
                                         <br/>
 
-                                        <p>Видео файлы:</p>
-                                        {% if videos %}
-                                            {% for video in videos %}
-                                                {% if video.post == post %}
-                                                    <a href="/post_video_update/{{ video.id }}">{{ video.video }}</a>
-                                                {% endif %}
-                                            {% endfor %}
+                                        {% if post.music %}
+                                            <p>Аудио файлы:</p>
+                                                    <a href="{{ MEDIA_URL }}{{ post.music }}">{{ post.music }}</a>
                                         {% endif %}
                                         <br/>
 
-                                        <p>Аудио файлы:</p>
-                                        {% if musics %}
-                                            {% for music in musics %}
-                                                {% if music.post == post %}
-                                                    <a href="/post_music_update/{{ music.id }}">{{ music.music }}</a>
-                                                {% endif %}
-                                            {% endfor %}
-                                        {% endif %}
-                                        <br/>
-
-                                        <p>Документы:</p>
-                                        {% if documents %}
-                                            {% for document in documents %}
-                                                {% if document.post == post %}
-                                                    <a href="/post_document_update/{{ document.id }}">{{ document.document }}</a>
-                                                {% endif %}
-                                            {% endfor %}
+                                        {% if post.document %}
+                                            <p>Документы:</p>
+                                            <a href="{{ MEDIA_URL }}{{ post.document }}">{{ post.document }}</a>
                                         {% endif %}
                                     </div>
 

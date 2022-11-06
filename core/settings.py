@@ -31,7 +31,7 @@ INSTALLED_APPS = [
     'apps.home',
 
     'crispy_forms',
-    'filer',
+    # 'filer',
     'mptt',
     'easy_thumbnails',
     'debug_toolbar',

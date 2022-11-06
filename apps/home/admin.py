@@ -7,57 +7,57 @@ from django.contrib.auth.models import User
 from .models import *
 
 
-class PostPhotoAdmin(admin.StackedInline):
-    model = PostPhoto
+# class PostPhotoAdmin(admin.StackedInline):
+#     model = PostPhoto
+#
+#
+# class PostMusicAdmin(admin.StackedInline):
+#     model = PostMusic
+#
+#
+# class PostVideoAdmin(admin.StackedInline):
+#     model = PostVideo
+#
+#
+# class PostDocumentAdmin(admin.StackedInline):
+#     model = PostDocument
+#
+#
+# class PostReferenceAdmin(admin.StackedInline):
+#     model = PostReference
 
 
-class PostMusicAdmin(admin.StackedInline):
-    model = PostMusic
+# @admin.register(Post)
+# class PostAdmin(admin.ModelAdmin):
+#     inlines = [PostPhotoAdmin, PostMusicAdmin, PostVideoAdmin, PostDocumentAdmin, PostReferenceAdmin]
+#
+#     class Meta:
+#         model = Post
 
 
-class PostVideoAdmin(admin.StackedInline):
-    model = PostVideo
-
-
-class PostDocumentAdmin(admin.StackedInline):
-    model = PostDocument
-
-
-class PostReferenceAdmin(admin.StackedInline):
-    model = PostReference
-
-
-@admin.register(Post)
-class PostAdmin(admin.ModelAdmin):
-    inlines = [PostPhotoAdmin, PostMusicAdmin, PostVideoAdmin, PostDocumentAdmin, PostReferenceAdmin]
-
-    class Meta:
-        model = Post
-
-
-@admin.register(PostPhoto)
-class PostImageAdmin(admin.ModelAdmin):
-    pass
-
-
-@admin.register(PostMusic)
-class PostMusicAdmin(admin.ModelAdmin):
-    pass
-
-
-@admin.register(PostVideo)
-class PostVideoAdmin(admin.ModelAdmin):
-    pass
-
-
-@admin.register(PostDocument)
-class PostDocumentAdmin(admin.ModelAdmin):
-    pass
-
-
-@admin.register(PostReference)
-class PostReferenceAdmin(admin.ModelAdmin):
-    pass
+# @admin.register(PostPhoto)
+# class PostImageAdmin(admin.ModelAdmin):
+#     pass
+#
+#
+# @admin.register(PostMusic)
+# class PostMusicAdmin(admin.ModelAdmin):
+#     pass
+#
+#
+# @admin.register(PostVideo)
+# class PostVideoAdmin(admin.ModelAdmin):
+#     pass
+#
+#
+# @admin.register(PostDocument)
+# class PostDocumentAdmin(admin.ModelAdmin):
+#     pass
+#
+#
+# @admin.register(PostReference)
+# class PostReferenceAdmin(admin.ModelAdmin):
+#     pass
 
 
 class UserStatusInline(admin.StackedInline):
@@ -70,6 +70,7 @@ class UserAdmin(BaseUserAdmin):
     inlines = (UserStatusInline,)
 
 
+admin.site.register(Post)
 admin.site.register(Bot)
 admin.site.register(Button)
 admin.site.register(Chat)

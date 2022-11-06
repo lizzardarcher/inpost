@@ -45,6 +45,24 @@ class Post(models.Model):
     text = models.TextField(max_length=5000, null=True, blank=True, verbose_name='Текст')
     is_active = models.BooleanField(null=True, blank=True, default=False, verbose_name='Активно')
     # reference = models.CharField(max_length=300, null=True, blank=True, verbose_name='Ссылка')
+
+    photo_1 = models.ImageField(null=True, blank=True, verbose_name='Фото 1')
+    photo_2 = models.ImageField(null=True, blank=True, verbose_name='Фото 2')
+    photo_3 = models.ImageField(null=True, blank=True, verbose_name='Фото 3')
+    photo_4 = models.ImageField(null=True, blank=True, verbose_name='Фото 4')
+    photo_5 = models.ImageField(null=True, blank=True, verbose_name='Фото 5')
+
+    music = models.FileField(null=True, blank=True, verbose_name='Музыкальный Трек')
+
+    video = models.FileField(null=True, blank=True, verbose_name='Видео Запись')
+
+    document = models.FileField(null=True, blank=True, verbose_name='Документ')
+
+    url = models.CharField(max_length=300, null=True, blank=True, verbose_name='Ссылка', validators=[validators.post_ref_validator])
+    url_text = models.CharField(max_length=300, null=True, blank=True, verbose_name='Текст внутри ссылки')
+
+    btn_name = models.CharField(max_length=100, null=True, blank=True, verbose_name='')
+
     id = models.AutoField(primary_key=True, editable=False)
 
     def __str__(self):
