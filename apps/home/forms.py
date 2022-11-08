@@ -11,7 +11,8 @@ class PostForm(forms.ModelForm):
         model = Post
         fields = ['post_type', 'name', 'text', 'bot',
                   'photo_1', 'photo_2', 'photo_3', 'photo_4', 'photo_5',
-                  'music', 'video', 'document', 'url', 'url_text', 'btn_name'
+                  'music', 'video', 'document', 'url', 'url_text',
+                  'btn_name_1', 'btn_name_2', 'btn_name_3', 'btn_name_4',
                   ]
         widgets = {
             'name': forms.TextInput(
@@ -27,7 +28,10 @@ class PostForm(forms.ModelForm):
             'document': forms.ClearableFileInput(attrs={'class': 'form-control'}),
             'url': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'https://t.me/your_group'}),
             'url_text': forms.TextInput(attrs={'class': 'form-control', 'placeholder': '...'}),
-            'btn_name': forms.TextInput(attrs={'class': 'form-control', 'style': 'text-align: center;'}),
+            'btn_name_1': forms.TextInput(attrs={'class': 'form-control', 'style': 'text-align: center;'}),
+            'btn_name_2': forms.TextInput(attrs={'class': 'form-control', 'style': 'text-align: center;'}),
+            'btn_name_3': forms.TextInput(attrs={'class': 'form-control', 'style': 'text-align: center;'}),
+            'btn_name_4': forms.TextInput(attrs={'class': 'form-control', 'style': 'text-align: center;'}),
         }
 
 
@@ -109,9 +113,9 @@ class PostScheduleMultiForm(MultiModelForm):
 class BotForm(forms.ModelForm):
     class Meta:
         model = Bot
-        fields = ['name', 'token']
+        fields = ['ref', 'token']
         widgets = {
-            'name': forms.TextInput(attrs={'class': 'form-control'}),
+            'ref': forms.TextInput(attrs={'class': 'form-control'}),
             'token': forms.TextInput(attrs={'class': 'form-control'}),
         }
 
@@ -121,8 +125,7 @@ class ChatForm(forms.ModelForm):
         model = Chat
         fields = ['chat_type', 'ref']
         widgets = {
-            'chat_type': forms.TextInput(attrs={'class': 'form-control'}),
-            'ref': forms.TextInput(attrs={'class': 'form-control'}),
+            'ref': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'https://t.me/blablabla'}),
         }
 
 

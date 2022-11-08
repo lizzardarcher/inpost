@@ -20,17 +20,16 @@ class UserStatus(models.Model):
 
 class Bot(models.Model):
 
-    ref = models.CharField(max_length=100, verbose_name='Ссылка на бота', validators=[validators.validate_post_name])
-    token = models.CharField(max_length=300, verbose_name='Бот Токен')
-    title = models.CharField(max_length=300, null=True, blank=True, verbose_name='Назавание бота')
+    name = models.CharField(max_length=100, null=True, verbose_name='Название вашего бота', validators=[validators.validate_post_name])
+    token = models.CharField(max_length=300, null=False, blank=False, verbose_name='Бот Токен')
     user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='Пользователь')
     id = models.AutoField(primary_key=True, editable=False)
 
     def __str__(self):
-        return self.title
+        return self.name
 
     def get_chat_username(self):
-        return self.ref.split('/')[0]
+        return self.name.split('/')[0]
 
     class Meta:
         ordering = ['id']
@@ -221,9 +220,7 @@ class Chat(models.Model):
     chat_type = models.CharField(max_length=20, choices=[('Группа', 'Группа'), ('Канал', 'Канал')], null=True, blank=False, verbose_name='Тип Чата')
     # name = models.CharField(max_length=200, null=True, blank=True, verbose_name='Название')
     ref = models.CharField(max_length=200, null=True, unique=True, validators=[validators.validate_contains_https], verbose_name='Ссылка на чат')
-    title = models.CharField(max_length=300, null=True, blank=True, verbose_name='Название канала')
-    image = models.CharField(max_length=300, null=True, blank=True, verbose_name='Ссылка на изображение канала')
-    subscribers = models.IntegerField(null=True, blank=True, verbose_name='Кол-во подписчиков')
+    title = models.CharField(max_length=300, default='', blank=True, verbose_name='Название канала')
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True, verbose_name='Пользователь')
     id = models.AutoField(primary_key=True, editable=False)
 

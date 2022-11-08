@@ -13,28 +13,28 @@
     <div class="col-sm-6">
         <a href="/post" class="text-black"><h3>Назад</h3></a>
         <div id="preview" class="card card-chart">
-            {% if photos %}
-                <div class="row">
-
-                    {% for photo in photos %}
-                        {% if photo.post == post %}
-
-                            <img class="img img-raised mt-1 ml-5 col-4 rounded"
-                                 src="{{ MEDIA_URL }}/{{ photo.photos }}"/>
-                        {% endif %}
-                    {% endfor %}
-                </div>
-            {% endif %}
+            <div class="row">
+                {% if post.photo_1 %}
+                    <img class="img img-raised mt-1 ml-5 col-4 rounded" src="{{ MEDIA_URL }}/{{ post.photo_1 }}"/>
+                {% endif %}
+                {% if post.photo_2 %}
+                    <img class="img img-raised mt-1 ml-5 col-4 rounded" src="{{ MEDIA_URL }}/{{ post.photo_2 }}"/>
+                {% endif %}
+                {% if post.photo_3 %}
+                    <img class="img img-raised mt-1 ml-5 col-4 rounded" src="{{ MEDIA_URL }}/{{ post.photo_3 }}"/>
+                {% endif %}
+                {% if post.photo_4 %}
+                    <img class="img img-raised mt-1 ml-5 col-4 rounded" src="{{ MEDIA_URL }}/{{ post.photo_4 }}"/>
+                {% endif %}
+                {% if post.photo_5 %}
+                    <img class="img img-raised mt-1 ml-5 col-4 rounded" src="{{ MEDIA_URL }}/{{ post.photo_5 }}"/>
+                {% endif %}
+            </div>
             <br/>
 
-            {% if videos %}
+            {% if post.video %}
                 <div class="row">
-                    {% for video in videos %}
-                        {% if video.post == post %}
-                            <img class="img img-raised mt-1 ml-1 col-4 rounded"
-                                 src="{{ MEDIA_URL }}/{{ video.video }}"/>
-                        {% endif %}
-                    {% endfor %}
+                    <img class="img img-raised mt-1 ml-1 col-4 rounded" src="{{ MEDIA_URL }}/{{ post.video }}"/>
                 </div>
             {% endif %}
 
@@ -44,29 +44,36 @@
                     {{ post.text }}
                 </div>
                 <div class="col-10">
-                    {% if references %}
-                        {% for ref in references %}
-                            {% if ref.post == post %}
-                                <div class="container ml-4 mt-1 text-center bg-dark opacity-8 rounded"
-                                     style="width: 100%">
-                                    <p>{{ ref.text }}</p>
-                                </div>
-                            {% endif %}
-                        {% endfor %}
+                    {% if post.url %}
+                        <div class="container ml-4 mt-1 text-center bg-dark opacity-8 rounded"
+                             style="width: 100%">
+                            <p>{{ post.url_text }}</p>
+                        </div>
                     {% endif %}
                 </div>
                 <div class="col-12">
-                    {% if buttons %}
-                        <div class="row">
-                            {% for btn in buttons %}
-                                {% if btn.post == post %}
-                                    <div class="col-4 ml-5 mt-1 text-center bg-dark opacity-8 rounded">
-                                        <p>{{ btn.name }}</p>
-                                    </div>
-                                {% endif %}
-                            {% endfor %}
-                        </div>
-                    {% endif %}
+                    <div class="row">
+                        {% if post.btn_name_1 %}
+                            <div class="col-4 ml-5 mt-1 text-center bg-dark opacity-8 rounded">
+                                <p>{{ post.btn_name_1 }}</p>
+                            </div>
+                        {% endif %}
+                        {% if post.btn_name_2 %}
+                            <div class="col-4 ml-5 mt-1 text-center bg-dark opacity-8 rounded">
+                                <p>{{ post.btn_name_2 }}</p>
+                            </div>
+                        {% endif %}
+                        {% if post.btn_name_3 %}
+                            <div class="col-4 ml-5 mt-1 text-center bg-dark opacity-8 rounded">
+                                <p>{{ post.btn_name_3 }}</p>
+                            </div>
+                        {% endif %}
+                        {% if post.btn_name_4 %}
+                            <div class="col-4 ml-5 mt-1 text-center bg-dark opacity-8 rounded">
+                                <p>{{ post.btn_name_4 }}</p>
+                            </div>
+                        {% endif %}
+                    </div>
                 </div>
             </div>
         </div>

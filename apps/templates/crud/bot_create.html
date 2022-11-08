@@ -3,15 +3,17 @@
 {% block content %}
 <body class="bg-light bg-gradient">
 <div class="container">
-
-<a href="/bot" ><h3>Назад</h3></a>
+<div class=" col-12 col-md-8">
+    <a href="/bot" ><h3>Назад</h3></a>
     <form method="post" >
         {% csrf_token %}
-        {{ form.name|as_crispy_field }}
+        {{ form.ref|as_crispy_field }}
         {{ form.token|as_crispy_field }}
         <br/>
         <button type="submit" class="btn btn-primary">Подтвердить</button>
     </form>
+</div>
+
 </div>
 </body>
 {% endblock %}

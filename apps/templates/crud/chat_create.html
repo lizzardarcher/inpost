@@ -1,16 +1,24 @@
 {% extends 'layouts/base.html' %}
 {% load crispy_forms_tags %}
 {% block content %}
-<body class="bg-light bg-gradient">
-<div class="container">
-<a href="/chat" ><h3>Назад</h3></a>
-    <form method="post" >
-        {% csrf_token %}
-        {{ form.chat_type|as_crispy_field }}
-        {{ form.ref|as_crispy_field }}
-        <br/>
-        <button type="submit" class="btn btn-primary">Подтвердить</button>
-    </form>
-</div>
-</body>
+    <body class="bg-light bg-gradient">
+    <div class="container">
+        <a href="/chat"><h3>Назад</h3></a>
+        <form method="post">
+            {% csrf_token %}
+            <div class="row">
+                <div class="col-12 col-md-8">
+                    <label>Выберите тип:</label><br/>
+                    {{ form.chat_type }}
+                </div>
+                <div class="col-12 col-md-8">
+                    <label>Ссылка:</label>
+                    {{ form.ref }}
+                </div>
+            </div>
+            <br/>
+            <button type="submit" class="btn btn-primary">Подтвердить</button>
+        </form>
+    </div>
+    </body>
 {% endblock %}

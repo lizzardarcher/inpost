@@ -1,12 +1,6 @@
 import requests
 from bs4 import BeautifulSoup
 
-chat_link = 'https://t.me/jgirwaojoaeweowjbot'
-
-
-import requests
-from bs4 import BeautifulSoup
-
 
 def get_chat_info(chat_link):
     try:
@@ -21,6 +15,9 @@ def get_chat_info(chat_link):
             if 'sub' not in i:
                 subscribers += i
         subscribers = int(subscribers)
+        print('Ссылка на изображение', image)
+        print('Название чата:', title)
+        print('Количество подписчиков:', subscribers)
     except:
         image = ''
         title = ''
@@ -37,6 +34,3 @@ def get_bot_info(chat_link):
     except:
         title = ''
     return title
-
-
-get_bot_info(chat_link)
