@@ -222,9 +222,12 @@ class Chat(models.Model):
     # name = models.CharField(max_length=200, null=True, blank=True, verbose_name='Название')
     ref = models.CharField(max_length=200, null=True, unique=True, validators=[validators.validate_contains_https], verbose_name='Ссылка на чат')
     title = models.CharField(max_length=300, null=True, blank=True, verbose_name='Название канала')
-    image = models.CharField(max_length=300, null=True, blank=True, verbose_name='Ссылка на изображение канала')
+    image = models.CharField(max_length=600, null=True, blank=True, verbose_name='Ссылка на изображение канала')
     subscribers = models.IntegerField(null=True, blank=True, verbose_name='Кол-во подписчиков')
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True, verbose_name='Пользователь')
+    positive_subs = models.IntegerField(default=0, null=True, blank=True, verbose_name='Количество подписавшихся за сутки')
+    negative_subs = models.IntegerField(default=0, null=True, blank=True, verbose_name='Количество отписавшихся за сутки')
+
     id = models.AutoField(primary_key=True, editable=False)
 
     class Meta:

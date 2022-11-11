@@ -29,7 +29,11 @@
                             </div>
                             <p class=""></p>
                             <div class="small"><a href="{{ chat.ref }}">{{ chat.ref }}</a></div>
-                            <div class="card-text">Подписчиков: <span class="text-success">{{ chat.subscribers }}</span> <br/><span class="badge badge-warning">+2 сегодня</span></div>
+                            <div class="card-text">Подписчиков: <span class="text-success">{{ chat.subscribers }}</span>
+                                <br/>
+                                <span class="badge badge-success">+{{ chat.positive_subs }} сегодня</span>
+                                <span class="badge badge-warning">-{{ chat.negative_subs }} сегодня</span>
+                            </div>
 
                         </div>
                         <div class="col-4">
