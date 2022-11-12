@@ -139,3 +139,12 @@ class PostCreationMultiForm(MultiModelForm):
         'reference': PostReferenceForm,
         'button': PostButtonForm,
     }
+
+
+class TemplateForm(forms.ModelForm):
+    class Meta:
+        model = Template
+        fields = ['text']
+        widgets = {
+            'text': forms.TextInput(attrs={'class': 'form-control'}),
+        }

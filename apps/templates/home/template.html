@@ -14,32 +14,28 @@
             {% endfor %}
         </div>
     {% endif %}
-    <h1> Мои TG Боты </h1>
+    <h1> Шаблоны </h1>
     <div class="p-2 m-1">
-        <a href="bot_create">
-            <button class="btn btn-primary">+ Добавить Бота</button>
+        <a href="template_create">
+            <button class="btn btn-primary">+ Шаблон</button>
         </a>
     </div>
-    {% for bot in bots %}
+    {% for template in templates %}
         <div class="col-12">
             <div class="card card-chart">
                 <div class="card-header ">
                     <div class="row">
-                        <div class="col-sm-2 text-left">
-                            <img class="img img-thumbnail" width="90px" height="90px" src="{{ MEDIA_URL }}/B.svg.png"/>
-                        </div>
                         <div class="col-sm-6 text-left">
-                            <h4 class="card-title">{{ bot.title }}</h4>
-                            <p class="card-text"><b>BOT TOKEN: </b>{{ bot.token }}</p>
+                            <p class="card-text"><b>Текст: </b>{{ template.text }}</p>
                         </div>
                         <div class="col-sm-4 ">
-                            <a href="bot_update/{{ bot.id }}">
+                            <a href="template_update/{{ template.id }}">
                                 <button class="btn btn-success text-dark text-center col-12">
                                     <i class="fa fa-edit"></i>
                                 </button>
                             </a>
 
-                            <a href="bot_delete/{{ bot.id }}">
+                            <a href="template_delete/{{ template.id }}">
                                 <button class="btn btn-danger text-dark col-12"><i
                                         class="fa fa-trash"></i>
                                 </button>

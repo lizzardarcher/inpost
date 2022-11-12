@@ -189,6 +189,36 @@ class PostDocumentDeleteView(SuccessMessageMixin, LoginRequiredMixin, DeleteView
     template_name = 'crud/post_document_delete.html'
 
 
+class TemplateListView(LoginRequiredMixin, ListView):
+    model = Template
+    context_object_name = 'templates'
+    success_url = '/template'
+    template_name = 'home/template.html'
+
+
+class TemplateCreateView(SuccessMessageMixin, LoginRequiredMixin, CreateView):
+    model = Post
+    form_class = TemplateForm
+    template_name = 'crud/template_create.html'
+    success_url = '/template'
+    success_message = 'Шаблон создан успешно!'
+
+
+class TemplateUpdateView(SuccessMessageMixin, LoginRequiredMixin, UpdateView):
+    model = Post
+    form_class = TemplateForm
+    template_name = 'crud/template_create.html'
+    success_url = '/template'
+    success_message = 'Шаблон обновлён успешно!'
+
+
+class TemplateDeleteView(SuccessMessageMixin, LoginRequiredMixin, DeleteView):
+    model = Template
+    form_class = TemplateForm
+    template_name = 'crud/template_delete.html'
+    success_url = '/template'
+    success_message = 'Шаблон успешно удалён!'
+
 # BOT ###############################################
 
 

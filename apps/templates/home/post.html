@@ -6,10 +6,14 @@
 {% block content %}
 
     {% if messages %}
-        <div class="rounded alert alert-success col-md-6">
+        <div class="col-md-6">
             {% for message in messages %}
-                <p{% if message.tags %} class="{{ message.tags }}"{% endif %}><i
-                        class="fa fa-check"></i> {{ message }}</p>
+                <div class="alert alert-success">
+                    <button type="button" aria-hidden="true" class="close" data-dismiss="alert" aria-label="Close">
+                        <i class="tim-icons icon-simple-remove"></i>
+                    </button>
+                    <span><b> <i class="fa fa-check"></i> {{ message }}</b></span>
+                </div>
             {% endfor %}
         </div>
     {% endif %}
@@ -20,6 +24,12 @@
                 <h1> Мои Посты </h1>
                 <a href="post_create">
                     <button class="btn btn-primary">+ Добавить Пост</button>
+                </a>
+                <a href="template">
+                    <button class="btn btn-primary">Мои Шаблоны</button>
+                </a>
+                <a href="template_create">
+                    <button class="btn btn-primary">+</button>
                 </a>
             </div>
             <div id="accordion-post">
