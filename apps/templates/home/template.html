@@ -17,16 +17,20 @@
     <h1> Шаблоны </h1>
     <div class="p-2 m-1">
         <a href="template_create">
-            <button class="btn btn-primary">+ Шаблон</button>
+            <button class="btn btn-primary">+ Создать</button>
         </a>
     </div>
     {% for template in templates %}
-        <div class="col-12">
+        <div class="col-8">
             <div class="card card-chart">
                 <div class="card-header ">
+
                     <div class="row">
-                        <div class="col-sm-6 text-left">
-                            <p class="card-text"><b>Текст: </b>{{ template.text }}</p>
+                        <div class="col-sm-8 text-left">
+                            <p class="card-text"><b>Название шаблона: </b>{{ template.title }}</p>
+                        </div>
+                        <div class="col-sm-8 text-left">
+                            <p class="card-text"><b>Текст шаблона: </b>{{ template.text }}</p>
                         </div>
                         <div class="col-sm-4 ">
                             <a href="template_update/{{ template.id }}">
@@ -44,7 +48,6 @@
                     </div>
                 </div>
             </div>
-
         </div>
     {% endfor %}
 {% endblock content %}

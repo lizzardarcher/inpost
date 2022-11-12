@@ -50,6 +50,17 @@
                                 </div>
                             </div>
 
+                            <!-- Шаблон -->
+                            <div class="col-md-12 px-md-3">
+                                <div class="form-group">
+                                    <h4><b>Выберите шаблон для сообщения: </b><small>
+                                        <i type="button" class="fa fa-question" data-toggle="tooltip"
+                                           data-placement="top" title="Шаблон будет добавлен в конец сообщения">
+                                        </i></small></h4>
+                                    {{ form.template }}
+                                </div>
+                            </div>
+
                             <!-- Кнопки -->
                             <div class="col-md-12 px-md-3">
                                 <div class="form-group">
@@ -235,56 +246,6 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        {#                                        <div class="row">#}
-                                        {#                                            <div id="load_photo_1"></div>#}
-                                        {#                                            <div class="col-6 col-sm-6">#}
-                                        {#                                                {{ form.photo_1 }}#}
-                                        {#                                            </div>#}
-                                        {#                                            <div class="col-3 col-sm-6" id="clear_photo_1"><a#}
-                                        {#                                                    class="btn btn-danger btn-round ">#}
-                                        {#                                                <i class="fa fa-times"></i></a></div>#}
-                                        {#                                        </div>#}
-                                        {##}
-                                        {#                                        <div class="row">#}
-                                        {#                                            <div id="load_photo_2"></div>#}
-                                        {#                                            <div class="col-6 col-sm-6">#}
-                                        {#                                                {{ form.photo_2 }}#}
-                                        {#                                            </div>#}
-                                        {#                                            <div class="col-3 col-sm-6" id="clear_photo_2"><a#}
-                                        {#                                                    class="btn btn-danger btn-round ">#}
-                                        {#                                                <i class="fa fa-times"></i></a></div>#}
-                                        {#                                        </div>#}
-                                        {##}
-                                        {#                                        <div class="row">#}
-                                        {#                                            <div id="load_photo_3"></div>#}
-                                        {#                                            <div class="col-6 col-sm-6">#}
-                                        {#                                                {{ form.photo_3 }}#}
-                                        {#                                            </div>#}
-                                        {#                                            <div class="col-3 col-sm-6" id="clear_photo_3"><a#}
-                                        {#                                                    class="btn btn-danger btn-round ">#}
-                                        {#                                                <i class="fa fa-times"></i></a></div>#}
-                                        {#                                        </div>#}
-                                        {##}
-                                        {#                                        <div class="row">#}
-                                        {#                                            <div id="load_photo_4"></div>#}
-                                        {#                                            <div class="col-6 col-sm-6">#}
-                                        {#                                                {{ form.photo_4 }}#}
-                                        {#                                            </div>#}
-                                        {#                                            <div class="col-3 col-sm-6" id="clear_photo_4"><a#}
-                                        {#                                                    class="btn btn-danger btn-round ">#}
-                                        {#                                                <i class="fa fa-times"></i></a></div>#}
-                                        {#                                        </div>#}
-                                        {##}
-                                        {#                                        <div class="row">#}
-                                        {#                                            <div id="load_photo_4"></div>#}
-                                        {#                                            <div class="col-6 col-sm-6">#}
-                                        {#                                                {{ form.photo_5 }}#}
-                                        {#                                            </div>#}
-                                        {#                                            <div class="col-3 col-sm-6" id="clear_photo_4"><a#}
-                                        {#                                                    class="btn btn-danger btn-round ">#}
-                                        {#                                                <i class="fa fa-times"></i></a></div>#}
-                                        {#                                        </div>#}
-
                                     </div>
 
                                     <a id="videoCollapse" class="btn btn-social" data-toggle="collapse"

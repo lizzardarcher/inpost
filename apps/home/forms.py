@@ -9,7 +9,7 @@ from apps.middleware import current_user
 class PostForm(forms.ModelForm):
     class Meta:
         model = Post
-        fields = ['post_type', 'name', 'text', 'bot',
+        fields = ['post_type', 'name', 'text', 'bot', 'template',
                   'photo_1', 'photo_2', 'photo_3', 'photo_4', 'photo_5',
                   'music', 'video', 'document', 'url', 'url_text',
                   'btn_name_1', 'btn_name_2', 'btn_name_3', 'btn_name_4',
@@ -144,7 +144,7 @@ class PostCreationMultiForm(MultiModelForm):
 class TemplateForm(forms.ModelForm):
     class Meta:
         model = Template
-        fields = ['text']
+        fields = ['title', 'text']
         widgets = {
-            'text': forms.TextInput(attrs={'class': 'form-control'}),
+            'title': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'например: Шаблон № ...'}),
         }

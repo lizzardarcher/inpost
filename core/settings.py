@@ -36,9 +36,13 @@ INSTALLED_APPS = [
     'easy_thumbnails',
     'debug_toolbar',
     # 'emoji_picker',
+    'markitup'
 ]
 
 CRISPY_TEMPLATE_PACK = 'uni_form'
+
+MARKITUP_FILTER = ('markdown.markdown', {})
+MARKITUP_AUTO_PREVIEW = False
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

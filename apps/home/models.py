@@ -1,7 +1,10 @@
 # -*- encoding: utf-8 -*-
+from datetime import datetime
 
 from django.db import models
 from django.contrib.auth.models import User
+from markitup.fields import MarkupField
+
 from . import validators
 
 
@@ -10,6 +13,9 @@ class UserStats(models.Model):
     post_sent = models.IntegerField(default=0, null=True, blank=True, verbose_name='Отправлено всего постов')
     send_errors = models.IntegerField(default=0, null=True, blank=True, verbose_name='Ошибок отправки постов')
 
+    def __str__(self):
+        return self.user.username
+
     class Meta:
         verbose_name = 'Статистика'
         verbose_name_plural = 'Статистика'
@@ -17,7 +23,7 @@ class UserStats(models.Model):
 
 class UserStatus(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    exp_date = models.DateField(null=True, blank=True, verbose_name='Оплачено по:')
+    exp_date = models.DateField(default=datetime.now(), null=True, blank=True, verbose_name='Оплачено по:')
     is_vip = models.BooleanField(default=False, blank=True, verbose_name='VIP')
 
     def __str__(self):
@@ -48,6 +54,21 @@ class Bot(models.Model):
         verbose_name_plural = "Боты"
 
 
+class Template(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True, verbose_name='Пользователь')
+    title = models.CharField(max_length=100, null=False, blank=False, verbose_name='Название шаблона')
+    text = MarkupField()
+    id = models.AutoField(primary_key=True, editable=False)
+
+    def __str__(self):
+        return 'Шаблон ' + self.title
+
+    class Meta:
+        ordering = ['id']
+        verbose_name = "Шаблон"
+        verbose_name_plural = "Шаблоны"
+
+
 class Post(models.Model):
     name = models.CharField(max_length=100, null=True, verbose_name='Заголовок поста', validators=[validators.validate_post_name])
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True, verbose_name='Пользователь')
@@ -55,6 +76,7 @@ class Post(models.Model):
     post_type = models.CharField(max_length=20, choices=[('Пост', 'Пост'), ('Опрос', 'Опрос')], null=True, blank=False, verbose_name='Тип поста')
     text = models.TextField(max_length=5000, null=True, blank=True, verbose_name='Текст')
     is_active = models.BooleanField(null=True, blank=True, default=False, verbose_name='Активно')
+    template = models.ForeignKey(Template, on_delete=models.CASCADE, null=True, blank=True, verbose_name='Шаблон')
 
     photo_1 = models.ImageField(null=True, blank=True, verbose_name='Фото 1')
     photo_2 = models.ImageField(null=True, blank=True, verbose_name='Фото 2')
@@ -180,20 +202,6 @@ class PostReference(models.Model):
         ordering = ['id']
         verbose_name = "Ссылка"
         verbose_name_plural = "Ссылки"
-
-
-class Template(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True, verbose_name='Пользователь')
-    text = models.TextField(max_length=4000, null=True, blank=True, verbose_name='Текст')
-    id = models.AutoField(primary_key=True, editable=False)
-
-    def __str__(self):
-        return 'Шаблон №' + str(self.id)
-
-    class Meta:
-        ordering = ['id']
-        verbose_name = "Шаблон"
-        verbose_name_plural = "Шаблоны"
 
 
 class Button(models.Model):

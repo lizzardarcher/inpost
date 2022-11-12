@@ -15,7 +15,7 @@ from .forms import *
 from .calendar import PostCalendar
 from .calendar_mini import PostCalendarMini
 from .utils import get_chat_info, get_bot_info
-from apps.middleware import current_user
+from ..middleware import current_user
 
 from django.shortcuts import render
 from django.forms import modelformset_factory
@@ -83,6 +83,7 @@ class PostDetailsView(LoginRequiredMixin, DetailView):
             'documents': PostDocument.objects.filter(post__user=self.request.user),
             'buttons': Button.objects.filter(post__user=self.request.user),
             'references': PostReference.objects.filter(post__user=self.request.user),
+            'templates': Template.objects.filter(post__user=self.request.user),
         })
         return context
 
@@ -197,7 +198,7 @@ class TemplateListView(LoginRequiredMixin, ListView):
 
 
 class TemplateCreateView(SuccessMessageMixin, LoginRequiredMixin, CreateView):
-    model = Post
+    model = Template
     form_class = TemplateForm
     template_name = 'crud/template_create.html'
     success_url = '/template'
@@ -205,7 +206,7 @@ class TemplateCreateView(SuccessMessageMixin, LoginRequiredMixin, CreateView):
 
 
 class TemplateUpdateView(SuccessMessageMixin, LoginRequiredMixin, UpdateView):
-    model = Post
+    model = Template
     form_class = TemplateForm
     template_name = 'crud/template_create.html'
     success_url = '/template'
@@ -395,7 +396,15 @@ def index(request):
         subs += chat.subscribers
     if subs > 10000:
         subs = math.floor(subs / 1000)
+        subs = '+' + str(subs) + 'k'
+
     all_users = len(User.objects.all())
+    try:
+        user_stats = UserStats.objects.filter(user=request.user)[0]
+        user_status = UserStatus.objects.filter(user=request.user)[0]
+    except:
+        user_stats = {}
+        user_status = {}
     context = {
         'segment': 'index',
         'year': datetime.now().year,
@@ -405,8 +414,8 @@ def index(request):
         'bots': Bot.objects.filter(user=request.user),
         'posts': Post.objects.filter(user=request.user),
         'chats': Chat.objects.filter(user=request.user),
-        'user_stats': UserStats.objects.filter(user=request.user)[0],
-        'user_status': UserStatus.objects.filter(user=request.user),
+        'user_stats': user_stats,
+        'user_status': user_status,
         'cal': PostCalendar().formatmonth(theyear=int(datetime.now().year), themonth=int(datetime.now().month)),
 
     }

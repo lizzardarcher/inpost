@@ -12,7 +12,7 @@
 
     <div class="col-sm-6">
         <a href="/post" class="text-black"><h3>Назад</h3></a>
-        <div id="preview" class="card card-chart">
+        <div id="preview">
             <div class="row">
                 {% if post.photo_1 %}
                     <img class="img img-raised mt-1 ml-5 col-4 rounded" src="{{ MEDIA_URL }}/{{ post.photo_1 }}"/>
@@ -40,8 +40,15 @@
 
             <div class="row">
                 <div class="col-1"></div>
-                <div class="col-10 bg-white rounded mb-2">
+                <div class="col-10 bg-secondary rounded mb-2">
                     {{ post.text }}
+                    {% for template in templates %}
+                        <div class="container bg-primary rounded text-dark">
+                            <hr>
+                            <hr>
+                            {{ template.text }}
+                        </div>
+                    {% endfor %}
                 </div>
                 <div class="col-10">
                     {% if post.url %}
@@ -75,6 +82,7 @@
                         {% endif %}
                     </div>
                 </div>
+
             </div>
         </div>
     </div>
