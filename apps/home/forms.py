@@ -99,7 +99,7 @@ class PostScheduleForm(forms.ModelForm):
         model = PostSchedule
         fields = ['post', 'schedule']
         widgets = {
-            # 'post': forms.Input(attrs={'class': 'form-control'}),
+            # 'post': forms.TextInput(attrs={'class': 'form-control'}),
             'schedule': forms.DateTimeInput(attrs={'type': 'datetime-local'})
         }
 

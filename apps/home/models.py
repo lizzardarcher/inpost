@@ -5,6 +5,19 @@ from django.contrib.auth.models import User
 from . import validators
 
 
+class UserStats(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    post_sent = models.IntegerField(default=0, null=True, blank=True, verbose_name='Отправлено всего постов')
+    send_errors = models.IntegerField(default=0, null=True, blank=True, verbose_name='Ошибок отправки постов')
+
+    # def __str__(self):
+    #     return self.user.username
+
+    class Meta:
+        verbose_name = 'Статистика'
+        verbose_name_plural = 'Статистика'
+
+
 class UserStatus(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     exp_date = models.DateField(null=True, blank=True, verbose_name='Оплачено по:')

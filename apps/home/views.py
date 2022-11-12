@@ -1,5 +1,5 @@
 # -*- encoding: utf-8 -*-
-
+import math
 from datetime import datetime
 
 from django.contrib.messages.views import SuccessMessageMixin
@@ -359,12 +359,24 @@ class ScheduleDeleteView(SuccessMessageMixin, LoginRequiredMixin, DeleteView):
 
 @login_required(login_url="/login/")
 def index(request):
+    subs = 0
+    chats = Chat.objects.filter(user=request.user)
+    for chat in chats:
+        subs += chat.subscribers
+    if subs > 10000:
+        subs = math.floor(subs / 1000)
+    all_users = len(User.objects.all())
     context = {
         'segment': 'index',
         'year': datetime.now().year,
         'month': datetime.now().month,
+        'subs': subs,
+        'all_users': all_users,
         'bots': Bot.objects.filter(user=request.user),
+        'posts': Post.objects.filter(user=request.user),
         'chats': Chat.objects.filter(user=request.user),
+        'user_stats': UserStats.objects.filter(user=request.user)[0],
+        'user_status': UserStatus.objects.filter(user=request.user),
         'cal': PostCalendar().formatmonth(theyear=int(datetime.now().year), themonth=int(datetime.now().month)),
 
     }

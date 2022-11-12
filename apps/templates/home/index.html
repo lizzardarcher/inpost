@@ -7,46 +7,58 @@
 
 {% block content %}
     {% if bots %}
-        <h1 class="alert alert-danger">Раздел находится в разработке</h1>
         <div class="row">
-            <div class="col-12">
-                <div class="card card-chart">
-                    <div class="card-header">
-                        <div class="row">
-                            <div class="col-sm-6 text-left">
-                                <h5 class="card-category">Информация по чатам</h5>
-                                <h2 class="card-title">Подписчики</h2>
-                            </div>
-                            <div class="col-sm-6">
-                                <div class="btn-group btn-group-toggle float-right" data-toggle="buttons">
-                                    {% for chat in chats %}
-                                    <label class="btn btn-sm btn-primary btn-simple" id="{{ chat.id }}">
-                                        <input type="radio" name="options" checked="">
-                                        <span class="d-none d-sm-block d-md-block d-lg-block d-xl-block">{{ chat.title }}</span>
-                                        <span class="d-block d-sm-none"><i class="tim-icons icon-chat-33"></i></span>
-                                    </label>
-                                    {% endfor %}
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+            {#      Приветственные баннеры      #}
+            <div class="col-lg-4 col-md-6">
+                <div class="card card-pricing card-primary">
                     <div class="card-body">
-                        <div class="chart-area">
-                            <div class="chartjs-size-monitor">
-                                <div class="chartjs-size-monitor-expand">
-                                    <div class=""></div>
-                                </div>
-                                <div class="chartjs-size-monitor-shrink">
-                                    <div class=""></div>
-                                </div>
-                            </div>
-                            <canvas id="chartBig1" width="748" height="440"
-                                    style="display: block; height: 220px; width: 374px;"
-                                    class="chartjs-render-monitor"></canvas>
-                        </div>
+                        <h1 class="card-title"></h1>
+                        <img class="card-img" src="/static/assets/img/card-primary.png" alt="Image">
+                        <ul class="list-group">
+                            <li class="list-group-item"><h1>Каналы: {{ chats|length }}</h1></li>
+                        </ul>
+
+                    </div>
+                    <div class="card-footer text-center mb-3 mt-3">
+                        <a href="/chat" class="btn btn-round btn-just-icon btn-primary">Мои Каналы</a>
                     </div>
                 </div>
             </div>
+            <div class="col-lg-4 col-md-6">
+                <div class="card card-pricing card-primary">
+                    <div class="card-body">
+                        <h1 class="card-title"></h1>
+                        <img class="card-img" src="/static/assets/img/card-success.png" alt="Image">
+                        <ul class="list-group">
+                            <li class="list-group-item"><h1>Посты: {{ posts|length }}</h1></li>
+                        </ul>
+
+                    </div>
+                    <div class="card-footer text-center mb-3 mt-3">
+                        <a href="/post" class="btn btn-round btn-just-icon btn-primary">Мои Посты</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6">
+                <div class="card card-pricing card-primary">
+                    <div class="card-body">
+                        <h1 class="card-title"></h1>
+                        <img class="card-img" src="/static/assets/img/card-warning.png" alt="Image">
+                        <ul class="list-group">
+                            <li class="list-group-item">
+                                <h1><p>Расписание постов</p><i class="tim-icons icon-calendar-60"></i></h1>
+                            </li>
+                        </ul>
+
+                    </div>
+                    <div class="card-footer text-center mb-3 mt-3">
+                        <a href="/calendar/{% now "Y" %}/{% now "m" %}/"
+                           class="btn btn-round btn-just-icon btn-primary">Расписание</a>
+                    </div>
+                </div>
+            </div>
+
+            {#    Мини статистика    #}
             <div class="col-lg-3 col-md-6">
                 <div class="card card-stats">
                     <div class="card-body">
@@ -59,7 +71,7 @@
                             <div class="col-7">
                                 <div class="numbers">
                                     <p class="card-category">Отправлено постов</p>
-                                    <h3 class="card-title">16074</h3>
+                                    <h3 class="card-title">{{ user_stats.post_sent }}</h3>
                                 </div>
                             </div>
                         </div>
@@ -84,7 +96,7 @@
                             <div class="col-7">
                                 <div class="numbers">
                                     <p class="card-category">Подписчики</p>
-                                    <h3 class="card-title">+45k</h3>
+                                    <h3 class="card-title">+{{ subs }}k</h3>
                                 </div>
                             </div>
                         </div>
@@ -109,7 +121,7 @@
                             <div class="col-7">
                                 <div class="numbers">
                                     <p class="card-category">Пользователи</p>
-                                    <h3 class="card-title">150,000</h3>
+                                    <h3 class="card-title">{{ all_users }}</h3>
                                 </div>
                             </div>
                         </div>
@@ -134,7 +146,7 @@
                             <div class="col-7">
                                 <div class="numbers">
                                     <p class="card-category">Ошибок</p>
-                                    <h3 class="card-title">2</h3>
+                                    <h3 class="card-title">{{ user_stats.send_errors }}</h3>
                                 </div>
                             </div>
                         </div>
@@ -147,6 +159,145 @@
                     </div>
                 </div>
             </div>
+
+            {#     Основная статистика по каналам     #}
+            <div class="col-12">
+                <div class="card card-chart">
+                    <div class="card-header">
+                        <div class="row">
+                            <div class="col-sm-6 text-left">
+                                <h5 class="card-category">Информация по чатам</h5>
+                                <h2 class="card-title">Подписчики</h2>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="btn-group btn-group-toggle float-right" data-toggle="buttons">
+                                    {% for chat in chats %}
+                                        <label class="btn btn-sm btn-primary btn-simple" id="{{ chat.id }}">
+                                            <input type="radio" name="options" checked="">
+                                            <span class="d-none d-sm-block d-md-block d-lg-block d-xl-block">{{ chat.title }}</span>
+                                            <span class="d-block d-sm-none"><i
+                                                    class="tim-icons icon-chat-33"></i></span>
+                                        </label>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="chart-area">
+                            <div class="chartjs-size-monitor">
+                                <div class="chartjs-size-monitor-expand">
+                                    <div class=""></div>
+                                </div>
+                                <div class="chartjs-size-monitor-shrink">
+                                    <div class=""></div>
+                                </div>
+                            </div>
+                            <canvas id="chartBig1" width="748" height="440"
+                                    style="display: block; height: 220px; width: 374px;"
+                                    class="chartjs-render-monitor"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {#     Timeline TODO дописать    #}
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card card-timeline card-plain">
+                        <div class="card-body">
+                            <ul class="timeline">
+                                <li class="timeline-inverted">
+                                    <div class="timeline-badge danger">
+                                        <i class="tim-icons icon-planet"></i>
+                                    </div>
+                                    <div class="timeline-panel">
+                                        <div class="timeline-heading">
+                                            <span class="badge badge-pill badge-danger">Some Title</span>
+                                        </div>
+                                        <div class="timeline-body">
+                                            <p>Wifey made the best Father's Day meal ever. So thankful so happy so
+                                                blessed. Thank you for making my family We just had fun with the
+                                                “future” theme !!! It was a fun night all together ... The always rude
+                                                Kanye Show at 2am Sold Out Famous viewing @ Figueroa and 12th in
+                                                downtown.</p>
+                                        </div>
+                                        <h6>
+                                            <i class="ti-time"></i> 11 hours ago via Twitter
+                                        </h6>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="timeline-badge success">
+                                        <i class="tim-icons icon-user-run"></i>
+                                    </div>
+                                    <div class="timeline-panel">
+                                        <div class="timeline-heading">
+                                            <span class="badge badge-pill badge-success">Another One</span>
+                                        </div>
+                                        <div class="timeline-body">
+                                            <p>Thank God for the support of my wife and real friends. I also wanted to
+                                                point out that it’s the first album to go number 1 off of streaming!!! I
+                                                love you Ellen and also my number one design rule of anything I do from
+                                                shoes to music to homes is that Kim has to like it....</p>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="timeline-inverted">
+                                    <div class="timeline-badge info">
+                                        <i class="tim-icons icon-notes"></i>
+                                    </div>
+                                    <div class="timeline-panel">
+                                        <div class="timeline-heading">
+                                            <span class="badge badge-pill badge-info">Another Title</span>
+                                        </div>
+                                        <div class="timeline-body">
+                                            <p>Called I Miss the Old Kanye That’s all it was Kanye And I love you like
+                                                Kanye loves Kanye Famous viewing @ Figueroa and 12th in downtown LA
+                                                11:10PM</p>
+                                            <p>What if Kanye made a song about Kanye Royère doesn't make a Polar bear
+                                                bed but the Polar bear couch is my favorite piece of furniture we own It
+                                                wasn’t any Kanyes Set on his goals Kanye</p>
+                                            <hr>
+                                        </div>
+                                        <div class="timeline-footer">
+                                            <div class="dropdown">
+                                                <button type="button" class="btn btn-round btn-info dropdown-toggle"
+                                                        data-toggle="dropdown">
+                                                    <i class="tim-icons icon-settings-gear-63"></i>
+                                                </button>
+                                                <div class="dropdown-menu">
+                                                    <a class="dropdown-item" href="#">Action</a>
+                                                    <a class="dropdown-item" href="#">Another action</a>
+                                                    <a class="dropdown-item" href="#">Something else here</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="timeline-badge warning">
+                                        <i class="tim-icons icon-gift-2"></i>
+                                    </div>
+                                    <div class="timeline-panel">
+                                        <div class="timeline-heading">
+                                            <span class="badge badge-pill badge-warning">Another One</span>
+                                        </div>
+                                        <div class="timeline-body">
+                                            <p>Tune into Big Boy's 92.3 I'm about to play the first single from Cruel
+                                                Winter also to Kim’s hair and makeup Lorraine jewelry and the whole
+                                                style squad at Balmain and the Yeezy team. Thank you Anna for the invite
+                                                thank you to the whole Vogue team</p>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {#     Ненужные charts TODO убрать       #}
             <div class="col-lg-4">
                 <div class="card card-chart">
                     <div class="card-header">
@@ -215,6 +366,7 @@
                     </div>
                 </div>
             </div>
+
         </div>
     {% else %}
         <div class="row">

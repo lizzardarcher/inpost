@@ -60,6 +60,12 @@ from .models import *
 #     pass
 
 
+class UserStatsInline(admin.StackedInline):
+    model = UserStats
+    can_delete = False
+    verbose_name_plural = 'Статистика'
+
+
 class UserStatusInline(admin.StackedInline):
     model = UserStatus
     can_delete = False
@@ -67,7 +73,7 @@ class UserStatusInline(admin.StackedInline):
 
 
 class UserAdmin(BaseUserAdmin):
-    inlines = (UserStatusInline,)
+    inlines = (UserStatusInline, UserStatsInline)
 
 
 admin.site.register(Post)

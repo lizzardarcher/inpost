@@ -19,8 +19,10 @@
         <br/>
         <h3>Посты на эту дату:</h3>
         {% for sched in sch %}
-            <a class="cal-link" href="/schedule_update/{{ sched.id }}"><div class="data">{{ sched.post }} - время: {{ sched.schedule.time }}|
-                {{ sched.schedule.date|linebreaksbr }}</div></a>
+            <a class="cal-link" href="/schedule_update/{{ sched.id }}">
+                <div class="data">{{ sched.post }} - время: {{ sched.schedule.time }}|
+                    {{ sched.schedule.date|linebreaksbr }}</div>
+            </a>
         {% endfor %}
     </div>
 
