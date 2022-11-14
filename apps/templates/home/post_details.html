@@ -10,7 +10,7 @@
 
 {% block content %}
 
-    <div class="col-sm-6">
+    <div class="col-md-6 col-12">
         <a href="/post" class="text-black"><h3>Назад</h3></a>
         <div id="preview">
             <div class="row">
@@ -40,19 +40,19 @@
 
             <div class="row">
                 <div class="col-1"></div>
-                <div class="col-10 bg-secondary rounded mb-2">
+                <div class="col-10 bg-dark rounded mb-2">
                     {{ post.text }}
                     {% for template in templates %}
-                        <div class="container bg-primary rounded text-dark">
-                            <hr>
+                        <div class="container rounded text-dark">
                             <hr>
                             {{ template.text }}
                         </div>
                     {% endfor %}
                 </div>
+                <div class="col-1"></div>
                 <div class="col-10">
                     {% if post.url %}
-                        <div class="container ml-4 mt-1 text-center bg-dark opacity-8 rounded"
+                        <div class="ml-5 mt-1 text-center bg-dark opacity-8 rounded"
                              style="width: 100%">
                             <p>{{ post.url_text }}</p>
                         </div>
