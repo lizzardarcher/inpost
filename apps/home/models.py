@@ -113,6 +113,7 @@ class PostSchedule(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True, verbose_name='Пользователь')
     post = models.ForeignKey(Post, on_delete=models.CASCADE, null=True, blank=False, verbose_name='Пост')
     schedule = models.DateTimeField(null=True, blank=False, verbose_name='Расписание')
+    is_sent = models.BooleanField(default=False, null=True, blank=True, verbose_name='Отправлено')
     id = models.AutoField(primary_key=True, editable=False)
 
     def __str__(self):

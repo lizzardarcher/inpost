@@ -204,6 +204,10 @@ class TemplateCreateView(SuccessMessageMixin, LoginRequiredMixin, CreateView):
     success_url = '/template'
     success_message = 'Шаблон создан успешно!'
 
+    def form_valid(self, form):
+        form.instance.user = self.request.user
+        return super().form_valid(form)
+
 
 class TemplateUpdateView(SuccessMessageMixin, LoginRequiredMixin, UpdateView):
     model = Template
@@ -211,6 +215,10 @@ class TemplateUpdateView(SuccessMessageMixin, LoginRequiredMixin, UpdateView):
     template_name = 'crud/template_create.html'
     success_url = '/template'
     success_message = 'Шаблон обновлён успешно!'
+
+    def form_valid(self, form):
+        form.instance.user = self.request.user
+        return super().form_valid(form)
 
 
 class TemplateDeleteView(SuccessMessageMixin, LoginRequiredMixin, DeleteView):
