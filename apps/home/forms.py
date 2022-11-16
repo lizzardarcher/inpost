@@ -97,10 +97,10 @@ class PostButtonForm(forms.ModelForm):
 class PostScheduleForm(forms.ModelForm):
     class Meta:
         model = PostSchedule
-        fields = ['post', 'schedule']
+        fields = ['post', 'schedule', 'is_sent']
         widgets = {
-            # 'post': forms.TextInput(attrs={'class': 'form-control'}),
-            'schedule': forms.DateTimeInput(attrs={'type': 'datetime-local'})
+            'schedule': forms.DateTimeInput(attrs={'type': 'datetime-local'}),
+            'is_sent': forms.HiddenInput(attrs={'value': ''}),
         }
 
 

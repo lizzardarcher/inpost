@@ -77,4 +77,6 @@ def update(connection, query, value):
 # get_by_id(DB_CONNECTION, GET_POST_BY_ID, (1,))
 # get_by_id(DB_CONNECTION, GET_TEMPLATE_BY_ID, (1,))
 
-update(DB_CONNECTION, UPDATE_SCHED_SET_SENT, (9, 1))
+# update(DB_CONNECTION, UPDATE_SCHED_SET_SENT, (9, 1))
+# template = get_by_id(DB_CONNECTION, GET_TEMPLATE_BY_ID, (5,))[0][3]
+# print(template)
