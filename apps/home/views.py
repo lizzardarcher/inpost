@@ -28,10 +28,6 @@ from ..middleware import current_user
 
 class AdminPageView(SuccessMessageMixin, LoginRequiredMixin, ListView):
     template_name = 'admin/admin_page.html'
-    # extra_context = {
-    #     'users': User.objects.all(),
-    #     'user_status': UserStatus.objects.all(),
-    # }
     queryset = {}
 
     def get_context_data(self, **kwargs):
@@ -51,7 +47,6 @@ class AdminPageUserUpdateView(SuccessMessageMixin, LoginRequiredMixin, UpdateVie
     success_message = 'Данные пользователя обновлены'
 
     def form_valid(self, form):
-        os.system('apachectl -k graceful')
         return super().form_valid(form)
 
 
@@ -63,7 +58,6 @@ class AdminPageUserStatusUpdateView(SuccessMessageMixin, LoginRequiredMixin, Upd
     success_message = 'Данные пользователя обновлены'
 
     def form_valid(self, form):
-        os.system('apachectl -k graceful')
         return super().form_valid(form)
 
 
@@ -76,12 +70,6 @@ class AdminPageUserDeleteView(SuccessMessageMixin, LoginRequiredMixin, DeleteVie
 
 class AdminPageUserDetailsView(SuccessMessageMixin, LoginRequiredMixin, TemplateView):
     template_name = 'admin/user_details.html'
-    # extra_context = {
-    #     'users': User.objects.all(),
-    #     'bots': Bot.objects.all(),
-    #     'posts': Post.objects.all(),
-    #     'chats': Chat.objects.all(),
-    # }
 
     def get_context_data(self, **kwargs):
         context = super(AdminPageUserDetailsView, self).get_context_data(**kwargs)
@@ -445,6 +433,9 @@ class TemplateListView(LoginRequiredMixin, ListView):
     context_object_name = 'templates'
     success_url = '/template'
     template_name = 'home/template.html'
+
+    def get_queryset(self):
+        return Template.objects.filter(user=self.request.user)
 
 
 class TemplateCreateView(SuccessMessageMixin, LoginRequiredMixin, CreateView):

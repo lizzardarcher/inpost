@@ -147,6 +147,12 @@ class BotAdminForm(forms.ModelForm):
 
 
 class ChatForm(forms.ModelForm):
+
+    def __init__(self, *args, **kwargs):
+        super(ChatForm, self).__init__(*args, **kwargs)
+        bot_set = Bot.objects.filter(user_id=current_user.get_current_user_id())
+        self.fields['bot'].queryset = bot_set
+
     class Meta:
         model = Chat
         fields = ['bot', 'chat_type', 'ref']
