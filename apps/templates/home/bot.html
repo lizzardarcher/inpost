@@ -9,7 +9,7 @@
                     <button type="button" aria-hidden="true" class="close" data-dismiss="alert" aria-label="Close">
                         <i class="tim-icons icon-simple-remove"></i>
                     </button>
-                    <span><b> <i class="fa fa-check"></i> {{ message }}</b></span>
+                    <span><b> <i class="fa fa-check"></i> {{ message|safe }}</b></span>
                 </div>
             {% endfor %}
         </div>

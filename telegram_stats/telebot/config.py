@@ -1,2 +1,0 @@
-chat = -1001800814718
-token = '5697092167:AAEkyttizOPHq1GtoLBT_ok20J2f2VE2ThI'

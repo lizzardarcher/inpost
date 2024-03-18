@@ -5,8 +5,9 @@
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="apple-touch-icon" sizes="76x76" href="/static/assets/img/apple-icon.png">
-    <link rel="icon" type="image/png" href="/static/assets/img/favicon.png">
+    <link rel="icon" type="image/png" href="/static/images/favicon.png">
     <link rel="canonical" href="https://appseed.us/admin-dashboards/django-dashboard-black">
+    <div style="display: none" ><a target="_blank" href="https://icons8.com/icon/9F6L4WZapjjU/template">Template</a> icon by <a target="_blank" href="https://icons8.com">Icons8</a></div>
 
     <title>
         Телеграм админ - {% block title %}{% endblock %} | Pro
@@ -57,7 +58,7 @@
 <div class="wrapper">
     {% include 'includes/sidebar.html' %}
 
-    <div class="main-panel">
+    <div class="main-panel" data="{{ status_of_user.primary_color }}">
 
         {% include 'includes/navigation.html' %}
 

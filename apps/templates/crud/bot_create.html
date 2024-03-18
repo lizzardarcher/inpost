@@ -5,10 +5,21 @@
 <div class="container">
 <div class=" col-12 col-md-8">
     <a href="/bot" ><h3>Назад</h3></a>
+    {% if messages %}
+        <div class="col-md-6">
+            {% for message in messages %}
+                <div class="alert alert-success">
+                    <button type="button" aria-hidden="true" class="close" data-dismiss="alert" aria-label="Close">
+                        <i class="tim-icons icon-simple-remove"></i>
+                    </button>
+                    <span><b> <i class="fa fa-check"></i> {{ message|safe }}</b></span>
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
     <form method="post" >
         {% csrf_token %}
-        {{ form.ref|as_crispy_field }}
-        {{ form.token|as_crispy_field }}
+        {{ form.as_p }}
         <br/>
         <button type="submit" class="btn btn-primary">Подтвердить</button>
     </form>

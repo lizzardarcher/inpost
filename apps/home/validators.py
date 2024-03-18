@@ -19,9 +19,9 @@ def validate_post_name(value):
 
 
 def validate_bot_name(value):
-    if 'http' not in value:
+    if 'http' not in value and '://' not in value:
         raise ValidationError(
-            _('%(value)s | Введите корректную ссылку'),
+            _('%(value)s | Введите корректную ссылку, включающую в себя http:// или https://'),
             params={'value': value},
         )
 

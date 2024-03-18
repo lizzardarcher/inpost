@@ -77,10 +77,12 @@ class UserAdmin(BaseUserAdmin):
 
 
 admin.site.register(Post)
+admin.site.register(Template)
 admin.site.register(Bot)
-admin.site.register(Button)
+# admin.site.register(Button)
 admin.site.register(Chat)
-admin.site.register(Media)
+# admin.site.register(Media)
 admin.site.register(PostSchedule)
+admin.site.register(Notification)
 admin.site.unregister(User)
 admin.site.register(User, UserAdmin)

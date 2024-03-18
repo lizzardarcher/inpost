@@ -13,10 +13,11 @@ SECRET_KEY = config('SECRET_KEY', default='S#perS3crEt_1122')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config('DEBUG', default=True, cast=bool)
+# DEBUG = True
 
 # load production server from .env
 # ALLOWED_HOSTS = ['localhost', '127.0.0.1', config('SERVER', default='127.0.0.1')]
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['*']  # inpost.su, 188.225.43.83
 
 # Application definition
 
@@ -36,13 +37,38 @@ INSTALLED_APPS = [
     'easy_thumbnails',
     'debug_toolbar',
     # 'emoji_picker',
-    'markitup'
+    'markitup',
+    'django_quill',
 ]
 
 CRISPY_TEMPLATE_PACK = 'uni_form'
 
 MARKITUP_FILTER = ('markdown.markdown', {})
 MARKITUP_AUTO_PREVIEW = False
+
+QUILL_CONFIGS = {
+    'default':{
+        'theme': 'snow',
+        'modules': {
+            'syntax': True,
+            'toolbar': [
+                [
+                    # {'font': []},
+                    # {'header': []},
+                    # {'align': []},
+                    'bold', 'italic', 'underline', 'strike',
+                    # {'color': []},
+                    # {'background': []},
+                ],
+                [
+                    # 'code-block',
+                    'link'
+                ],
+                # ['clean'],
+            ]
+        }
+    }
+}
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -79,6 +105,7 @@ TEMPLATES = [
                 'django.contrib.messages.context_processors.messages',
                 'django.template.context_processors.media',
                 'django.template.context_processors.static',
+                'apps.home.context_processors.get_notifications',
             ],
         },
     },
@@ -88,16 +115,37 @@ WSGI_APPLICATION = 'core.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': 'db.sqlite3',
+if os.name == 'nt':
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': 'db.sqlite3',
+        }
     }
-}
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': '/var/www/html/black-dashboard-django-new/db.sqlite3',
+        }
+    }
 
 # Password validation
 # https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators
+
+# EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+# EMAIL_BACKEND = 'django.core.mail.backends.dummy.EmailBackend'
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.mail.ru'
+EMAIL_PORT = 2525
+EMAIL_HOST_USER = "tgmail_no_reply@inbox.ru"
+EMAIL_HOST_PASSWORD = "DvpKvv4NQpQiTtkdVE7E"
+EMAIL_USE_TLS = True
+# EMAIL_USE_SSL = True
+
+SERVER_EMAIL = EMAIL_HOST_USER
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -144,3 +192,5 @@ MEDIA_URL = '/media/'
 STATICFILES_DIRS = (
     os.path.join(CORE_DIR, 'apps/static'),
 )
+
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'

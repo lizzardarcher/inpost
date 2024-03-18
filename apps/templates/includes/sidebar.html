@@ -1,4 +1,4 @@
-<div class="sidebar">
+<div class="sidebar" data="{{ status_of_user.primary_color }}">
     <div class="sidebar-wrapper">
         <div class="logo">
             <a rel="sponsored noopener noreferrer"
@@ -55,14 +55,24 @@
                     </a>
                 </li>
 
+<!--                {% if request.user.is_superuser %}-->
+<!--                    <li class="dropdown nav-item">-->
+<!--                        <a href="/admin">-->
+<!--                            <i class="tim-icons icon-app"></i>-->
+<!--                            <p>Админ</p>-->
+<!--                        </a>-->
+<!--                    </li>-->
+<!--                {% endif %}-->
+
                 {% if request.user.is_superuser %}
                     <li class="dropdown nav-item">
-                        <a href="/admin">
+                        <a href="/admin_page">
                             <i class="tim-icons icon-app"></i>
-                            <p>Админ</p>
+                            <p>Администратор</p>
                         </a>
                     </li>
                 {% endif %}
+
             {% endif %}
         </ul>
     </div>

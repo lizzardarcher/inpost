@@ -30,7 +30,7 @@
                             <p class="card-text"><b>Название шаблона: </b>{{ template.title }}</p>
                         </div>
                         <div class="col-sm-8 text-left">
-                            <p class="card-text"><b>Текст шаблона: </b>{{ template.text }}</p>
+                            <p class="card-text"><b>Текст шаблона: </b>{{ template.text|safe }}</p>
                         </div>
                         <div class="col-sm-4 ">
                             <a href="template_update/{{ template.id }}">

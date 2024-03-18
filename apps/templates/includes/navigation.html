@@ -23,14 +23,22 @@
             <span class="navbar-toggler-bar navbar-kebab"></span>
             <span class="navbar-toggler-bar navbar-kebab"></span>
         </button>
+
+        {% if request.user.is_authenticated %}
+
         <div class="navbar-collapse collapse" id="navigation" style="">
             <ul class="navbar-nav ml-auto">
-{#                <li class="search-bar input-group">#}
-{#                    <button class="btn btn-link" id="search-button" data-toggle="modal" data-target="#searchModal"><i#}
-{#                            class="tim-icons icon-zoom-split"></i>#}
-{#                        <span class="d-lg-none d-md-block">Search</span>#}
-{#                    </button>#}
-{#                </li>#}
+
+                <li>Статус: <a href="/payment_info">{% if status_of_user.is_vip %}<span class="badge badge-warning border">VIP</span>
+                    {% else %}<span class="badge badge-light">Стандарт</span>{% endif %}</a></li>
+
+                <li>Подписка до: <a href="/payment_info">{{ status_of_user.exp_date }}</a></li>
+
+                {% if status_of_user.tz %}
+                    <li><a href="/change_location/{{ status_of_user.id }}" class="btn-link text-light">UTC {{ status_of_user.tz }}</a></li>
+                {% else %}
+                    <li><a href="/create_location" class="btn-link text-light"><span class="badge badge-warning">Выберите город</span></a></li>
+                {% endif %}
 
                 <li class="dropdown nav-item">
                     <a href="javascript:void(0)" class="dropdown-toggle nav-link" data-toggle="dropdown">
@@ -41,16 +49,15 @@
                         </p>
                     </a>
                     <ul class="dropdown-menu dropdown-menu-right dropdown-navbar">
-                        <li class="nav-link"><a href="#" class="nav-item dropdown-item">Пост №3 "Анжелика"
-                            отправлен</a></li>
-                        <li class="nav-link"><a href="javascript:void(0)" class="nav-item dropdown-item">Пост №1
-                            "Сбор грибов" отправлен</a></li>
-                        <li class="nav-link"><a href="javascript:void(0)" class="nav-item dropdown-item">Пост №5
-                            "Автомойка" отправлен</a></li>
-                        <li class="nav-link"><a href="javascript:void(0)" class="nav-item dropdown-item">Ошибка
-                            отправки поста №72</a></li>
-                        <li class="nav-link"><a href="javascript:void(0)" class="nav-item dropdown-item">Пост №41
-                            "Елена" отправлен</a></li>
+                        {% if notifications %}
+                            {% for notify in notifications %}
+                                {% if notify.user_id == request.user.id %}
+                                    <li class="nav-link"><a href="#" class="nav-item dropdown-item">{{ notify.text }}</a></li>
+                                {% endif %}
+                            {% endfor %}
+                        {% else %}
+                            <li class="nav-link"><a href="#" class="nav-item dropdown-item">Нет новых уведомлений</a></li>
+                        {% endif %}
                     </ul>
                 </li>
 
@@ -77,18 +84,6 @@
                 <li class="separator d-lg-none"></li>
             </ul>
         </div>
+        {% endif %}
     </div>
 </nav>
-<div class="modal modal-search fade" id="searchModal" tabindex="-1" role="dialog" aria-labelledby="searchModal"
-     aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <input type="text" class="form-control" id="inlineFormInputGroup" placeholder="SEARCH">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <i class="tim-icons icon-simple-remove"></i>
-                </button>
-            </div>
-        </div>
-    </div>
-</div>
