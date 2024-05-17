@@ -3,6 +3,7 @@ import math
 from datetime import datetime
 import os
 
+from pathlib import Path
 from django.contrib.messages.views import SuccessMessageMixin
 from django.http import HttpResponse
 from django.template import loader
@@ -628,13 +629,37 @@ class CalendarEventCreate(SuccessMessageMixin, LoginRequiredMixin, CreateView):
 
     def get_context_data(self, **kwargs):
         context = super(CalendarEventCreate, self).get_context_data(**kwargs)
+        context['name'] = self.request.GET.get('name')
         context['sch'] = PostSchedule.objects.filter(user=self.request.user)
         return context
 
     def form_valid(self, form):
-        print('1212212121121221e34f3ww3')
         form.instance.user = self.request.user
-        return super(CalendarEventCreate, self).form_valid(form)
+        return super().form_valid(form)
+
+
+class CalendarEventMultipleCreate(SuccessMessageMixin, LoginRequiredMixin, CreateView):
+    model = PostSchedule
+    form_class = PostScheduleMultipleForm
+    template_name = 'crud/calendar_event_create.html'
+    # success_url = f'/calendar/{datetime.now().year}/{datetime.now().month}/'
+    success_url = f'/post'
+    success_message = 'Распиание обновлено'
+
+    def get_context_data(self, **kwargs):
+        context = super(CalendarEventMultipleCreate, self).get_context_data(**kwargs)
+        context['name'] = self.request.GET.get('name')
+        context['sch'] = PostSchedule.objects.filter(user=self.request.user)
+        return context
+
+    def form_valid(self, form):
+        
+        form.instance.user = self.request.user
+        posts = form.cleaned_data['post']
+        for post in posts:
+            self.request.datasession['post'] = post.id
+            form.save()
+        return super().form_valid(form)
 
 
 class ScheduleUpdateView(SuccessMessageMixin, LoginRequiredMixin, UpdateView):

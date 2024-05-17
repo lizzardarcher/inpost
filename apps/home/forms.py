@@ -110,13 +110,30 @@ class PostScheduleForm(forms.ModelForm):
         model = PostSchedule
         fields = ['post', 'schedule', 'is_sent']
         widgets = {
-            # 'post': forms.CheckboxSelectMultiple(),
-            'schedule': forms.DateTimeInput(attrs={'type': 'datetime-local'}),
+            'post': forms.Select(attrs={'class': 'form-control text-info'}),
+            'schedule': forms.DateTimeInput(attrs={'class': 'form-control text-info', 'type': 'datetime-local'}),
             'is_sent': forms.HiddenInput(attrs={'value': ''}),
         }
 
     def __init__(self, *args, **kwargs):
         super(PostScheduleForm, self).__init__(*args, **kwargs)
+        post_set = Post.objects.filter(user_id=current_user.get_current_user_id())
+        self.fields['post'].queryset = post_set
+
+
+class PostScheduleMultipleForm(forms.ModelForm):
+    class Meta:
+        model = PostSchedule
+        fields = ['post', 'schedule', 'is_sent']
+        widgets = {
+            # 'post': forms.CheckboxSelectMultiple(attrs={'class': 'form-control text-info'}),
+            'post': forms.SelectMultiple(),
+            'schedule': forms.DateTimeInput(attrs={'class': 'form-control text-info', 'type': 'datetime-local'}),
+            'is_sent': forms.HiddenInput(attrs={'value': ''}),
+        }
+
+    def __init__(self, *args, **kwargs):
+        super(PostScheduleMultipleForm, self).__init__(*args, **kwargs)
         post_set = Post.objects.filter(user_id=current_user.get_current_user_id())
         self.fields['post'].queryset = post_set
 
@@ -158,6 +175,8 @@ class ChatForm(forms.ModelForm):
         model = Chat
         fields = ['bot', 'chat_type', 'ref']
         widgets = {
+            'bot': forms.Select(attrs={'class': 'form-control text-info'}),
+            'chat_type': forms.Select(attrs={'class': 'form-control text-info'}),
             'ref': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'https://t.me/blablabla'}),
         }
 

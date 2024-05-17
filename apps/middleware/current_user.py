@@ -25,6 +25,6 @@ def get_current_user_id():
     try:
         return _user.id
     except AttributeError:
-        print(traceback.format_exc())
+        print(traceback.fromat_exc())
         return None
 

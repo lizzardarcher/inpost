@@ -1,18 +1,22 @@
 # -*- encoding: utf-8 -*-
 
 from django.urls import path, re_path
+from django.views.static import serve
+
 from . import views
 from django.conf import settings
 from django.conf.urls.static import static
 
 urlpatterns = [
-
+    re_path(r'^media/(?P<path>.*)$', serve, {'document_root': settings.MEDIA_ROOT}),
+    re_path(r'^static/(?P<path>.*)$', serve, {'document_root': settings.STATIC_ROOT}),
     path('', views.index, name='home'),
 
     path('admin_page', views.AdminPageView.as_view(), name='admin page'),
     path('admin_page/user_update/<int:pk>', views.AdminPageUserUpdateView.as_view(), name='admin user update'),
     path('admin_page/user_details/<int:pk>', views.AdminPageUserDetailsView.as_view(), name='admin user details'),
-    path('admin_page/user_status_update/<int:pk>', views.AdminPageUserStatusUpdateView.as_view(), name='admin user status update'),
+    path('admin_page/user_status_update/<int:pk>', views.AdminPageUserStatusUpdateView.as_view(),
+         name='admin user status update'),
     path('admin_page/user_delete/<int:pk>', views.AdminPageUserDeleteView.as_view(), name='admin user delete'),
 
     path('admin_page/post_create', views.AdminPagePostCreateView.as_view(), name='admin create post'),
@@ -70,8 +74,8 @@ urlpatterns = [
     path('chat_delete/<int:pk>', views.ChatDeleteView.as_view(), name='delete chat'),
 
     path('calendar/<int:year>/<int:month>/', views.CalendarView.as_view(), name='calendar'),
-    path('calendar_event_create/<int:year>/<int:month>/<int:day>/', views.add_schedule,
-         name='calendar event create'),
+    path('calendar_event_create/<int:year>/<int:month>/<int:day>/', views.CalendarEventCreate.as_view(), name='calendar event create'),
+    path('calendar_event_create_multiple/<int:year>/<int:month>/<int:day>/', views.CalendarEventMultipleCreate.as_view(), name='calendar event create multiple'),
 
     path('schedule_update/<int:pk>', views.ScheduleUpdateView.as_view(), name='update schedule'),
     path('schedule_delete/<int:pk>', views.ScheduleDeleteView.as_view(), name='delete schedule'),

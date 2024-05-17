@@ -17,7 +17,6 @@
     {% endfor %}
 </div>
 {% endif %}
-
 <div class="row">
     <div class="col-md-8">
         <div class="p-2 m-1">
@@ -125,7 +124,8 @@
                             </div>
 
                             <div class="col-sm-4">
-                                <a class="add_sched">
+                                <a class="add_sched"
+                                    href="?name={{ post.name }}&?id={{ post.id }}">
                                     <button class="btn btn-simple btn-twitter text-center col-12">
                                         Опубликовать
                                     </button>
@@ -166,10 +166,11 @@
     let month = new Date().getMonth() + 1;
     let year = new Date().getFullYear();
     let day = new Date().getDate();
-    console.log(year, month, day)
+    // console.log(year, month, day)
     const add_sched = document.getElementsByClassName('add_sched')
     for (i = 0; i <= add_sched.length; i++) {
-        add_sched[i].setAttribute('href', `/calendar_event_create/${year}/${month}/${day}/`)
+        let postName = add_sched[i].getAttribute('href')
+        add_sched[i].setAttribute('href', `/calendar_event_create/${year}/${month}/${day}/${postName}`)
     }
 </script>
 {% endblock javascripts %}
