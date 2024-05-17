@@ -632,8 +632,9 @@ class CalendarEventCreate(SuccessMessageMixin, LoginRequiredMixin, CreateView):
         return context
 
     def form_valid(self, form):
+        print('1212212121121221e34f3ww3')
         form.instance.user = self.request.user
-        return super().form_valid(form)
+        return super(CalendarEventCreate, self).form_valid(form)
 
 
 class ScheduleUpdateView(SuccessMessageMixin, LoginRequiredMixin, UpdateView):

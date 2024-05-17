@@ -70,7 +70,7 @@ urlpatterns = [
     path('chat_delete/<int:pk>', views.ChatDeleteView.as_view(), name='delete chat'),
 
     path('calendar/<int:year>/<int:month>/', views.CalendarView.as_view(), name='calendar'),
-    path('calendar_event_create/<int:year>/<int:month>/<int:day>/', views.CalendarEventCreate.as_view(),
+    path('calendar_event_create/<int:year>/<int:month>/<int:day>/', views.add_schedule,
          name='calendar event create'),
 
     path('schedule_update/<int:pk>', views.ScheduleUpdateView.as_view(), name='update schedule'),

@@ -110,6 +110,7 @@ class PostScheduleForm(forms.ModelForm):
         model = PostSchedule
         fields = ['post', 'schedule', 'is_sent']
         widgets = {
+            # 'post': forms.CheckboxSelectMultiple(),
             'schedule': forms.DateTimeInput(attrs={'type': 'datetime-local'}),
             'is_sent': forms.HiddenInput(attrs={'value': ''}),
         }
