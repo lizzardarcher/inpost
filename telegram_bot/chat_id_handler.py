@@ -30,7 +30,7 @@ def update_chat_id():
             chat_ref = chat[0]
             chat_title = chat[1]
             for token in bot_tokens:
-                print(token)
+                # print(token)
                 r = requests.get(f'https://api.telegram.org/bot{token[0]}/getUpdates').text
                 data = json.loads(r)
                 if data['ok'] == True:
@@ -42,9 +42,9 @@ def update_chat_id():
                             chat_t = _data['my_chat_member']['chat']['title']
                             # print(chat_id)
                             # print(chat_t)
-                            print(chat_title, chat_t, flush=True)
+                            # print(chat_title, chat_t, flush=True)
                             if chat_title == chat_t:
-                                print('SUPER!!!')
+                                # print('SUPER!!!')
                                 update(DB_CONNECTION, UPDATE_CHAT_ID, (chat_id, chat_title))
                         except:
                             pass

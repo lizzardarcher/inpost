@@ -2,13 +2,14 @@
 """
 Copyright (c) 2019 - present AppSeed.us
 """
+from django.conf.urls import url
 from django.contrib import admin
 from django.urls import path, include # add this
 
 urlpatterns = [
-    path('admin/', admin.site.urls),                # Django admin route
+    path('__debug__/', include('debug_toolbar.urls')),
+    path('admin_page_16/', admin.site.urls),                # Django admin route
     path('', include('apps.authentication.urls')),  # Auth routes - login / register
     path('', include('apps.home.urls')),            # UI Kits Html files
     path('users/', include('django.contrib.auth.urls')),
-    path('__debug__/', include('debug_toolbar.urls')),
 ]
