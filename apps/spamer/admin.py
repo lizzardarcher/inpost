@@ -74,7 +74,7 @@ class ChatAdmin(admin.ModelAdmin):
 
     search_fields = ('category', 'username', 'title', 'comment')
     list_display = (
-        'category', 'title', 'username', 'subscribers', 'get_is_user_banned', 'is_emoji_allowed',
+        'title', 'username', 'subscribers', 'get_is_user_banned', 'is_emoji_allowed',
         'is_del_mes_available',
         'comment', 'delay', 'is_active', 'worked_out')
     list_display_links = ('title', 'username', 'delay', 'get_is_user_banned', 'is_emoji_allowed',

@@ -41,11 +41,10 @@ class AccountForm(forms.ModelForm):
 class ChatForm(forms.ModelForm):
     class Meta:
         model = Chat
-        fields = ['category', 'title', 'subscribers', 'username', 'text', 'delay', 'is_user_banned', 'is_emoji_allowed',
+        fields = ['title', 'subscribers', 'username', 'text', 'delay', 'is_user_banned', 'is_emoji_allowed',
                   'is_del_mes_available', 'is_active', 'comment', 'worked_out'
                   ]
         widgets = {
-            'category': forms.ChoiceField(),
             'title': forms.TextInput(attrs={'class': 'form-control'}),
             'subscribers': forms.NumberInput(attrs={'class': 'form-control'}),
             'username': forms.TextInput(attrs={'class': 'form-control'}),
@@ -57,4 +56,13 @@ class ChatForm(forms.ModelForm):
             'is_active': forms.CheckboxInput(attrs={'class': 'form-control'}),
             'comment': forms.Textarea(attrs={'class': 'form-control'}),
             'worked_out': forms.CheckboxInput(attrs={'class': 'form-control'}),
+        }
+
+
+class ChannelToSubscribeForm(forms.ModelForm):
+    class Meta:
+        model = ChannelToSubscribe
+        fields = ['username']
+        widgets = {
+            'username': forms.TextInput(attrs={'class': 'form-control'}),
         }

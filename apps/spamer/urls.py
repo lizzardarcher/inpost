@@ -19,8 +19,11 @@ urlpatterns = [
     path('chat/<int:pk>/update/', views.ChatUpdateView.as_view(), name='chat edit'),
     path('chat/<int:pk>/delete/', views.ChatDeleteView.as_view(), name='chat delete'),
 
+    path('channel/', views.ChannelToSubscribeListView.as_view(), name='channels'),
+    path('channel/create/', views.ChannelToSubscribeCreateView.as_view(), name='channel create'),
+    path('channel/<int:pk>/update/', views.ChannelToSubscribeUpdateView.as_view(), name='channel edit'),
+    path('channel/<int:pk>/delete/', views.ChannelToSubscribeDeleteView.as_view(), name='channel delete'),
 
-
-
+    path('statistics/', views.StatisticsDetailView.as_view(), name='statistics'),
 
 ]

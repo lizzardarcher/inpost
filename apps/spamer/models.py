@@ -76,9 +76,8 @@ class Message(models.Model):
 
 
 class Chat(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True, verbose_name='Пользователь')
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='spamchat', null=True, blank=True, verbose_name='Пользователь')
     datetime = models.DateTimeField(auto_now_add=True, verbose_name='Время добавления')
-    category = models.CharField(max_length=1024, default='дубай обмен', choices=CHAT_CATEGORY, verbose_name='Категория')
     title = models.CharField(max_length=1000, null=True, blank=True, verbose_name='Название чата')
     subscribers = models.IntegerField(default=0, null=True, blank=True, verbose_name='Подписчиков')
     username = models.CharField(max_length=1000, unique=True, null=True, blank=True, verbose_name='Ссылка или Юзернейм')
@@ -101,6 +100,7 @@ class Chat(models.Model):
 
 
 class ChannelToSubscribe(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='spamchannel', null=True, blank=True, verbose_name='Пользователь')
     username = models.CharField(max_length=1000, unique=True, null=True, blank=True, verbose_name='Username')
 
     def __str__(self):
