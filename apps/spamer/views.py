@@ -19,7 +19,7 @@ class AccountListView(LoginRequiredMixin, ListView):
 
     def get_context_data(self, **kwargs):
         context = super(AccountListView, self).get_context_data(**kwargs)
-        context.update({'segment': 'account'})
+        context.update({'segment': 'spm', 'spm_segment': 'account'})
         return context
 
 
@@ -30,6 +30,7 @@ class AccountDetailView(LoginRequiredMixin, DetailView):
 
     def get_context_data(self, **kwargs):
         context = super(AccountDetailView, self).get_context_data(**kwargs)
+        context.update({'segment': 'spm', 'spm_segment': 'account'})
         return context
 
 
@@ -38,6 +39,11 @@ class AccountCreateView(SuccessMessageMixin, LoginRequiredMixin, CreateView):
     success_url = '/spm'
     template_name = 'spamer/crud/account_create.html'
     success_message = 'Аккаунт успешно создан!'
+
+    def get_context_data(self, **kwargs):
+        context = super(AccountCreateView, self).get_context_data(**kwargs)
+        context.update({'segment': 'spm', 'spm_segment': 'account'})
+        return context
 
     def form_valid(self, form):
         form.instance.user = self.request.user
@@ -51,6 +57,11 @@ class AccountUpdateView(SuccessMessageMixin, LoginRequiredMixin, UpdateView):
     success_url = '/spm'
     success_message = 'Аккаунт успешно обновлен!'
 
+    def get_context_data(self, **kwargs):
+        context = super(AccountUpdateView, self).get_context_data(**kwargs)
+        context.update({'segment': 'spm', 'spm_segment': 'account'})
+        return context
+
     def form_valid(self, form):
         form.instance.user = self.request.user
         return super().form_valid(form)
@@ -61,6 +72,11 @@ class AccountDeleteView(LoginRequiredMixin, DeleteView):
     success_url = '/spm'
     template_name = 'spamer/crud/account_delete.html'
 
+    def get_context_data(self, **kwargs):
+        context = super(AccountDeleteView, self).get_context_data(**kwargs)
+        context.update({'segment': 'spm', 'spm_segment': 'account'})
+        return context
+
 
 class ChatListView(LoginRequiredMixin, ListView):
     model = Chat
@@ -69,7 +85,7 @@ class ChatListView(LoginRequiredMixin, ListView):
 
     def get_context_data(self, **kwargs):
         context = super(ChatListView, self).get_context_data(**kwargs)
-        context.update({'segment': 'spm-chats'})
+        context.update({'segment': 'spm', 'spm_segment': 'chat'})
         return context
 
 
@@ -80,7 +96,7 @@ class ChatDetailView(LoginRequiredMixin, DetailView):
 
     def get_context_data(self, **kwargs):
         context = super(ChatDetailView, self).get_context_data(**kwargs)
-        context.update({'segment': 'spm-chats'})
+        context.update({'segment': 'spm', 'spm_segment': 'chat'})
         return context
 
 
@@ -89,6 +105,11 @@ class ChatCreateView(SuccessMessageMixin, LoginRequiredMixin, CreateView):
     success_url = '/spm'
     template_name = 'spamer/crud/chat_create.html'
     success_message = 'Чат успешно создан!'
+
+    def get_context_data(self, **kwargs):
+        context = super(ChatCreateView, self).get_context_data(**kwargs)
+        context.update({'segment': 'spm', 'spm_segment': 'chat'})
+        return context
 
     def form_valid(self, form):
         form.instance.user = self.request.user
@@ -102,6 +123,11 @@ class ChatUpdateView(SuccessMessageMixin, LoginRequiredMixin, UpdateView):
     success_url = '/spm'
     success_message = 'Чат успешно обновлен!'
 
+    def get_context_data(self, **kwargs):
+        context = super(ChatUpdateView, self).get_context_data(**kwargs)
+        context.update({'segment': 'spm', 'spm_segment': 'chat'})
+        return context
+
     def form_valid(self, form):
         form.instance.user = self.request.user
         return super().form_valid(form)
@@ -111,3 +137,8 @@ class ChatDeleteView(LoginRequiredMixin, DeleteView):
     model = Chat
     success_url = '/spm'
     template_name = 'spamer/crud/chat_delete.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(ChatDeleteView, self).get_context_data(**kwargs)
+        context.update({'segment': 'spm', 'spm_segment': 'chat'})
+        return context

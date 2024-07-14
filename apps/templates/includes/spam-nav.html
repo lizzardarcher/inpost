@@ -1,9 +1,9 @@
 <ul class="nav nav-pills">
   <li class="nav-item">
-    <a class="nav-link {% if 'account' in segment %}active{% else %}{% endif %}" href="{% url "accs" %}">Аккаунты</a>
+    <a class="nav-link {% if 'account' in spm_segment %}active{% else %}{% endif %}" href="{% url "accs" %}">Аккаунты</a>
   </li>
   <li class="nav-item">
-    <a class="nav-link" href="#">Link</a>
+    <a class="nav-link {% if 'chat' in spm_segment %}active{% else %}{% endif %}" href="/spm/chat">Чаты</a>
   </li>
   <li class="nav-item">
     <a class="nav-link" href="#">Link</a>

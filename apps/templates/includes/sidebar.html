@@ -73,16 +73,16 @@
                         </a>
                     </li>
                 {% endif %}
-                
+
                 {% if request.user.is_superuser %}
-                    <li class="{% if 'account' in segment %} active {% endif %}">
+                    <li class="{% if 'spm' in segment %} active {% endif %}">
                         <a href="/spm">
                             <i class="tim-icons icon-app"></i>
-                            <p>Раздел в разработке (спамер)</p> 
+                            <p>Раздел в разработке (спамер)</p>
                         </a>
                     </li>
                 {% endif %}
-                
+
             {% endif %}
         </ul>
     </div>

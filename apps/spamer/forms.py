@@ -16,9 +16,9 @@ class AccountForm(forms.ModelForm):
                   'account_enabled'
                   ]
         widgets = {
-            'id_account': forms.TextInput(attrs={'class': 'form-control'}),
+            'id_account': forms.NumberInput(attrs={'class': 'form-control'}),
             'username': forms.TextInput(attrs={'class': 'form-control'}),
-            'api_id': forms.TextInput(attrs={'class': 'form-control'}),
+            'api_id': forms.NumberInput(attrs={'class': 'form-control'}),
             'api_hash': forms.TextInput(attrs={'class': 'form-control'}),
             'phone': forms.TextInput(attrs={'class': 'form-control'}),
             'sms_code': forms.TextInput(attrs={'class': 'form-control'}),
@@ -45,12 +45,12 @@ class ChatForm(forms.ModelForm):
                   'is_del_mes_available', 'is_active', 'comment', 'worked_out'
                   ]
         widgets = {
-            'category': forms.ChoiceField(attrs={'class': 'form-control'}),
+            'category': forms.ChoiceField(),
             'title': forms.TextInput(attrs={'class': 'form-control'}),
-            'subscribers': forms.IntegerField(attrs={'class': 'form-control'}),
+            'subscribers': forms.NumberInput(attrs={'class': 'form-control'}),
             'username': forms.TextInput(attrs={'class': 'form-control'}),
             'text': forms.Textarea(attrs={'class': 'form-control'}),
-            'delay': forms.IntegerField(attrs={'class': 'form-control'}),
+            'delay': forms.NumberInput(attrs={'class': 'form-control'}),
             'is_user_banned': forms.CheckboxInput(attrs={'class': 'form-control'}),
             'is_emoji_allowed': forms.CheckboxInput(attrs={'class': 'form-control'}),
             'is_del_mes_available': forms.CheckboxInput(attrs={'class': 'form-control'}),
