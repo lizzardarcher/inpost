@@ -5,9 +5,22 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
-    path('', views.AccountListView.as_view(), name='accs'),
-    path('<int:pk>/', views.AccountDetailView.as_view(), name='acc detail'),
-    path('create/', views.AccountCreateView.as_view(), name='acc create'),
-    path('<int:pk>/update/', views.AccountUpdateView.as_view(), name='acc edit'),
-    path('<int:pk>/delete/', views.AccountDeleteView.as_view(), name='acc delete'),
+    path('', views.BaseSpamerView.as_view(), name='index'),
+
+    path('accs/', views.AccountListView.as_view(), name='accs'),
+    path('accs/<int:pk>/', views.AccountDetailView.as_view(), name='acc detail'),
+    path('accs/create/', views.AccountCreateView.as_view(), name='acc create'),
+    path('accs/<int:pk>/update/', views.AccountUpdateView.as_view(), name='acc edit'),
+    path('accs/<int:pk>/delete/', views.AccountDeleteView.as_view(), name='acc delete'),
+
+    path('chat/', views.ChatListView.as_view(), name='chats'),
+    path('chat/<int:pk>/', views.ChatDetailView.as_view(), name='chat detail'),
+    path('chat/create/', views.ChatCreateView.as_view(), name='chat create'),
+    path('chat/<int:pk>/update/', views.ChatUpdateView.as_view(), name='chat edit'),
+    path('chat/<int:pk>/delete/', views.ChatDeleteView.as_view(), name='chat delete'),
+
+
+
+
+
 ]

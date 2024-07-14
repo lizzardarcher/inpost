@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 LOG_LEVEL = (
     ('Trace', 'Trace'),
@@ -15,7 +16,9 @@ CHAT_CATEGORY = (
     ('оаэ', 'оаэ'),
 )
 
+
 class Account(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True, verbose_name='Пользователь')
     datetime = models.DateTimeField(auto_now_add=True, verbose_name='Время добавления')
     id_account = models.IntegerField(primary_key=True, verbose_name='Account ID')
     username = models.CharField(max_length=100, null=True, blank=True, verbose_name='Username')
@@ -37,7 +40,8 @@ class Account(models.Model):
                                                    verbose_name='Автоответчик вкл/выкл')
     is_spam_active = models.BooleanField(default=False, null=True, blank=True, verbose_name='Спам вкл/выкл')
     is_spam_lk_active = models.BooleanField(default=False, null=True, blank=True, verbose_name='Спам по ЛС вкл/выкл')
-    delay = models.IntegerField(default=0, null=True, blank=True, verbose_name='Задержка отправки сообщения (в минутах)')
+    delay = models.IntegerField(default=0, null=True, blank=True,
+                                verbose_name='Задержка отправки сообщения (в минутах)')
     master_to_forward = models.CharField(max_length=100, null=True, blank=True,
                                          verbose_name='Кому пересылать сообщения')
     account_enabled = models.BooleanField(default=True, null=True, blank=True, verbose_name='Задействован в чатах')
@@ -72,8 +76,9 @@ class Message(models.Model):
 
 
 class Chat(models.Model):
-    category = models.CharField(max_length=1024, default='дубай обмен', choices=CHAT_CATEGORY, verbose_name='Категория')
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True, verbose_name='Пользователь')
     datetime = models.DateTimeField(auto_now_add=True, verbose_name='Время добавления')
+    category = models.CharField(max_length=1024, default='дубай обмен', choices=CHAT_CATEGORY, verbose_name='Категория')
     title = models.CharField(max_length=1000, null=True, blank=True, verbose_name='Название чата')
     subscribers = models.IntegerField(default=0, null=True, blank=True, verbose_name='Подписчиков')
     username = models.CharField(max_length=1000, unique=True, null=True, blank=True, verbose_name='Ссылка или Юзернейм')
@@ -138,7 +143,7 @@ class Client(models.Model):
     is_spam_active = models.BooleanField(default=True, null=True, blank=True, verbose_name='Включён в рассылку')
 
     def __str__(self):
-        return '@'+str(self.username) + ' ' + str(self.user_id)
+        return '@' + str(self.username) + ' ' + str(self.user_id)
 
     class Meta:
         db_table = 'client'
@@ -159,7 +164,7 @@ class MasterAccount(models.Model):
     is_duplicate = models.BooleanField(default=False, null=True, blank=True, verbose_name='Дубликат')
 
     def __str__(self):
-        return '@'+str(self.username).split('/')[-1] + ' ' + str(self.id_account)
+        return '@' + str(self.username).split('/')[-1] + ' ' + str(self.id_account)
 
     class Meta:
         db_table = 'masteraccount'
@@ -221,7 +226,6 @@ class TGAdmin(models.Model):
 
 
 class GeneralSettings(models.Model):
-
     price_1 = models.CharField(max_length=100, null=True, blank=True, verbose_name='Цена 1')
     price_2 = models.CharField(max_length=100, null=True, blank=True, verbose_name='Цена 2')
     price_3 = models.CharField(max_length=100, null=True, blank=True, verbose_name='Цена 3')
@@ -229,7 +233,8 @@ class GeneralSettings(models.Model):
     forward_lk = models.CharField(max_length=100, null=True, blank=True, verbose_name='Пересыл в ЛС')
     general_text = models.TextField(max_length=1024, null=True, blank=True, verbose_name='Общий Текст')
     general_auto_answering = models.TextField(max_length=1024, null=True, blank=True, verbose_name='Общий автоответчик')
-    general_delay = models.IntegerField(default=0, null=True, blank=True, verbose_name='Общая задержка отправки сообщения (в минутах)')
+    general_delay = models.IntegerField(default=0, null=True, blank=True,
+                                        verbose_name='Общая задержка отправки сообщения (в минутах)')
 
     def __str__(self):
         return 'Общие настройки для всего бота'

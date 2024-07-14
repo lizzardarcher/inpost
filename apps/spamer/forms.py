@@ -10,9 +10,9 @@ User = get_user_model()
 class AccountForm(forms.ModelForm):
     class Meta:
         model = Account
-        fields = ['id_account', 'username', 'api_id','api_hash','phone','sms_code','signed_in','status',
-                  'report','session','session_for_chat','session_for_lk','common_text','auto_answering_text',
-                  'is_auto_answering_active','is_spam_active','is_spam_lk_active','delay', 'master_to_forward',
+        fields = ['id_account', 'username', 'api_id', 'api_hash', 'phone', 'sms_code', 'signed_in', 'status',
+                  'report', 'session', 'session_for_chat', 'session_for_lk', 'common_text', 'auto_answering_text',
+                  'is_auto_answering_active', 'is_spam_active', 'is_spam_lk_active', 'delay', 'master_to_forward',
                   'account_enabled'
                   ]
         widgets = {
@@ -35,4 +35,26 @@ class AccountForm(forms.ModelForm):
             'delay': forms.TextInput(attrs={'class': 'form-control'}),
             'master_to_forward': forms.CheckboxInput(attrs={'class': 'form-control'}),
             'account_enabled': forms.CheckboxInput(attrs={'class': 'form-control'}),
+        }
+
+
+class ChatForm(forms.ModelForm):
+    class Meta:
+        model = Chat
+        fields = ['category', 'title', 'subscribers', 'username', 'text', 'delay', 'is_user_banned', 'is_emoji_allowed',
+                  'is_del_mes_available', 'is_active', 'comment', 'worked_out'
+                  ]
+        widgets = {
+            'category': forms.ChoiceField(attrs={'class': 'form-control'}),
+            'title': forms.TextInput(attrs={'class': 'form-control'}),
+            'subscribers': forms.IntegerField(attrs={'class': 'form-control'}),
+            'username': forms.TextInput(attrs={'class': 'form-control'}),
+            'text': forms.Textarea(attrs={'class': 'form-control'}),
+            'delay': forms.IntegerField(attrs={'class': 'form-control'}),
+            'is_user_banned': forms.CheckboxInput(attrs={'class': 'form-control'}),
+            'is_emoji_allowed': forms.CheckboxInput(attrs={'class': 'form-control'}),
+            'is_del_mes_available': forms.CheckboxInput(attrs={'class': 'form-control'}),
+            'is_active': forms.CheckboxInput(attrs={'class': 'form-control'}),
+            'comment': forms.Textarea(attrs={'class': 'form-control'}),
+            'worked_out': forms.CheckboxInput(attrs={'class': 'form-control'}),
         }
