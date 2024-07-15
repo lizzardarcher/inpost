@@ -34,7 +34,7 @@ class GeneralSettingsAdmin(admin.ModelAdmin):
 
 class AccountAdmin(admin.ModelAdmin):
     list_display = (
-        'account_enabled', 'datetime', 'username', 'phone', 'status', 'is_spam_active', 'delay', 'is_spam_lk_active')
+        'datetime', 'username', 'phone', 'status', 'is_spam_active', 'delay', 'is_spam_lk_active')
     list_display_links = ('datetime', 'username', 'phone', 'status', 'is_spam_active', 'delay', 'is_spam_lk_active')
     search_fields = ('username',)
 
@@ -84,10 +84,8 @@ class ChatAdmin(admin.ModelAdmin):
 
 
 class ClientAdmin(admin.ModelAdmin):
-    list_display = ('datetime', 'username', 'first_name', 'last_name', 'phone', 'next_time_contact', 'exchange_time',
-                    'exchange_value', 'is_spam_active')
-    list_display_links = ('datetime', 'username', 'first_name', 'last_name', 'phone', 'next_time_contact',
-                          'exchange_time', 'exchange_value', 'is_spam_active')
+    list_display = ('datetime', 'username', 'first_name', 'last_name', 'phone',)
+    list_display_links = ('datetime', 'username', 'first_name', 'last_name', 'phone',)
 
 
 class MasterAccountAdmin(admin.ModelAdmin):

@@ -26,5 +26,8 @@ urlpatterns = [
 
     path('statistics/', views.StatisticsDetailView.as_view(), name='statistics'),
     path('msg/', views.MessageListView.as_view(), name='msg'),
+    path('client/', views.ClientListView.as_view(), name='client'),
+    path('logging/', views.AccountLoggingListView.as_view(), name='logging'),
+    path('settings/', views.GeneralSettingsListView.as_view(), name='settings'),
 
 ]

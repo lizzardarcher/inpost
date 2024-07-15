@@ -10,8 +10,9 @@ User = get_user_model()
 class AccountForm(forms.ModelForm):
     class Meta:
         model = Account
-        fields = ['id_account', 'username', 'api_id', 'api_hash', 'phone', 'sms_code', 'signed_in', 'status',
-                  'report', 'session', 'session_for_chat', 'session_for_lk', 'common_text', 'auto_answering_text',
+        fields = ['id_account', 'first_name', 'last_name', 'photo', 'username', 'api_id', 'api_hash', 'phone',
+                  'sms_code', 'signed_in', 'status',
+                  'report', 'session', 'session_for_chat', 'session_for_lk', 'common_text', 'media','auto_answering_text',
                   'is_auto_answering_active', 'is_spam_active', 'is_spam_lk_active', 'delay', 'master_to_forward',
                   'account_enabled'
                   ]
@@ -21,12 +22,16 @@ class AccountForm(forms.ModelForm):
             'api_id': forms.NumberInput(attrs={'class': 'form-control'}),
             'api_hash': forms.TextInput(attrs={'class': 'form-control'}),
             'phone': forms.TextInput(attrs={'class': 'form-control'}),
+            'first_name': forms.TextInput(attrs={'class': 'form-control'}),
+            'last_name': forms.TextInput(attrs={'class': 'form-control'}),
+            'photo': forms.FileInput(attrs={'class': 'form-control'}),
             'sms_code': forms.TextInput(attrs={'class': 'form-control'}),
-            'signed_in': forms.TextInput(attrs={'class': 'form-control'}),
-            'status': forms.TextInput(attrs={'class': 'form-control'}),
+            'signed_in': forms.CheckboxInput(attrs={'class': 'form-control'}),
+            'status': forms.CheckboxInput(attrs={'class': 'form-control'}),
             'report': forms.TextInput(attrs={'class': 'form-control'}),
             'session_for_chat': forms.TextInput(attrs={'class': 'form-control'}),
             'session_for_lk': forms.TextInput(attrs={'class': 'form-control'}),
+            'media': forms.FileInput(attrs={'class': 'form-control'}),
             'common_text': forms.Textarea(attrs={'class': 'form-control'}),
             'auto_answering_text': forms.Textarea(attrs={'class': 'form-control'}),
             'is_auto_answering_active': forms.CheckboxInput(attrs={'class': 'form-control'}),

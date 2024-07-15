@@ -9,6 +9,7 @@ LOG_LEVEL = (
     ('Fatal', 'Fatal'),
 )
 
+
 class Account(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True, verbose_name='Пользователь')
     datetime = models.DateTimeField(auto_now_add=True, verbose_name='Время добавления')
@@ -20,6 +21,10 @@ class Account(models.Model):
     sms_code = models.CharField(default='', max_length=16, null=True, blank=True, verbose_name='SMS код')
     signed_in = models.BooleanField(default=False, blank=True, verbose_name='Активирован')
 
+    first_name = models.CharField(max_length=100, null=True, blank=True, verbose_name='Name')
+    last_name = models.CharField(max_length=100, null=True, blank=True, verbose_name='Surname')
+    photo = models.ImageField(null=True, blank=True, verbose_name='Photo')
+
     status = models.BooleanField(default=True, verbose_name='Состояние')
     report = models.TextField(max_length=1000000, null=True, blank=True, verbose_name='Отчёт о состоянии')
     session = models.CharField(max_length=1000, null=True, blank=True, verbose_name='Сессия')
@@ -27,7 +32,9 @@ class Account(models.Model):
     session_for_lk = models.CharField(max_length=1000, null=True, blank=True, verbose_name='Сессия для лс')
 
     common_text = models.TextField(max_length=4000, null=True, blank=True, verbose_name='Текст Рассылки')
+    media = models.FileField(null=True, blank=True, verbose_name='Image')
     auto_answering_text = models.TextField(max_length=4000, null=True, blank=True, verbose_name='Текст автоответчика')
+
     is_auto_answering_active = models.BooleanField(default=False, null=True, blank=True,
                                                    verbose_name='Автоответчик вкл/выкл')
     is_spam_active = models.BooleanField(default=False, null=True, blank=True, verbose_name='Спам вкл/выкл')
@@ -68,7 +75,8 @@ class Message(models.Model):
 
 
 class Chat(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='spamchat', null=True, blank=True, verbose_name='Пользователь')
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='spamchat', null=True, blank=True,
+                             verbose_name='Пользователь')
     datetime = models.DateTimeField(auto_now_add=True, verbose_name='Время добавления')
     title = models.CharField(max_length=1000, null=True, blank=True, verbose_name='Название чата')
     subscribers = models.IntegerField(default=0, null=True, blank=True, verbose_name='Подписчиков')
@@ -92,7 +100,8 @@ class Chat(models.Model):
 
 
 class ChannelToSubscribe(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='spamchannel', null=True, blank=True, verbose_name='Пользователь')
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='spamchannel', null=True, blank=True,
+                             verbose_name='Пользователь')
     username = models.CharField(max_length=1000, unique=True, null=True, blank=True, verbose_name='Username')
 
     def __str__(self):

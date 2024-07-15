@@ -31,6 +31,12 @@
                         <p>Мои Каналы</p>
                     </a>
                 </li>
+                <li class="{% if 'mychat' in segment %} active {% endif %}">
+                    <a href="#">
+                        <i class="tim-icons icon-alert-circle-exc"></i>
+                        <p>Мои Чаты (в разработке)</p>
+                    </a>
+                </li>
                 <li class="{% if 'bot' in segment %} active {% endif %}">
                     <a href="/bot">
                         <i class="tim-icons icon-atom"></i>
@@ -56,15 +62,6 @@
                     </a>
                 </li>
 
-<!--                {% if request.user.is_superuser %}-->
-<!--                    <li class="dropdown nav-item">-->
-<!--                        <a href="/admin">-->
-<!--                            <i class="tim-icons icon-app"></i>-->
-<!--                            <p>Админ</p>-->
-<!--                        </a>-->
-<!--                    </li>-->
-<!--                {% endif %}-->
-
                 {% if request.user.is_superuser %}
                     <li class="dropdown nav-item">
                         <a href="/admin_page">
@@ -77,8 +74,8 @@
                 {% if request.user.is_superuser %}
                     <li class="{% if 'spm' in segment %} active {% endif %}">
                         <a href="/spm">
-                            <i class="tim-icons icon-app"></i>
-                            <p>Раздел в разработке (спамер)</p>
+                            <i class="tim-icons icon-alert-circle-exc"></i>
+                            <p>Спамер (в разработке)</p>
                         </a>
                     </li>
                 {% endif %}

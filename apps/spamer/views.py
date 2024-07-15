@@ -10,6 +10,8 @@ from apps.spamer.forms import AccountForm
 from apps.spamer.forms import ChatForm
 from apps.spamer.forms import ChannelToSubscribeForm
 
+from apps.middleware.current_user import get_current_user
+
 
 class BaseSpamerView(LoginRequiredMixin, TemplateView):
     template_name = "spamer/home/index.html"
@@ -44,7 +46,7 @@ class AccountDetailView(LoginRequiredMixin, DetailView):
 
 class AccountCreateView(SuccessMessageMixin, LoginRequiredMixin, CreateView):
     form_class = AccountForm
-    success_url = '/spm/account'
+    success_url = '/spm/accs'
     template_name = 'spamer/crud/create.html'
     success_message = 'Аккаунт успешно добавлен!'
 
@@ -62,7 +64,7 @@ class AccountUpdateView(SuccessMessageMixin, LoginRequiredMixin, UpdateView):
     model = Account
     form_class = AccountForm
     template_name = 'spamer/crud/create.html'
-    success_url = '/spm/account'
+    success_url = '/spm/accs'
     success_message = 'Аккаунт успешно обновлен!'
 
     def get_context_data(self, **kwargs):
@@ -77,7 +79,7 @@ class AccountUpdateView(SuccessMessageMixin, LoginRequiredMixin, UpdateView):
 
 class AccountDeleteView(LoginRequiredMixin, DeleteView):
     model = Account
-    success_url = '/spm/account'
+    success_url = '/spm/accs'
     template_name = 'spamer/crud/delete.html'
 
     def get_context_data(self, **kwargs):
@@ -166,13 +168,13 @@ class ChannelToSubscribeListView(LoginRequiredMixin, ListView):
 
 class ChannelToSubscribeCreateView(SuccessMessageMixin, LoginRequiredMixin, CreateView):
     form_class = ChannelToSubscribeForm
-    success_url = '/spm/chat'
-    template_name = 'spamer/crud/create.html'
+    success_url = '/spm/channel/create/'
+    template_name = 'spamer/crud/channel_to_sub_create.html'
     success_message = 'Канал успешно добавлен!'
 
     def get_context_data(self, **kwargs):
         context = super(ChannelToSubscribeCreateView, self).get_context_data(**kwargs)
-        context.update({'segment': 'spm', 'spm_segment': 'chat'})
+        context.update({'segment': 'spm', 'spm_segment': 'chat', 'channel': ChannelToSubscribe.objects.filter(user=get_current_user())})
         return context
 
     def form_valid(self, form):
