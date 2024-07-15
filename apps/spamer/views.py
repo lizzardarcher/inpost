@@ -2,7 +2,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView, TemplateView
 
-from apps.spamer.models import Account
+from apps.spamer.models import Account, Message, Client, AccountLogging, GeneralSettings
 from apps.spamer.models import Chat
 from apps.spamer.models import ChannelToSubscribe
 
@@ -215,4 +215,52 @@ class StatisticsDetailView(LoginRequiredMixin, TemplateView):
     def get_context_data(self, **kwargs):
         context = super(StatisticsDetailView, self).get_context_data(**kwargs)
         context.update({'segment': 'spm', 'spm_segment': 'stats'})
+        return context
+
+
+class MessageListView(LoginRequiredMixin, ListView):
+    model = Message
+    context_object_name = 'msg'
+    paginate_by = 100
+    template_name = 'spamer/home/msg.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(MessageListView, self).get_context_data(**kwargs)
+        context.update({'segment': 'spm', 'spm_segment': 'msg'})
+        return context
+
+
+class ClientListView(LoginRequiredMixin, ListView):
+    model = Client
+    context_object_name = 'client'
+    paginate_by = 100
+    template_name = 'spamer/home/client.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(ClientListView, self).get_context_data(**kwargs)
+        context.update({'segment': 'spm', 'spm_segment': 'client'})
+        return context
+
+
+class AccountLoggingListView(LoginRequiredMixin, ListView):
+    model = AccountLogging
+    context_object_name = 'logging'
+    paginate_by = 100
+    template_name = 'spamer/home/logging.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(AccountLoggingListView, self).get_context_data(**kwargs)
+        context.update({'segment': 'spm', 'spm_segment': 'logging'})
+        return context
+
+
+class GeneralSettingsListView(LoginRequiredMixin, ListView):
+    model = GeneralSettings
+    context_object_name = 'settings'
+    paginate_by = 100
+    template_name = 'spamer/home/settings.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(GeneralSettingsListView, self).get_context_data(**kwargs)
+        context.update({'segment': 'spm', 'spm_segment': 'settings'})
         return context

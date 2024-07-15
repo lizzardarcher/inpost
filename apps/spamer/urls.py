@@ -25,5 +25,6 @@ urlpatterns = [
     path('channel/<int:pk>/delete/', views.ChannelToSubscribeDeleteView.as_view(), name='channel delete'),
 
     path('statistics/', views.StatisticsDetailView.as_view(), name='statistics'),
+    path('msg/', views.MessageListView.as_view(), name='msg'),
 
 ]

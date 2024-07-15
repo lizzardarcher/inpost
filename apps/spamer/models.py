@@ -8,14 +8,6 @@ LOG_LEVEL = (
     ('Warning', 'Warning'),
     ('Fatal', 'Fatal'),
 )
-CHAT_CATEGORY = (
-    ('дубай обмен', 'дубай обмен'),
-    ('работа', 'работа'),
-    ('crypto', 'crypto'),
-    ('пхукет', 'пхукет'),
-    ('оаэ', 'оаэ'),
-)
-
 
 class Account(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True, verbose_name='Пользователь')
@@ -128,19 +120,12 @@ class ChatMaster(models.Model):
 
 
 class Client(models.Model):
+    datetime = models.DateTimeField(auto_now_add=True, verbose_name='Время добавления')
     user_id = models.IntegerField(null=True, blank=True, verbose_name='User_id')
     username = models.CharField(max_length=100, null=True, blank=True, verbose_name='Username')
     first_name = models.CharField(max_length=100, null=True, blank=True, verbose_name='Фамилия')
     last_name = models.CharField(max_length=100, null=True, blank=True, verbose_name='Имя')
     phone = models.CharField(max_length=16, null=True, blank=True, verbose_name='Телефон')
-
-    datetime = models.DateTimeField(auto_now_add=True, verbose_name='Время добавления')
-    next_time_contact = models.DateTimeField(null=True, blank=True, verbose_name='Время следующего контакта')
-
-    exchange_time = models.DateTimeField(null=True, blank=True, verbose_name='Когда поменял')
-    exchange_value = models.TextField(max_length=100, null=True, blank=True, verbose_name='Сколько поменял')
-
-    is_spam_active = models.BooleanField(default=True, null=True, blank=True, verbose_name='Включён в рассылку')
 
     def __str__(self):
         return '@' + str(self.username) + ' ' + str(self.user_id)
@@ -226,10 +211,6 @@ class TGAdmin(models.Model):
 
 
 class GeneralSettings(models.Model):
-    price_1 = models.CharField(max_length=100, null=True, blank=True, verbose_name='Цена 1')
-    price_2 = models.CharField(max_length=100, null=True, blank=True, verbose_name='Цена 2')
-    price_3 = models.CharField(max_length=100, null=True, blank=True, verbose_name='Цена 3')
-    price_4 = models.CharField(max_length=100, null=True, blank=True, verbose_name='Цена 4')
     forward_lk = models.CharField(max_length=100, null=True, blank=True, verbose_name='Пересыл в ЛС')
     general_text = models.TextField(max_length=1024, null=True, blank=True, verbose_name='Общий Текст')
     general_auto_answering = models.TextField(max_length=1024, null=True, blank=True, verbose_name='Общий автоответчик')
