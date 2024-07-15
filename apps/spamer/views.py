@@ -6,11 +6,12 @@ from apps.spamer.models import Account, Message, Client, AccountLogging, General
 from apps.spamer.models import Chat
 from apps.spamer.models import ChannelToSubscribe
 
-from apps.spamer.forms import AccountForm
+from apps.spamer.forms import AccountForm, ChatUploadForm
 from apps.spamer.forms import ChatForm
 from apps.spamer.forms import ChannelToSubscribeForm
 
 from apps.middleware.current_user import get_current_user
+from apps.home.utils import get_chat_info
 
 
 class BaseSpamerView(LoginRequiredMixin, TemplateView):
@@ -125,6 +126,51 @@ class ChatCreateView(SuccessMessageMixin, LoginRequiredMixin, CreateView):
         form.instance.user = self.request.user
         return super().form_valid(form)
 
+        # Парсим данные чата с помощью requests
+
+        # chat_data = get_chat_info(form.instance.link)
+        # form.instance.title = chat_data[1]
+        # if 'data:image' in chat_data[0]:
+        #     form.instance.image = chat_data[0]
+        # else:
+        #     form.instance.data_image = chat_data[0]
+        # return super().form_valid(form)
+
+        # Парсим данные чата с помощью requests
+        # chat_data = get_chat_info(form.instance.ref)
+        # form.instance.subscribers = chat_data[2]
+        # form.instance.title = chat_data[1]
+        # form.instance.image = chat_data[0]
+        # return super().form_valid(form)
+
+
+class ChatUploadView(SuccessMessageMixin, LoginRequiredMixin, CreateView):
+    form_class = ChatUploadForm
+    success_url = '/spm/chat'
+    template_name = 'spamer/crud/create.html'
+    success_message = 'Чат успешно создан!'
+
+    def get_context_data(self, **kwargs):
+        context = super(ChatUploadView, self).get_context_data(**kwargs)
+        context.update({'segment': 'spm', 'spm_segment': 'chat'})
+        return context
+
+    def form_valid(self, form):
+        form.instance.user = self.request.user
+
+        # Парсим данные чата с помощью requests
+
+        chat_data = get_chat_info(form.instance.link)
+        form.instance.title = chat_data[1]
+        form.instance.subscribers = chat_data[2]
+        form.instance.username = str(form.instance.link).split('/')[-1]
+
+        if 'data:image' in chat_data[0]:
+            form.instance.image = chat_data[0]
+        else:
+            form.instance.data_image = chat_data[0]
+        return super().form_valid(form)
+
 
 class ChatUpdateView(SuccessMessageMixin, LoginRequiredMixin, UpdateView):
     model = Chat
@@ -174,7 +220,8 @@ class ChannelToSubscribeCreateView(SuccessMessageMixin, LoginRequiredMixin, Crea
 
     def get_context_data(self, **kwargs):
         context = super(ChannelToSubscribeCreateView, self).get_context_data(**kwargs)
-        context.update({'segment': 'spm', 'spm_segment': 'chat', 'channel': ChannelToSubscribe.objects.filter(user=get_current_user())})
+        context.update({'segment': 'spm', 'spm_segment': 'chat',
+                        'channel': ChannelToSubscribe.objects.filter(user=get_current_user())})
         return context
 
     def form_valid(self, form):

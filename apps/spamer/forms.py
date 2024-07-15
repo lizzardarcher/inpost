@@ -12,7 +12,8 @@ class AccountForm(forms.ModelForm):
         model = Account
         fields = ['id_account', 'first_name', 'last_name', 'photo', 'username', 'api_id', 'api_hash', 'phone',
                   'sms_code', 'signed_in', 'status',
-                  'report', 'session', 'session_for_chat', 'session_for_lk', 'common_text', 'media','auto_answering_text',
+                  'report', 'session', 'session_for_chat', 'session_for_lk', 'common_text', 'media',
+                  'auto_answering_text',
                   'is_auto_answering_active', 'is_spam_active', 'is_spam_lk_active', 'delay', 'master_to_forward',
                   'account_enabled'
                   ]
@@ -46,21 +47,23 @@ class AccountForm(forms.ModelForm):
 class ChatForm(forms.ModelForm):
     class Meta:
         model = Chat
-        fields = ['title', 'subscribers', 'username', 'text', 'delay', 'is_user_banned', 'is_emoji_allowed',
-                  'is_del_mes_available', 'is_active', 'comment', 'worked_out'
-                  ]
+        fields = ['text', 'delay', 'is_emoji_allowed',
+                  'is_del_mes_available', 'comment']
         widgets = {
-            'title': forms.TextInput(attrs={'class': 'form-control'}),
-            'subscribers': forms.NumberInput(attrs={'class': 'form-control'}),
-            'username': forms.TextInput(attrs={'class': 'form-control'}),
             'text': forms.Textarea(attrs={'class': 'form-control'}),
             'delay': forms.NumberInput(attrs={'class': 'form-control'}),
-            'is_user_banned': forms.CheckboxInput(attrs={'class': 'form-control'}),
             'is_emoji_allowed': forms.CheckboxInput(attrs={'class': 'form-control'}),
             'is_del_mes_available': forms.CheckboxInput(attrs={'class': 'form-control'}),
-            'is_active': forms.CheckboxInput(attrs={'class': 'form-control'}),
             'comment': forms.Textarea(attrs={'class': 'form-control'}),
-            'worked_out': forms.CheckboxInput(attrs={'class': 'form-control'}),
+        }
+
+
+class ChatUploadForm(forms.ModelForm):
+    class Meta:
+        model = Chat
+        fields = ['link', ]
+        widgets = {
+            'link': forms.URLInput(attrs={'class': 'form-control'}),
         }
 
 

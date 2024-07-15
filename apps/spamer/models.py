@@ -78,6 +78,9 @@ class Chat(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='spamchat', null=True, blank=True,
                              verbose_name='Пользователь')
     datetime = models.DateTimeField(auto_now_add=True, verbose_name='Время добавления')
+    image = models.ImageField(null=True, blank=True, verbose_name='Image')
+    data_image = models.CharField(max_length=4000, null=True, blank=True, verbose_name='Data Image')
+    link = models.URLField(null=True, blank=True, verbose_name='Link')
     title = models.CharField(max_length=1000, null=True, blank=True, verbose_name='Название чата')
     subscribers = models.IntegerField(default=0, null=True, blank=True, verbose_name='Подписчиков')
     username = models.CharField(max_length=1000, unique=True, null=True, blank=True, verbose_name='Ссылка или Юзернейм')
