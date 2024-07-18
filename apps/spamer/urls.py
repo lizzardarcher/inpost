@@ -11,6 +11,7 @@ urlpatterns = [
     path('accs/<int:pk>/', views.AccountDetailView.as_view(), name='acc detail'),
     path('accs/create/', views.AccountCreateView.as_view(), name='acc create'),
     path('accs/<int:pk>/update/', views.AccountUpdateView.as_view(), name='acc edit'),
+    # path('accs/<int:pk>/delete/', views.AccountDeleteView.as_view(), name='acc delete'),
     path('accs/<int:pk>/delete/', views.AccountDeleteView.as_view(), name='acc delete'),
 
     path('chat/', views.ChatListView.as_view(), name='chats'),
@@ -18,7 +19,8 @@ urlpatterns = [
     path('chat/create/', views.ChatCreateView.as_view(), name='chat create'),
     path('chat/upload/', views.ChatUploadView.as_view(), name='chat upload'),
     path('chat/<int:pk>/update/', views.ChatUpdateView.as_view(), name='chat edit'),
-    path('chat/<int:pk>/delete/', views.ChatDeleteView.as_view(), name='chat delete'),
+    # path('chat/<int:pk>/delete/', views.ChatDeleteView.as_view(), name='chat delete'),
+    path('chat/<int:id>/delete/', views.ChatDeleteView.delete_view, name='chat delete'),
 
     path('channel/', views.ChannelToSubscribeListView.as_view(), name='channels'),
     path('channel/create/', views.ChannelToSubscribeCreateView.as_view(), name='channel create'),

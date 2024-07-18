@@ -1,5 +1,8 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
+from django.http import HttpResponseRedirect
+from django.shortcuts import get_object_or_404, render
+from django.template import context
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView, TemplateView
 
 from apps.spamer.models import Account, Message, Client, AccountLogging, GeneralSettings
@@ -87,6 +90,12 @@ class AccountDeleteView(LoginRequiredMixin, DeleteView):
         context = super(AccountDeleteView, self).get_context_data(**kwargs)
         context.update({'segment': 'spm', 'spm_segment': 'account'})
         return context
+
+    @staticmethod
+    def delete_view(request, id):
+        obj = Account.objects.get(id=id)
+        obj.delete()
+        return HttpResponseRedirect("/spm/accs")
 
 
 class ChatListView(LoginRequiredMixin, ListView):
@@ -199,6 +208,12 @@ class ChatDeleteView(LoginRequiredMixin, DeleteView):
         context = super(ChatDeleteView, self).get_context_data(**kwargs)
         context.update({'segment': 'spm', 'spm_segment': 'chat'})
         return context
+
+    @staticmethod
+    def delete_view(request, id):
+        obj = Chat.objects.get(id=id)
+        obj.delete()
+        return HttpResponseRedirect("/spm/chat")
 
 
 class ChannelToSubscribeListView(LoginRequiredMixin, ListView):
