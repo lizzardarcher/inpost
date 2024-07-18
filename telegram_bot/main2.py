@@ -46,8 +46,8 @@ def auto_post():
             # Проверка по дате-времени, если совпадает, то continue
 
             if datetime_now == sched_datetime:
-                # print(sched_datetime, datetime_now, sched_datetime == datetime_now)
-                # print('OK!')
+                print(sched_datetime, datetime_now, sched_datetime == datetime_now)
+                print('OK!')
 
                 # цикл - по чатам с user_id
                 chats = Chat.objects.filter(user=user)
@@ -207,13 +207,13 @@ def auto_post():
                                     PostSchedule.objects.filter(id=sched_id).update(is_sent=True)
                                     Notification.objects.create(text=notification_success, user=user)
                                 sleep(0.4)
-                                # print(notification_success)
+                                print(notification_success)
                             except Exception as e:
                                 notification_fail = f'🛑 Ошибка отправки {post.name} в {chat.title} {datetime_now}'
                                 if '403' not in traceback.format_exc():
                                     Notification.objects.create(text=notification_fail, user=user)
-                                # print(e)
-                                # print(notification_fail)
+                                print(e)
+                                print(notification_fail)
 
 while True:
     auto_post()

@@ -135,7 +135,8 @@ class UserStatus(models.Model):
                                      choices=[('primary', 'Розовый'), ('blue', 'Синий'), ('orange', 'Оранжевый'),
                                               ('red', 'Красный'), ('green', 'Зеленый')],
                                      default='Розовый', blank=True, verbose_name='Основной цвет')
-    main_theme = models.CharField(max_length=100, choices=[('white-content', 'Светлая'), ('', 'Темная')], default='Темная',
+    main_theme = models.CharField(max_length=100, choices=[('white-content', 'Светлая'), ('', 'Темная')],
+                                  default='Темная',
                                   blank=True, verbose_name='Тема Оформления')
     tz = models.CharField(max_length=100, blank=True, default='Москва', choices=tz_choice, verbose_name='Город')
 
@@ -231,7 +232,10 @@ class PostSchedule(models.Model):
     id = models.AutoField(primary_key=True, editable=False)
 
     def __str__(self):
-        return self.post.name
+        return str(self.schedule) + str(self.is_sent)
+
+    def save(self, *args, **kwargs):
+        super(PostSchedule, self).save(*args, **kwargs)
 
     class Meta:
         ordering = ['id']
@@ -246,11 +250,6 @@ class PostPhoto(models.Model):
     photo_3 = models.ImageField(null=True, blank=True, verbose_name='Фото 3')
     photo_4 = models.ImageField(null=True, blank=True, verbose_name='Фото 4')
     photo_5 = models.ImageField(null=True, blank=True, verbose_name='Фото 5')
-    # photo_6 = models.ImageField(null=True, blank=True, verbose_name='Фото 6')
-    # photo_7 = models.ImageField(null=True, blank=True, verbose_name='Фото 7')
-    # photo_8 = models.ImageField(null=True, blank=True, verbose_name='Фото 8')
-    # photo_9 = models.ImageField(null=True, blank=True, verbose_name='Фото 9')
-    # photo_10 = models.ImageField(null=True, blank=True, verbose_name='Фото 10')
     id = models.AutoField(primary_key=True, editable=False)
 
     def __str__(self):

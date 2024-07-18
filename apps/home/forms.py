@@ -110,7 +110,8 @@ class PostScheduleForm(forms.ModelForm):
         model = PostSchedule
         fields = ['post', 'schedule', 'is_sent']
         widgets = {
-            'post': forms.Select(attrs={'class': 'form-control text-info'}),
+            'post': forms.Select(),
+            # 'post': forms.ModelChoiceField(attrs={'class': 'form-control text-info'}),
             'schedule': forms.DateTimeInput(attrs={'class': 'form-control text-info', 'type': 'datetime-local'}),
             'is_sent': forms.HiddenInput(attrs={'value': ''}),
         }
@@ -126,8 +127,9 @@ class PostScheduleMultipleForm(forms.ModelForm):
         model = PostSchedule
         fields = ['post', 'schedule', 'is_sent']
         widgets = {
-            # 'post': forms.CheckboxSelectMultiple(attrs={'class': 'form-control text-info'}),
+            # 'post': forms.ChoiceField(),
             'post': forms.SelectMultiple(),
+            # 'post': forms.SelectMultiple(attrs={'class': 'form-control-sm form-control js-multiple-select', 'multiple': 'multiple'}),
             'schedule': forms.DateTimeInput(attrs={'class': 'form-control text-info', 'type': 'datetime-local'}),
             'is_sent': forms.HiddenInput(attrs={'value': ''}),
         }
